@@ -168,7 +168,6 @@ if __name__ == '__main__':
 
             messages_get(out=1)
 
-
         except Exception as e:
             log.exception('Error:')
 
