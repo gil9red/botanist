@@ -29,12 +29,12 @@ def execute():
     rq = json.loads(request_text)
     print('rq:', rq)
 
-    # from commands.command__damn.damn import damn
-    def damn(name):
-        if not name:
-            return
-
-        return name.upper()
+    from commands.command__damn.damn import damn
+    # def damn(name):
+    #     if not name:
+    #         return
+    #
+    #     return name.upper()
 
     if 'command' not in rq:
         raise Exception("Not found key 'command'.")
