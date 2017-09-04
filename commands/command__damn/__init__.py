@@ -4,13 +4,15 @@
 __author__ = 'ipetrash'
 
 
-import requests
-rs = requests.post('http://127.0.0.1:55001/execute', json={'command': 'Петя'})
-print(rs.json())
-rs = requests.post('http://127.0.0.1:55001/execute', json={'status': 'ok'})
-print(rs.json())
-rs = requests.post('http://127.0.0.1:55001/execute', data=str({'status': 'ok'}))
-print(rs.json())
+from commands.command__damn.damn import damn
 
-# import json
-# print(json.loads(str({'status': 'ok'})))
+# NOTE: for test
+# def damn(name):
+#     if not name:
+#         return
+#
+#     return name.upper()
+
+
+def execute(command):
+    return damn(command)
