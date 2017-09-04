@@ -20,6 +20,13 @@ from commands import generate_response
 #     })
 
 
+@app.route("/get_commands")
+def get_commands():
+    # TODO: временно
+    from commands import ALL_COMMANDS
+    return jsonify(ALL_COMMANDS)
+
+
 @app.route("/execute", methods=['POST'])
 def execute():
     # TODO: нужно определить в какой модуль перенаправить запрос
