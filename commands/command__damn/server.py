@@ -47,6 +47,9 @@ def execute():
 
 @app.errorhandler(Exception)
 def all_exception_handler(error):
+    import traceback
+    print('Error', error, traceback.format_exc())
+
     rs = generate_response(result=None, ok=False, error=str(error))
     print('  rs:', rs)
 

@@ -30,37 +30,39 @@ def get_commands():
 @app.route("/execute", methods=['POST'])
 def execute():
     # TODO: нужно определить в какой модуль перенаправить запрос
-    pass
 
-    # request_text = request.data.decode('utf-8')
-    # print('request_text:', request_text)
-    #
-    # import json
-    # rq = json.loads(request_text)
-    # print('rq:', rq)
-    #
-    # # from commands.command__damn.damn import damn
-    # def damn(name):
-    #     if not name:
-    #         return
-    #
-    #     return name.upper()
-    #
-    # if 'command' not in rq:
-    #     raise Exception("Not found key 'command'.")
-    #
-    # command = rq['command']
-    # result = damn(command)
-    # ok = result is not None
-    #
-    # rs = generate_response(result, ok)
-    # print('  rs:', rs)
-    #
-    # return jsonify(rs)
+    request_text = request.data.decode('utf-8')
+    print('request_text:', request_text)
+
+    import json
+    rq = json.loads(request_text)
+    print('rq:', rq)
+
+    if 'command' not in rq:
+        raise Exception("Not found key 'command'.")
+
+    command = rq['command']
+
+    # Отправка запроса в damn
+    import requests
+    rs = requests.post('http://127.0.0.1:55001/execute', json={'command': command})
+    rs = rs.json()
+    result = rs['result']
+
+    # TODO: ok брать из rs
+    ok = result is not None
+
+    rs = generate_response(result, ok)
+    print('  rs:', rs)
+
+    return jsonify(rs)
 
 
 @app.errorhandler(Exception)
 def all_exception_handler(error):
+    import traceback
+    print('Error', error, traceback.format_exc())
+
     rs = generate_response(result=None, ok=False, error=str(error))
     print('  rs:', rs)
 
