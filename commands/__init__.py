@@ -4,6 +4,9 @@
 __author__ = 'ipetrash'
 
 
+# coordinator
+
+
 # TODO: каждая команда отдельный http вебсервер, к которым бот шлет запросы в формате json
 # TODO: добавить команду курс валют
 # TODO: добавить команду курс криптовалют
@@ -55,7 +58,7 @@ def execute(command):
             return '\n'.join('{}: {}'.format(k, v) for k, v in ALL_COMMANDS.items())
 
         elif execute_command.startswith('насмеши'):
-            from commands import fun
+            from commands.command__fun import fun
             return fun.get_random_quote()
 
         elif execute_command.startswith('ругнись'):
@@ -64,7 +67,7 @@ def execute(command):
             if not name:
                 name = 'Бот'
 
-            from commands import damn
+            from commands.command__damn import damn
             return damn.damn(name)
 
         elif execute_command.startswith('погода'):
@@ -72,7 +75,44 @@ def execute(command):
             if not city:
                 return "Неправильная команда 'погода': не указан населенный пункт"
 
-            from commands import weather_in_city
+            from commands.command__weather_in_city import weather_in_city
             return weather_in_city.get_weather(city)
 
     return message
+
+
+# TODO: нужно стандартизировать формат запросов и ответов между модулями-командами
+
+def generate_response(result=None, ok=True, error=None):
+    return {
+        'result': result,
+        'ok': ok,
+        'error': error,
+    }
+
+# class Request:
+#     def __init__(self, command):
+#         self.command = command
+#
+#     def to_json_str(self):
+#         return {
+#             'command': self.command,
+#         }
+#
+#     @staticmethod
+#     def from_json(json):
+#         return Request(json['command'])
+#
+#
+# class Response:
+#     def __init__(self, response):
+#         self.response = response
+#
+#     def to_json_str(self):
+#         return {
+#             'response': self.response,
+#         }
+#
+#     @staticmethod
+#     def from_json(json):
+#         return Response(json['response'])
