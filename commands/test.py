@@ -9,13 +9,13 @@ result = commands.execute('команды')
 print(result)
 print()
 
-result = commands.execute('ругнись петр иваныч')
-print(result)
-print()
-
-result = commands.execute('спой')
-print(result)
-print()
+# result = commands.execute('ругнись петр иваныч')
+# print(result)
+# print()
+#
+# result = commands.execute('спой')
+# print(result)
+# print()
 
 # import requests
 # rs = requests.get('http://127.0.0.1:55000/get_commands')
