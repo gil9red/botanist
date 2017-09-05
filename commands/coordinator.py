@@ -4,7 +4,7 @@
 __author__ = 'ipetrash'
 
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, redirect
 app = Flask(__name__)
 
 import logging
@@ -59,13 +59,17 @@ def execute():
         # Приведение в нижний регистр чтобы проверка команды была регистронезависимой
         execute_command = command.lower()
 
+        # Обработка собственной команды
+        if execute_command == 'команды':
+            return redirect('/get_commands?as_result')
+
         result = None
         ok = False
-        error = 'Что-то пошло не так: команда "{}" не была распознана'.format(command)
 
         for command_name, url in ALL_COMMAND_BY_URL.items():
             if execute_command.startswith(command_name.lower()):
                 command_module = command[len(command_name):].strip()
+                print(command_module, url)
 
                 import requests
                 rs = requests.post(url, json={'command': command_module})
@@ -76,6 +80,9 @@ def execute():
                 ok = True
 
                 break
+
+        if result is None:
+            error = 'Что-то пошло не так: команда "{}" не была распознана'.format(command)
 
     rs = generate_response(result, ok, error)
     print('  rs:', rs)

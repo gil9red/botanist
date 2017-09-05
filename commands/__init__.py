@@ -68,48 +68,61 @@ ALL_COMMAND_NAME_BY_DESCRIPTION = {x.command: x.description for x in ALL_COMMAND
 
 
 def execute(command):
-    # TODO: кроме результата команды лучше писать что за команда
-    # Пример: Бот: результат выполнения команды: "погода магнитогорск"
-    #         23 C, облачно
-    #
-    # Любой ответ от бота нужно начинать с "Бот: "
-    
-    # Если текущая команда не была найдена среди списка команд хотя бы по совпадению начальной строки
-    if not any(command.lower().startswith(x) for x in ALL_COMMANDS):
-        return 'Получена неизвестная команда "{}".\n' \
-               'Чтобы узнать команды введи: "Бот, команды"'.format(command)
+    import requests
+    rs = requests.post('http://127.0.0.1:55000/execute', json={'command': command})
+    print(rs.text)
+    rs = rs.json()
+    print('rs:', rs)
 
-    else:
-        message = ''
+    if rs['error'] is not None:
+        return rs['error']
 
-        # Приведение в нижний регистр чтобы проверка команды была регистронезависимой
-        execute_command = command.lower()
+    return rs['result']
 
-        if execute_command.startswith('команды'):
-            return '\n'.join('{}: {}'.format(k, v) for k, v in ALL_COMMANDS.items())
 
-        elif execute_command.startswith('насмеши'):
-            from commands.command__fun import fun
-            return fun.get_random_quote()
-
-        elif execute_command.startswith('ругнись'):
-            # Вытаскивание имени того, кого нужно обругать
-            name = command[len('ругнись'):].strip()
-            if not name:
-                name = 'Бот'
-
-            from commands.command__damn import damn
-            return damn.damn(name)
-
-        elif execute_command.startswith('погода'):
-            city = command[len('погода'):].strip()
-            if not city:
-                return "Неправильная команда 'погода': не указан населенный пункт"
-
-            from commands.command__weather_in_city import weather_in_city
-            return weather_in_city.get_weather(city)
-
-    return message
+# def execute(command):
+#     # TODO: кроме результата команды лучше писать что за команда
+#     # Пример: Бот: результат выполнения команды: "погода магнитогорск"
+#     #         23 C, облачно
+#     #
+#     # Любой ответ от бота нужно начинать с "Бот: "
+#
+#     # Если текущая команда не была найдена среди списка команд хотя бы по совпадению начальной строки
+#     if not any(command.lower().startswith(x) for x in ALL_COMMANDS):
+#         return 'Получена неизвестная команда "{}".\n' \
+#                'Чтобы узнать команды введи: "Бот, команды"'.format(command)
+#
+#     else:
+#         message = ''
+#
+#         # Приведение в нижний регистр чтобы проверка команды была регистронезависимой
+#         execute_command = command.lower()
+#
+#         if execute_command.startswith('команды'):
+#             return '\n'.join('{}: {}'.format(k, v) for k, v in ALL_COMMANDS.items())
+#
+#         elif execute_command.startswith('насмеши'):
+#             from commands.command__fun import fun
+#             return fun.get_random_quote()
+#
+#         elif execute_command.startswith('ругнись'):
+#             # Вытаскивание имени того, кого нужно обругать
+#             name = command[len('ругнись'):].strip()
+#             if not name:
+#                 name = 'Бот'
+#
+#             from commands.command__damn import damn
+#             return damn.damn(name)
+#
+#         elif execute_command.startswith('погода'):
+#             city = command[len('погода'):].strip()
+#             if not city:
+#                 return "Неправильная команда 'погода': не указан населенный пункт"
+#
+#             from commands.command__weather_in_city import weather_in_city
+#             return weather_in_city.get_weather(city)
+#
+#     return message
 
 
 # TODO: нужно стандартизировать формат запросов и ответов между модулями-командами
