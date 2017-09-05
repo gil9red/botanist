@@ -6,7 +6,17 @@ __author__ = 'ipetrash'
 
 import requests
 rs = requests.get('http://127.0.0.1:55000/get_commands')
-print(rs.json())
+rs = rs.json()
+print(rs)
+# for command, description in rs.items():
+#     print('{}: {}'.format(command, description))
+# print()
 
-rs = requests.post('http://127.0.0.1:55000/execute', json={'command': 'Петя'})
+print()
+rs = requests.get('http://127.0.0.1:55000/get_commands?as_result')
+rs = rs.json()
+print(rs)
+
+print()
+rs = requests.post('http://127.0.0.1:55000/execute', json={'command': 'ругнись петр иваныч'})
 print(rs.json())

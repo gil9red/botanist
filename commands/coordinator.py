@@ -10,8 +10,7 @@ app = Flask(__name__)
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from commands import generate_response
-
+from commands import generate_response, ALL_COMMAND_MODULE, ALL_COMMAND_BY_URL, ALL_COMMAND_NAME_BY_DESCRIPTION
 
 # @app.route("/")
 # def index():
@@ -20,11 +19,16 @@ from commands import generate_response
 #     })
 
 
-@app.route("/get_commands")
+@app.route("/get_commands", methods=['GET', 'POST'])
 def get_commands():
-    # TODO: временно
-    from commands import ALL_COMMANDS
-    return jsonify(ALL_COMMANDS)
+    print(request.args)
+    if 'as_result' in request.args:
+        result = '\n'.join('{}: {}'.format(k, v) for k, v in sorted(ALL_COMMAND_NAME_BY_DESCRIPTION.items(), key=lambda x: x[0]))
+
+        rs = generate_response(result, ok=True)
+        return jsonify(rs)
+
+    return jsonify(ALL_COMMAND_NAME_BY_DESCRIPTION)
 
 
 @app.route("/execute", methods=['POST'])
@@ -43,16 +47,37 @@ def execute():
 
     command = rq['command']
 
-    # Отправка запроса в damn
-    import requests
-    rs = requests.post('http://127.0.0.1:55001/execute', json={'command': command})
-    rs = rs.json()
-    result = rs['result']
+    error = None
 
-    # TODO: ok брать из rs
-    ok = result is not None
+    # Если текущая команда не была найдена среди списка команд хотя бы по совпадению начальной строки
+    if not any(command.lower().startswith(x) for x in ALL_COMMAND_BY_URL):
+        result = 'Получена неизвестная команда "{}".\n' \
+                 'Чтобы узнать команды введи: "Бот, команды"'.format(command)
+        ok = True
 
-    rs = generate_response(result, ok)
+    else:
+        # Приведение в нижний регистр чтобы проверка команды была регистронезависимой
+        execute_command = command.lower()
+
+        result = None
+        ok = False
+        error = 'Что-то пошло не так: команда "{}" не была распознана'.format(command)
+
+        for command_name, url in ALL_COMMAND_BY_URL.items():
+            if execute_command.startswith(command_name.lower()):
+                command_module = command[len(command_name):].strip()
+
+                import requests
+                rs = requests.post(url, json={'command': command_module})
+                rs = rs.json()
+                print(rs)
+
+                result = rs['result']
+                ok = True
+
+                break
+
+    rs = generate_response(result, ok, error)
     print('  rs:', rs)
 
     return jsonify(rs)
