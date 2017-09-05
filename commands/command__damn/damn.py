@@ -5,20 +5,19 @@ __author__ = 'ipetrash'
 
 
 def damn(name):
-    return name.upper()
-    # url = 'https://damn.ru/?sex=&name=' + name
-    #
-    # import requests
-    # rs = requests.get(url)
-    #
-    # from bs4 import BeautifulSoup
-    # root = BeautifulSoup(rs.content, 'lxml')
-    #
-    # damn_item = root.select_one('div.damn')
-    # if not damn_item:
-    #     return
-    #
-    # return damn_item.text
+    url = 'https://damn.ru/?sex=&name=' + name
+
+    import requests
+    rs = requests.get(url)
+
+    from bs4 import BeautifulSoup
+    root = BeautifulSoup(rs.content, 'lxml')
+
+    damn_item = root.select_one('div.damn')
+    if not damn_item:
+        return
+
+    return damn_item.text
 
 
 if __name__ == '__main__':
