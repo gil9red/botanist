@@ -10,7 +10,7 @@ app = Flask(__name__)
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from commands import generate_response
+from commands import generate_response, DEBUG
 
 
 # @app.route("/")
@@ -34,8 +34,11 @@ def execute():
 
     command = rq['command']
 
-    from commands.command__damn.damn import damn
-    result = damn(command)
+    if DEBUG:
+        result = command.upper()
+    else:
+        from commands.command__damn.damn import damn
+        result = damn(command)
 
     ok = result is not None
 

@@ -9,10 +9,10 @@ result = commands.execute('команды')
 print(result)
 print()
 
-# result = commands.execute('ругнись петр иваныч')
-# print(result)
-# print()
-#
+result = commands.execute('ругнись петр иваныч')
+print(result)
+print()
+
 # result = commands.execute('спой')
 # print(result)
 # print()
