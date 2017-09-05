@@ -43,7 +43,7 @@ def execute():
     print('rq:', rq)
 
     if 'command' not in rq:
-        raise Exception("Not found key 'command'.")
+        raise Exception("В запросе не найдено поле 'command'.")
 
     command = rq['command']
 
