@@ -20,9 +20,9 @@ from commands import generate_response, ALL_COMMAND_MODULE, ALL_COMMAND_BY_URL, 
 
 
 @app.route("/get_commands", methods=['GET', 'POST'])
-def get_commands():
+def get_commands(as_result=None):
     print(request.args)
-    if 'as_result' in request.args:
+    if as_result or 'as_result' in request.args:
         result = '\n'.join('{}: {}'.format(k, v) for k, v in sorted(ALL_COMMAND_NAME_BY_DESCRIPTION.items(), key=lambda x: x[0]))
 
         rs = generate_response(result, ok=True)
@@ -47,22 +47,23 @@ def execute():
 
     command = rq['command']
 
+    # Приведение в нижний регистр чтобы проверка команды была регистронезависимой
+    execute_command = command.lower()
+
+    # Обработка собственной команды
+    if execute_command == 'команды':
+        # return redirect('/get_commands?as_result')
+        return get_commands(as_result=True)
+
     error = None
 
     # Если текущая команда не была найдена среди списка команд хотя бы по совпадению начальной строки
-    if not any(command.lower().startswith(x) for x in ALL_COMMAND_BY_URL):
+    if not any(execute_command.startswith(x) for x in ALL_COMMAND_BY_URL):
         result = 'Получена неизвестная команда "{}".\n' \
                  'Чтобы узнать команды введи: "Бот, команды"'.format(command)
         ok = True
 
     else:
-        # Приведение в нижний регистр чтобы проверка команды была регистронезависимой
-        execute_command = command.lower()
-
-        # Обработка собственной команды
-        if execute_command == 'команды':
-            return redirect('/get_commands?as_result')
-
         result = None
         ok = False
 

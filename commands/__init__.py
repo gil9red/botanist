@@ -71,8 +71,15 @@ def execute(command):
     import requests
     rs = requests.post('http://127.0.0.1:55000/execute', json={'command': command})
     print(rs.text)
-    rs = rs.json()
-    print('rs:', rs)
+
+    try:
+        rs = rs.json()
+        print('rs:', rs)
+
+    except Exception as e:
+        import traceback
+        print(e, traceback.format_exc(), rs.content)
+        return
 
     if rs['error'] is not None:
         return rs['error']
