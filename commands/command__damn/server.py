@@ -34,8 +34,8 @@ def execute():
 
     command = rq['command']
 
-    from commands.command__damn import execute
-    result = execute(command)
+    from commands.command__damn.damn import damn
+    result = damn(command)
 
     ok = result is not None
 
