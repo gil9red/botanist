@@ -34,6 +34,9 @@ def execute():
 
     command = rq['command']
 
+    if not command:
+        command = 'Бот'
+
     if DEBUG:
         result = command.upper()
     else:
