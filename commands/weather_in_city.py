@@ -28,6 +28,7 @@ def get_weather(city):
 
 
     temp = condition['temp']
+
     CODE_WEATHER_BY_DESCRIPTION = {
         '0': 'Торнадо',
         '1': 'Тропический шторм',
@@ -79,7 +80,8 @@ def get_weather(city):
         '47': 'Изолированные грозовые ливни',
         '3200': 'Недоступно'
     }
-    code = str(condition['code'])
+    
+    code = condition['code']
     text = CODE_WEATHER_BY_DESCRIPTION[code]
     return 'Текущая погода в "{}": {} °C, {}'.format(city, temp, text)
 
