@@ -3,6 +3,7 @@
 
 __author__ = 'Maia'
 
+
 CODE_WEATHER_BY_DESCRIPTION = {
     '0': 'Торнадо',
     '1': 'Тропический шторм',
@@ -83,7 +84,6 @@ def get_weather(city):
     code = condition['code']
     text = CODE_WEATHER_BY_DESCRIPTION[code]
     return 'Текущая погода в "{}": {} °C, {}'.format(city, temp, text)
-
 
 
 if __name__ == '__main__':
