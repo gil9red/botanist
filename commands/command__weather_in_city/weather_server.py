@@ -33,6 +33,8 @@ def execute():
         raise Exception("Not found key 'command'.")
 
     command = rq['command']
+    if not command:
+        raise Exception("Неправильная команда 'погода': не указан населенный пункт")
 
     if DEBUG:
         result = command.upper()
