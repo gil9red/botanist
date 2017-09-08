@@ -4,7 +4,7 @@
 __author__ = 'ipetrash'
 
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 app = Flask(__name__)
 
 import logging
@@ -22,18 +22,6 @@ from commands import generate_response, DEBUG
 
 @app.route("/execute", methods=['POST'])
 def execute():
-    # request_text = request.data.decode('utf-8')
-    # print('request_text:', request_text)
-    #
-    # import json
-    # rq = json.loads(request_text)
-    # print('rq:', rq)
-    #
-    # if 'command' not in rq:
-    #     raise Exception("Not found key 'command'.")
-    #
-    # command = rq['command']
-
     if DEBUG:
         result = 'command__fun'.upper()
     else:

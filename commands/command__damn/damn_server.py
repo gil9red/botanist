@@ -10,7 +10,7 @@ app = Flask(__name__)
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from commands import generate_response, DEBUG
+from commands import generate_response, get_request_data, DEBUG
 
 
 # @app.route("/")
@@ -22,20 +22,11 @@ from commands import generate_response, DEBUG
 
 @app.route("/execute", methods=['POST'])
 def execute():
-    request_text = request.data.decode('utf-8')
-    print('request_text:', request_text)
-
-    import json
-    rq = json.loads(request_text)
-    print('rq:', rq)
-
-    if 'command' not in rq:
-        raise Exception("Not found key 'command'.")
+    rq = get_request_data(request)
 
     command = rq['command']
-
     if not command:
-        command = 'Бот'
+        raise Exception("Неправильная команда 'ругнись': не указано на кого нужно ругнуться.")
 
     if DEBUG:
         result = command.upper()

@@ -13,6 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 from commands import (
     generate_response,
     generate_request,
+    get_request_data,
     ALL_COMMAND_BY_URL,
     ALL_COMMAND_NAME_BY_DESCRIPTION
 )
@@ -38,18 +39,7 @@ def get_commands(as_result=None):
 
 @app.route("/execute", methods=['POST'])
 def execute():
-    # TODO: нужно определить в какой модуль перенаправить запрос
-
-    request_text = request.data.decode('utf-8')
-    print('request_text:', request_text)
-
-    import json
-    rq = json.loads(request_text)
-    print('rq:', rq)
-
-    if 'command' not in rq:
-        raise Exception("В запросе не найдено поле 'command'.")
-
+    rq = get_request_data(request)
     command = rq['command']
 
     # Приведение в нижний регистр чтобы проверка команды была регистронезависимой

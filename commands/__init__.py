@@ -90,8 +90,6 @@ def execute(command):
     return rs['result']
 
 
-# TODO: нужно стандартизировать формат запросов и ответов между модулями-командами
-
 def generate_response(result=None, ok=True, error=None):
     return {
         'result': result,
@@ -105,29 +103,16 @@ def generate_request(command):
         'command': command,
     }
 
-# class Request:
-#     def __init__(self, command):
-#         self.command = command
-#
-#     def to_json_str(self):
-#         return {
-#             'command': self.command,
-#         }
-#
-#     @staticmethod
-#     def from_json(json):
-#         return Request(json['command'])
-#
-#
-# class Response:
-#     def __init__(self, response):
-#         self.response = response
-#
-#     def to_json_str(self):
-#         return {
-#             'response': self.response,
-#         }
-#
-#     @staticmethod
-#     def from_json(json):
-#         return Response(json['response'])
+
+def get_request_data(request_flask):
+    request_text = request_flask.data.decode('utf-8')
+    print('request_text:', request_text)
+
+    import json
+    rq = json.loads(request_text)
+    print('rq:', rq)
+
+    if 'command' not in rq:
+        raise Exception("В запросе не найдено поле 'command'.")
+
+    return rq
