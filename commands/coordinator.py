@@ -4,13 +4,18 @@
 __author__ = 'ipetrash'
 
 
-from flask import Flask, jsonify, request, redirect
+from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from commands import generate_response, ALL_COMMAND_MODULE, ALL_COMMAND_BY_URL, ALL_COMMAND_NAME_BY_DESCRIPTION
+from commands import (
+    generate_response,
+    generate_request,
+    ALL_COMMAND_BY_URL,
+    ALL_COMMAND_NAME_BY_DESCRIPTION
+)
 
 # @app.route("/")
 # def index():
@@ -73,7 +78,7 @@ def execute():
                 print(command_module, url)
 
                 import requests
-                rs = requests.post(url, json={'command': command_module})
+                rs = requests.post(url, json=generate_request(command_module))
                 rs = rs.json()
                 print(rs)
 

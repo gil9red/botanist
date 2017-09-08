@@ -4,13 +4,18 @@
 __author__ = 'ipetrash'
 
 
+from commands import generate_request
+
+
 import requests
-rs = requests.post('http://127.0.0.1:55003/execute', json={'command': 'Магнитогорск'})
+rs = requests.post('http://127.0.0.1:55003/execute', json=generate_request('Магнитогорск'))
 print(rs.json())
 
-rs = requests.post('http://127.0.0.1:55003/execute', json={'command': '3421выаы:)'})
+rs = requests.post('http://127.0.0.1:55003/execute', json=generate_request('3421выаы:)'))
 print(rs.json())
 
-rs = requests.post('http://127.0.0.1:55003/execute', json={'command': ''})
+rs = requests.post('http://127.0.0.1:55003/execute', json=generate_request(''))
 print(rs.json())
 
+rs = requests.post('http://127.0.0.1:55003/execute')
+print(rs.json())

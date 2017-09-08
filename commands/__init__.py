@@ -72,7 +72,7 @@ ALL_COMMAND_NAME_BY_DESCRIPTION = {x.command: x.description for x in ALL_COMMAND
 
 def execute(command):
     import requests
-    rs = requests.post('http://127.0.0.1:55000/execute', json={'command': command})
+    rs = requests.post('http://127.0.0.1:55000/execute', json=generate_request(command))
     print(rs.text)
 
     try:
@@ -97,6 +97,12 @@ def generate_response(result=None, ok=True, error=None):
         'result': result,
         'ok': ok,
         'error': error,
+    }
+
+
+def generate_request(command):
+    return {
+        'command': command,
     }
 
 # class Request:
