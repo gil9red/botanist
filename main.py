@@ -6,8 +6,6 @@ __author__ = 'ipetrash'
 
 # TODO: обрабатывать не последнее полученное сообщение, а пачку, например 100
 # TODO: логировать в файл
-# TODO: В messages.get (https://vk.com/dev/messages.get) передавать параметр preview_length
-#       чтобы запрашиваемые команды были ограничены
 
 from config import LOGIN, PASSWORD
 
@@ -116,11 +114,6 @@ if __name__ == '__main__':
             log.debug('From user #%s, message (#%s): "%s"', from_user_id, message_id, message)
 
         command = message[len(command_prefix):].strip()
-
-        # TODO: для каждой команды отдельный поток создавать
-        # Пример: https://www.ibm.com/developerworks/ru/library/l-python_part_9/index.html#N10078
-        # только поток нужно без демона использовать, демон указывает что при закрытии главного потока
-        # должны и потоки-демоны завершиться, что для текущей задачи не будет правильным
 
         # Выполнение команды
         try:
