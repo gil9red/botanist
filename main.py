@@ -5,28 +5,13 @@ __author__ = 'ipetrash'
 
 
 # TODO: обрабатывать не последнее полученное сообщение, а пачку, например 100
-# TODO: логировать в файл
+
 
 from config import LOGIN, PASSWORD
+from common import get_logger
 
 
-def get_logger(name):
-    import logging
-    log = logging.getLogger(name)
-    log.setLevel(logging.DEBUG)
-
-    formatter = logging.Formatter('[%(asctime)s] %(message)s')
-
-    import sys
-    ch = logging.StreamHandler(stream=sys.stdout)
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(formatter)
-    log.addHandler(ch)
-
-    return log
-
-
-log = get_logger('mini_vk_bot')
+log = get_logger('mini_vk_bot', file='bot.log')
 
 
 # Отлов необработанныз исключений и закрытие
