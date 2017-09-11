@@ -10,3 +10,7 @@ DB_FILE_NAME = 'database.sqlite'
 def create_connect():
     import sqlite3
     return sqlite3.connect(DB_FILE_NAME)
+
+
+def init_db():
+    pass
