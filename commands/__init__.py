@@ -17,13 +17,6 @@ DEBUG = False
 #       Пример: Бот: результат выполнения команды: "погода магнитогорск"
 #               23 C, облачно
 
-
-# TODO: при обработке команды учитывать в ней опечатки, использовать алгоритм
-# Damerau–Levenshtein distance (Расстояние Дамерау — Левенштейна) для определения опечатки
-# и наиболее похожей команде (для вычисления расстояний между строками)
-# https://github.com/gil9red/SimplePyScripts/blob/12c303ea76c1f2c2983e38c96f3acf4c5ecd4e50/Damerau%E2%80%93Levenshtein_distance__misprints__%D0%BE%D0%BF%D0%B5%D1%87%D0%B0%D1%82%D0%BA%D0%B8/use__pyxdameraulevenshtein/find_command.py
-
-
 # TODO: добавить команду курс валют
 # TODO: добавить команду курс криптовалют
 # TODO: добавить команду Язык Йода: http://vexer.ru/jokez/joda.php
