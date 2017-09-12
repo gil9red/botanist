@@ -30,6 +30,7 @@ ALL_COMMANDS = {
     # 'что посмотреть': 'Рандомная ссылка на кинопоиск',
     # 'котики': ':3',
     'команды': 'Показать список команд',
+    'курс валют': 'Показать текущий курс евро и доллара'
 }
 
 
@@ -66,6 +67,12 @@ def execute(command):
 
             from commands import damn
             return damn.damn(name)
+
+        elif execute_command.startswith('курс валют'):
+            from commands import currency
+            rate_list = currency.exchange_rate(['EUR', 'USD'])
+            text = ', '.join(rate_list)
+            return text
 
         elif execute_command.startswith('погода'):
             city = command[len('погода'):].strip()
