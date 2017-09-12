@@ -73,24 +73,13 @@ if __name__ == '__main__':
     command_prefix = 'Бот,'
 
     messages_get_values = {
-        'out': 0,
         'count': 1,
         'time_offset': 60,
-        'version': '5.67'
+        'version': '5.68'
     }
 
-    messages_get_values__out = {
-        'out': 1,
-        'count': 1,
-        'time_offset': 60,
-        'version': '5.67'
-    }
-
-    def messages_get(out=0):
-        if not out:
-            rs = vk.method('messages.get', messages_get_values)
-        else:
-            rs = vk.method('messages.get', messages_get_values__out)
+    def messages_get():
+        rs = vk.method('messages.get', messages_get_values)
         # log.debug(rs)
 
         # Если ничего не пришло
@@ -152,21 +141,14 @@ if __name__ == '__main__':
             messages_send_values['user_id'] = from_user_id
 
         time.sleep(0.3)
-        last_message_bot_id = vk.method('messages.send', messages_send_values)
 
-        if not out:
-            messages_get_values['last_message_id'] = last_message_bot_id
-        else:
-            messages_get_values__out['last_message_id'] = last_message_bot_id
+        last_message_bot_id = vk.method('messages.send', messages_send_values)
+        messages_get_values['last_message_id'] = last_message_bot_id
+
 
     while True:
         try:
             messages_get()
-
-            # TODO: временно, сделать красиво
-            time.sleep(1)
-
-            messages_get(out=1)
 
         except Exception as e:
             log.exception('Error:')
