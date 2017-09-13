@@ -55,11 +55,6 @@ def execute():
 
     print('execute_command: "{}"'.format(execute_command))
 
-    if DEBUG_ALONE_COORDINATOR:
-        rs = generate_response(execute_command.upper(), True)
-        print('  rs[DEBUG_ALONE_COORDINATOR]:', rs)
-        return jsonify(rs)
-
     # Обработка собственной команды
     if execute_command == 'команды':
         # return redirect('/get_commands?as_result')
@@ -79,16 +74,23 @@ def execute():
 
         for command_name, url in ALL_COMMAND_BY_URL.items():
             if execute_command.startswith(command_name.lower()):
-                command_module = command[len(command_name):].strip()
-                print(command_module, url)
+                command_text = command[len(command_name):].strip()
+                print('Found server: {}, command_name: "{}", command text: "{}"'.format(
+                    url, command_name, command_text)
+                )
 
-                import requests
-                rs = requests.post(url, json=generate_request(command_module))
-                rs = rs.json()
-                print(rs)
+                if DEBUG_ALONE_COORDINATOR:
+                    result = execute_command.upper()
+                    ok = True
 
-                result = rs['result']
-                ok = True
+                else:
+                    import requests
+                    rs = requests.post(url, json=generate_request(command_text))
+                    rs = rs.json()
+                    print(rs)
+
+                    result = rs['result']
+                    ok = True
 
                 break
 
@@ -96,7 +98,10 @@ def execute():
             error = 'Что-то пошло не так: команда "{}" не была распознана'.format(command)
 
     rs = generate_response(result, ok, error)
-    print('  rs:', rs)
+    if DEBUG_ALONE_COORDINATOR:
+        print('  rs[DEBUG_ALONE_COORDINATOR]:', rs)
+    else:
+        print('  rs:', rs)
 
     return jsonify(rs)
 
