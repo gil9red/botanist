@@ -126,11 +126,12 @@ def execute():
                 print(rs)
 
                 result = rs['result']
-                ok = True
+                error = rs['error']
+                ok = rs['ok']
 
             break
 
-    if result is None:
+    if result is None and error is None:
         error = 'Что-то пошло не так: команда "{}" не была распознана'.format(command)
 
     rs = generate_response(result, ok, error)
