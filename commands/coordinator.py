@@ -52,6 +52,8 @@ def execute():
     #
     # execute_command = find_command(execute_command)
 
+    print('execute_command: "{}"'.format(execute_command))
+
     # Обработка собственной команды
     if execute_command == 'команды':
         # return redirect('/get_commands?as_result')
