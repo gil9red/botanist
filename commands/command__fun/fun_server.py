@@ -31,7 +31,10 @@ def execute():
     ok = result is not None
 
     rs = generate_response(result, ok)
-    print('  rs:', rs)
+    if DEBUG:
+        print('  rs[DEBUG]:', rs)
+    else:
+        print('  rs:', rs)
 
     return jsonify(rs)
 
