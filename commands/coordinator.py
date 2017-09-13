@@ -19,6 +19,25 @@ from commands import (
     DEBUG_ALONE_COORDINATOR,
 )
 
+
+# SOURCE: https://github.com/gil9red/SimplePyScripts/blob/460f3538ebc0fb78628ea885ac7d39481404fa1e/Damerau%E2%80%93Levenshtein_distance__misprints__%D0%BE%D0%BF%D0%B5%D1%87%D0%B0%D1%82%D0%BA%D0%B8/use__pyxdameraulevenshtein/fix_command.py
+def fix_command(text, all_commands):
+    import numpy as np
+    array = np.array(all_commands)
+
+    from pyxdameraulevenshtein import normalized_damerau_levenshtein_distance_ndarray
+    result = list(zip(all_commands, list(normalized_damerau_levenshtein_distance_ndarray(text, array))))
+    # print('\n' + text, sorted(result, key=lambda x: x[1]))
+
+    command, rate = min(result, key=lambda x: x[1])
+
+    # Подобранное значение для определения совпадения текста среди значений указанного списка
+    if rate >= 0.25:
+        return text
+
+    return command
+
+
 # @app.route("/")
 # def index():
 #     return jsonify({
@@ -42,60 +61,77 @@ def get_commands(as_result=None):
 def execute():
     rq = get_request_data(request)
     command = rq['command']
+    print('Execute command: "{}"'.format(command))
 
     # Приведение в нижний регистр чтобы проверка команды была регистронезависимой
     execute_command = command.lower()
-
-    # TODO: при обработке команды учитывать в ней опечатки, использовать алгоритм
-    # Damerau–Levenshtein distance (Расстояние Дамерау — Левенштейна) для определения опечатки
-    # и наиболее похожей команде (для вычисления расстояний между строками)
-    # https://github.com/gil9red/SimplePyScripts/blob/12c303ea76c1f2c2983e38c96f3acf4c5ecd4e50/Damerau%E2%80%93Levenshtein_distance__misprints__%D0%BE%D0%BF%D0%B5%D1%87%D0%B0%D1%82%D0%BA%D0%B8/use__pyxdameraulevenshtein/find_command.py
-    #
-    # execute_command = find_command(execute_command)
-
     print('execute_command: "{}"'.format(execute_command))
+
+    command_name_list = list(ALL_COMMAND_BY_URL.keys())
+
+    # Если текущая команда не была найдена среди списка команд хотя бы по совпадению начальной строки,
+    # пытаемся найти, учитывая, что в ней могут быть опечатки, иначе ругаемся на неизвестную команду
+    if not any(execute_command.startswith(x) for x in command_name_list):
+        fix_execute_command = None
+
+        for command_name in command_name_list:
+            word_list = execute_command.split()
+            for i in range(1, len(word_list) + 1):
+                part_command_name = ' '.join(word_list[:i])
+
+                # Если нашли команду
+                if command_name == fix_command(part_command_name, command_name_list):
+                    # Составляем команду с текстом
+                    fix_execute_command = ' '.join([command_name] + word_list[i:])
+
+        # Если это была опечатка, обновляем запрос команды, исправив опечатку
+        if fix_execute_command is not None and execute_command != fix_execute_command:
+            print('fix execute command: "{}" -> "{}"'.format(execute_command, fix_execute_command))
+            execute_command = fix_execute_command
+
+        # Если не удалось разобрать команду как опечатку
+        if fix_execute_command is None:
+            result = 'Получена неизвестная команда "{}".\n' \
+                     'Чтобы узнать доступные команды введи: Бот, команды'.format(command)
+
+            rs = generate_response(result, ok=True)
+            print('  rs:', rs)
+
+            return jsonify(rs)
 
     # Обработка собственной команды
     if execute_command == 'команды':
         # return redirect('/get_commands?as_result')
         return get_commands(as_result=True)
 
+    result = None
+    ok = False
     error = None
 
-    # Если текущая команда не была найдена среди списка команд хотя бы по совпадению начальной строки
-    if not any(execute_command.startswith(x) for x in ALL_COMMAND_BY_URL):
-        result = 'Получена неизвестная команда "{}".\n' \
-                 'Чтобы узнать команды введи: "Бот, команды"'.format(command)
-        ok = True
+    for command_name, url in ALL_COMMAND_BY_URL.items():
+        if execute_command.startswith(command_name.lower()):
+            command_text = command[len(command_name):].strip()
+            print('Found server: {}, command name: "{}", command text: "{}"'.format(
+                url, command_name, command_text)
+            )
 
-    else:
-        result = None
-        ok = False
+            if DEBUG_ALONE_COORDINATOR:
+                result = execute_command.upper()
+                ok = True
 
-        for command_name, url in ALL_COMMAND_BY_URL.items():
-            if execute_command.startswith(command_name.lower()):
-                command_text = command[len(command_name):].strip()
-                print('Found server: {}, command_name: "{}", command text: "{}"'.format(
-                    url, command_name, command_text)
-                )
+            else:
+                import requests
+                rs = requests.post(url, json=generate_request(command_text))
+                rs = rs.json()
+                print(rs)
 
-                if DEBUG_ALONE_COORDINATOR:
-                    result = execute_command.upper()
-                    ok = True
+                result = rs['result']
+                ok = True
 
-                else:
-                    import requests
-                    rs = requests.post(url, json=generate_request(command_text))
-                    rs = rs.json()
-                    print(rs)
+            break
 
-                    result = rs['result']
-                    ok = True
-
-                break
-
-        if result is None:
-            error = 'Что-то пошло не так: команда "{}" не была распознана'.format(command)
+    if result is None:
+        error = 'Что-то пошло не так: команда "{}" не была распознана'.format(command)
 
     rs = generate_response(result, ok, error)
     if DEBUG_ALONE_COORDINATOR:
