@@ -8,6 +8,10 @@ __author__ = 'ipetrash'
 DEBUG = False
 # DEBUG = True
 
+# Если True, тогда координатор не отправляет команду, а сразу отвечает эхом
+DEBUG_ALONE_COORDINATOR = False
+# DEBUG_ALONE_COORDINATOR = True
+
 
 # TODO: добавить команды текстовой обработки: нижнее подчеркивание, зачеркивание и т.п.
 #       используя юникод. Пример: Вася -> В̶а̶с̶я

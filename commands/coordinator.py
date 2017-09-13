@@ -15,7 +15,8 @@ from commands import (
     generate_request,
     get_request_data,
     ALL_COMMAND_BY_URL,
-    ALL_COMMAND_NAME_BY_DESCRIPTION
+    ALL_COMMAND_NAME_BY_DESCRIPTION,
+    DEBUG_ALONE_COORDINATOR,
 )
 
 # @app.route("/")
@@ -53,6 +54,11 @@ def execute():
     # execute_command = find_command(execute_command)
 
     print('execute_command: "{}"'.format(execute_command))
+
+    if DEBUG_ALONE_COORDINATOR:
+        rs = generate_response(execute_command.upper(), True)
+        print('  rs[DEBUG_ALONE_COORDINATOR]:', rs)
+        return jsonify(rs)
 
     # Обработка собственной команды
     if execute_command == 'команды':
