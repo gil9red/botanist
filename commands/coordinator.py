@@ -107,6 +107,8 @@ def all_exception_handler(error):
 if __name__ == '__main__':
     app.debug = True
 
+    # TODO: тут добавить запуск серверов-команд
+
     # Localhost
     # port=0 -- random free port
     # app.run(port=0)
