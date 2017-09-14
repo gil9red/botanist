@@ -158,6 +158,8 @@ if __name__ == '__main__':
     app.debug = True
 
     # TODO: тут добавить запуск серверов-команд
+    #       как вариант загрузку бот со всеми командами вынести в батник или ярлык:
+    #       https://gist.github.com/gil9red/8b0333380e9a6287b2a9d9f94075736a
 
     # Localhost
     # port=0 -- random free port
