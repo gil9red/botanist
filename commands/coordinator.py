@@ -63,6 +63,10 @@ def execute():
     command = rq['command']
     print('Execute command: "{}"'.format(command))
 
+    # Если команды нет, показываем список команд
+    if not command.strip():
+        return get_commands(as_result=True)
+
     # Приведение в нижний регистр чтобы проверка команды была регистронезависимой
     execute_command = command.lower()
     print('execute_command: "{}"'.format(execute_command))
