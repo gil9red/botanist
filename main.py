@@ -5,9 +5,7 @@ __author__ = 'ipetrash'
 
 
 # TODO: обрабатывать не последнее полученное сообщение, а пачку, например 100
-# TODO: логировать в файл
-# TODO: В messages.get (https://vk.com/dev/messages.get) передавать параметр preview_length
-#       чтобы запрашиваемые команды были ограничены
+
 
 from config import LOGIN, PASSWORD
 from common import get_logger
@@ -37,22 +35,6 @@ if __name__ == '__main__':
     vk = vk_api.VkApi(login=LOGIN, password=PASSWORD)
     vk.auth()
     log.debug("Бот запущен")
-
-    # BOT_USER_ID = vk.method('users.get')[0]['id']
-    # time.sleep(0.3)
-
-    # NOTE: для запроса сообщений
-    # messages_get_values = {
-    #     'out': 0,
-    #     'count': 100,
-    #     'version': '5.67'
-    # }
-    # rs = vk.method('messages.get', messages_get_values)
-    # print(rs)
-    # for i in sorted(rs['items'], key=lambda x: x['date']):
-    #     print(i)
-    #
-    # quit()
 
     command_prefix = 'Бот,'
 
