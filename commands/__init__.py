@@ -5,6 +5,10 @@ __author__ = 'ipetrash'
 
 
 # TODO: пусть каждый вебсервер при запуске пишет в консоль свое название
+# TODO: Добавить requirements.txt с списком используемых посторонних модулей, чтобы проще было устанавливать зависимости
+#       Для установки зависимостей: pip install -r requirements.txt
+#       http://www.idiotinside.com/2015/05/10/python-auto-generate-requirements-txt/
+
 
 # Если True, тогда модули-команды вместо выполнения своей команды вернут эхо
 DEBUG = False
