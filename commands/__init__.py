@@ -18,6 +18,10 @@ DEBUG = False
 DEBUG_ALONE_COORDINATOR = False
 # DEBUG_ALONE_COORDINATOR = True
 
+# TODO: добавить флаг для app.debug = True
+# TODO: переименовать файлы серверов команд в server.py: damn_server.py -> server.py.
+#       Подправить шаблон поиска в make_run_bat.py
+
 
 # TODO: добавить команды текстовой обработки: нижнее подчеркивание, зачеркивание и т.п.
 #       используя юникод. Пример: Вася -> В̶а̶с̶я
