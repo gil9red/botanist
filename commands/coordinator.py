@@ -10,14 +10,26 @@ app = Flask(__name__)
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from commands import (
-    generate_response,
-    generate_request,
-    get_request_data,
-    ALL_COMMAND_BY_URL,
-    ALL_COMMAND_NAME_BY_DESCRIPTION,
-    DEBUG_ALONE_COORDINATOR,
-)
+try:
+    from commands import (
+        generate_response,
+        generate_request,
+        get_request_data,
+        ALL_COMMAND_BY_URL,
+        ALL_COMMAND_NAME_BY_DESCRIPTION,
+        DEBUG_ALONE_COORDINATOR,
+    )
+
+except:
+    # Красиво было с "from commands import (", но из-за обхода проблемы, возникающей при запуске скрипта вне PyCharm'а
+    from __init__ import (
+        generate_response,
+        generate_request,
+        get_request_data,
+        ALL_COMMAND_BY_URL,
+        ALL_COMMAND_NAME_BY_DESCRIPTION,
+        DEBUG_ALONE_COORDINATOR,
+    )
 
 
 # SOURCE: https://github.com/gil9red/SimplePyScripts/blob/460f3538ebc0fb78628ea885ac7d39481404fa1e/Damerau%E2%80%93Levenshtein_distance__misprints__%D0%BE%D0%BF%D0%B5%D1%87%D0%B0%D1%82%D0%BA%D0%B8/use__pyxdameraulevenshtein/fix_command.py
