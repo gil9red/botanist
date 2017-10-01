@@ -18,6 +18,8 @@ DEBUG = False
 DEBUG_ALONE_COORDINATOR = False
 # DEBUG_ALONE_COORDINATOR = True
 
+# TODO: для logging.basicConfig определить filename для сбора всякие логов (проверить
+#       как сработает для уже установленых логов)
 # TODO: добавить флаг для app.debug = True
 # TODO: переименовать файлы серверов команд в server.py: damn_server.py -> server.py.
 #       Подправить шаблон поиска в make_run_bat.py
