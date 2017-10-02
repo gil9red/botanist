@@ -11,7 +11,7 @@ file_name_list = [
 ]
 
 import glob
-file_name_list += glob.glob('commands\command__*\*_server.py')
+file_name_list += glob.glob('commands\command__*\server.py')
 
 text_run = """
 @echo off

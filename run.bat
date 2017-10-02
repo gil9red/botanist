@@ -5,7 +5,7 @@ set PYTHONPATH=.
 set PYTHON=C:\ProgramData\Anaconda3\python.exe
 
 start %PYTHON% main.py
-start %PYTHON% commands\coordinator.py
-start %PYTHON% commands\command__damn\damn_server.py
-start %PYTHON% commands\command__fun\fun_server.py
-start %PYTHON% commands\command__weather_in_city\weather_server.py
+REM start %PYTHON% commands\coordinator.py
+REM start %PYTHON% commands\command__damn\server.py
+REM start %PYTHON% commands\command__fun\server.py
+REM start %PYTHON% commands\command__weather_in_city\server.py
