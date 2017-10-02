@@ -126,13 +126,17 @@ def execute():
 
             else:
                 import requests
-                rs = requests.post(url, json=generate_request(command_text))
-                rs = rs.json()
-                print(rs)
+                try:
+                    rs = requests.post(url, json=generate_request(command_text))
+                    rs = rs.json()
+                    print(rs)
 
-                result = rs['result']
-                error = rs['error']
-                ok = rs['ok']
+                    result = rs['result']
+                    error = rs['error']
+                    ok = rs['ok']
+
+                except requests.exceptions.ConnectionError:
+                    error = 'Сервер команды "{}" ({}) недоступен'.format(command_name, url)
 
             break
 
