@@ -13,6 +13,8 @@ from commands import (
     DEBUG_ALONE_COORDINATOR,
 )
 
+# TODO: поддержать флаг DEBUG_ALONE_COORDINATOR
+
 
 # SOURCE: https://github.com/gil9red/SimplePyScripts/blob/460f3538ebc0fb78628ea885ac7d39481404fa1e/Damerau%E2%80%93Levenshtein_distance__misprints__%D0%BE%D0%BF%D0%B5%D1%87%D0%B0%D1%82%D0%BA%D0%B8/use__pyxdameraulevenshtein/fix_command.py
 def fix_command(text, all_commands):
@@ -101,10 +103,6 @@ class CoordinatorServer(BaseServer):
         if execute_command == 'команды':
             return self.get_commands(as_result=True)
 
-        result = None
-        ok = False
-        error = None
-
         for command_name, url in ALL_COMMAND_BY_URL.items():
             if execute_command.startswith(command_name.lower()):
                 command_text = command[len(command_name):].strip()
@@ -112,37 +110,19 @@ class CoordinatorServer(BaseServer):
                     url, command_name, command_text)
                 )
 
-                if DEBUG_ALONE_COORDINATOR:
-                    result = execute_command.upper()
-                    ok = True
+                import requests
+                try:
+                    rs = requests.post(url, json=generate_request(command_text))
+                    return rs.json()
 
-                else:
-                    import requests
-                    try:
-                        rs = requests.post(url, json=generate_request(command_text))
-                        rs = rs.json()
-                        print(rs)
+                except requests.exceptions.ConnectionError:
+                    error = 'Сервер команды "{}" ({}) недоступен'.format(command_name, url)
 
-                        # TODO: просто сделать return rs
-                        result = rs['result']
-                        error = rs['error']
-                        ok = rs['ok']
-                        # TODO: append rs['traceback'] / rs['server_name']
+                    rs = self.generate_response(result=None, ok=False, error=error)
+                    return rs
 
-                    except requests.exceptions.ConnectionError:
-                        error = 'Сервер команды "{}" ({}) недоступен'.format(command_name, url)
-
-                break
-
-        if result is None and error is None:
-            error = 'Что-то пошло не так: команда "{}" не была распознана'.format(command)
-
-        rs = self.generate_response(result, ok, error)
-        if DEBUG_ALONE_COORDINATOR:
-            print('  rs[DEBUG_ALONE_COORDINATOR]:', rs)
-        else:
-            print('  rs:', rs)
-
+        error = 'Что-то пошло не так: команда "{}" не была распознана'.format(command)
+        rs = self.generate_response(result=None, ok=False, error=error)
         return rs
 
 
