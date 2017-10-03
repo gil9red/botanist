@@ -123,9 +123,11 @@ class CoordinatorServer(BaseServer):
                         rs = rs.json()
                         print(rs)
 
+                        # TODO: просто сделать return rs
                         result = rs['result']
                         error = rs['error']
                         ok = rs['ok']
+                        # TODO: append rs['traceback'] / rs['server_name']
 
                     except requests.exceptions.ConnectionError:
                         error = 'Сервер команды "{}" ({}) недоступен'.format(command_name, url)
