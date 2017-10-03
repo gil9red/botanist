@@ -106,6 +106,7 @@ def execute(command):
     return rs['result']
 
 
+# TODO: удалить, после замены flask на cherrypy
 def generate_response(result=None, ok=True, error=None):
     return {
         'result': result,
