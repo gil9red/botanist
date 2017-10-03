@@ -89,7 +89,12 @@ class BaseServer:
         # Autoreload off
         cherrypy.config.update({'engine.autoreload.on': False})
 
-        cherrypy.quickstart(self)
+        print('Start server "{}": port={}'.format(self.name, port))
+        try:
+            cherrypy.quickstart(self)
+
+        finally:
+            print('Finish server "{}": port={}'.format(self.name, port))
 
 
 if __name__ == '__main__':
