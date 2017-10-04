@@ -4,7 +4,7 @@
 __author__ = 'ipetrash'
 
 
-from base_server import BaseServer
+from commands.base_server import BaseServer
 from commands import (
     generate_request,
     ALL_COMMAND_BY_URL,
