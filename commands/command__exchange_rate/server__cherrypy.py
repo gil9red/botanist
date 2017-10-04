@@ -13,6 +13,7 @@ class ExchangeRateServer(BaseServer):
         super().__init__()
 
         self.name = 'ExchangeRateServer'
+        self.guid = '21535ECEF2104BFD8F1CD1DC715309AA'
 
     def _execute_body(self, command):
         if DEBUG:

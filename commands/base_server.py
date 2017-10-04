@@ -20,13 +20,19 @@ class BaseServer:
 
         self.name = 'BaseServer'
 
-    # Expose the index method through the web. CherryPy will never
-    # publish methods that don't have the exposed attribute set to True.
+        # Для генерации GUID нужно вызвать:
+        # import uuid
+        # x = uuid.uuid4()
+        # print(x.hex.upper())
+        #
+        self.guid = 'E72DD28502D64F76B5E698DC9247C220'
+
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def index(self):
         return {
-            'name': self.name
+            'name': self.name,
+            'guid': self.guid,
         }
 
     @cherrypy.expose
@@ -67,6 +73,7 @@ class BaseServer:
         rs['error'] = error
         rs['traceback'] = traceback
         rs['server_name'] = self.name
+        rs['server_guid'] = self.guid
 
         return rs
 

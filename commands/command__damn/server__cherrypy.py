@@ -13,6 +13,7 @@ class DamnServer(BaseServer):
         super().__init__()
 
         self.name = 'DamnServer'
+        self.guid = 'BD672810C4D8416FA0CE15B55487224D'
 
     def _execute_body(self, command):
         if not command:

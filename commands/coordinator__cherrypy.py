@@ -37,6 +37,7 @@ class CoordinatorServer(BaseServer):
         super().__init__()
 
         self.name = 'CoordinatorServer'
+        self.guid = 'B57B73C8F8D442C48EDAFC951963D7A5'
 
     @BaseServer.expose
     @BaseServer.json_out
