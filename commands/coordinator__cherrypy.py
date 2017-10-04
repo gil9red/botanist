@@ -53,7 +53,7 @@ class CoordinatorServer(BaseServer):
 
         return ALL_COMMAND_NAME_BY_DESCRIPTION
 
-    def _execute_body(self, rq):
+    def _execute_body(self, rq=None):
         command = rq['command']
         print('Execute command: "{}"'.format(command))
 

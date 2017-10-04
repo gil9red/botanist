@@ -51,7 +51,7 @@ class BaseServer:
 
         return rs
 
-    def _execute_body(self, rq):
+    def _execute_body(self, rq=None):
         raise Exception('_execute_body is not implemented!')
 
     def generate_response(self, result=None, ok=True, error=None, traceback=None):
