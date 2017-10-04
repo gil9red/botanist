@@ -14,18 +14,18 @@ class BaseServer:
     json_out = cherrypy.tools.json_out()
     request = cherrypy.request
 
+    name = 'BaseServer'
+
+    # Для генерации GUID нужно вызвать:
+    # import uuid
+    # x = uuid.uuid4()
+    # print(x.hex.upper())
+    #
+    guid = 'E72DD28502D64F76B5E698DC9247C220'
+
     def __init__(self):
         # Set a custom response for errors.
         self._cp_config = {'error_page.default': self.all_exception_handler}
-
-        self.name = 'BaseServer'
-
-        # Для генерации GUID нужно вызвать:
-        # import uuid
-        # x = uuid.uuid4()
-        # print(x.hex.upper())
-        #
-        self.guid = 'E72DD28502D64F76B5E698DC9247C220'
 
     @cherrypy.expose
     @cherrypy.tools.json_out()

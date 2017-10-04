@@ -33,11 +33,8 @@ def fix_command(text, all_commands):
 
 
 class CoordinatorServer(BaseServer):
-    def __init__(self):
-        super().__init__()
-
-        self.name = 'CoordinatorServer'
-        self.guid = 'B57B73C8F8D442C48EDAFC951963D7A5'
+    name = 'CoordinatorServer'
+    guid = 'B57B73C8F8D442C48EDAFC951963D7A5'
 
     @BaseServer.expose
     @BaseServer.json_out

@@ -9,11 +9,8 @@ from commands import DEBUG
 
 
 class WeatherServer(BaseServer):
-    def __init__(self):
-        super().__init__()
-
-        self.name = 'WeatherServer'
-        self.guid = 'EF3D2E05CBAA49F2867C742EA7D856D0'
+    name = 'WeatherServer'
+    guid = 'EF3D2E05CBAA49F2867C742EA7D856D0'
 
     def _execute_body(self, command):
         if not command:

@@ -9,11 +9,8 @@ from commands import DEBUG
 
 
 class FunServer(BaseServer):
-    def __init__(self):
-        super().__init__()
-
-        self.name = 'FunServer'
-        self.guid = 'D24972621DAF4E35AA6BE68AB55BB46F'
+    name = 'FunServer'
+    guid = 'D24972621DAF4E35AA6BE68AB55BB46F'
 
     def _execute_body(self, command):
         if DEBUG:

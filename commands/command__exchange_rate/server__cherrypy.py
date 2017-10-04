@@ -9,11 +9,8 @@ from commands import DEBUG
 
 
 class ExchangeRateServer(BaseServer):
-    def __init__(self):
-        super().__init__()
-
-        self.name = 'ExchangeRateServer'
-        self.guid = '21535ECEF2104BFD8F1CD1DC715309AA'
+    name = 'ExchangeRateServer'
+    guid = '21535ECEF2104BFD8F1CD1DC715309AA'
 
     def _execute_body(self, command):
         if DEBUG:

@@ -9,11 +9,8 @@ from commands import DEBUG
 
 
 class DamnServer(BaseServer):
-    def __init__(self):
-        super().__init__()
-
-        self.name = 'DamnServer'
-        self.guid = 'BD672810C4D8416FA0CE15B55487224D'
+    name = 'DamnServer'
+    guid = 'BD672810C4D8416FA0CE15B55487224D'
 
     def _execute_body(self, command):
         if not command:
