@@ -4,13 +4,20 @@
 __author__ = 'ipetrash'
 
 
-from commands.base_server import BaseServer
+from commands.base_server import BaseServer, Command
 from commands import DEBUG
 
 
 class ExchangeRateServer(BaseServer):
     name = 'ExchangeRateServer'
     guid = '21535ECEF2104BFD8F1CD1DC715309AA'
+    command_list = [
+         Command(
+             command='курс валют',
+             uri='/execute',
+             description='Показать текущий курс евро и доллара'
+         ),
+    ]
 
     def _execute_body(self, command):
         if DEBUG:

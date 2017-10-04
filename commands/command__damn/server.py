@@ -4,13 +4,20 @@
 __author__ = 'ipetrash'
 
 
-from commands.base_server import BaseServer
+from commands.base_server import BaseServer, Command
 from commands import DEBUG
 
 
 class DamnServer(BaseServer):
     name = 'DamnServer'
     guid = 'BD672810C4D8416FA0CE15B55487224D'
+    command_list = [
+         Command(
+             command='ругнись',
+             uri='/execute',
+             description='Напиши кого бот отругает. Например: Бот, ругнись петр иваныч'
+         ),
+    ]
 
     def _execute_body(self, command):
         if not command:

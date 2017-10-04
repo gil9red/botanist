@@ -4,13 +4,20 @@
 __author__ = 'ipetrash'
 
 
-from commands.base_server import BaseServer
+from commands.base_server import BaseServer, Command
 from commands import DEBUG
 
 
 class WeatherServer(BaseServer):
     name = 'WeatherServer'
     guid = 'EF3D2E05CBAA49F2867C742EA7D856D0'
+    command_list = [
+         Command(
+             command='погода',
+             uri='/execute',
+             description='Погода в указанном населенном пункте. Например: Бот, погода магнитогорск'
+         ),
+    ]
 
     def _execute_body(self, command):
         if not command:

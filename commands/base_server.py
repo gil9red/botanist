@@ -8,6 +8,10 @@
 import cherrypy
 
 
+from collections import namedtuple
+Command = namedtuple('Command', ['command', 'uri', 'description'])
+
+
 class BaseServer:
     expose = cherrypy.expose
     json_in = cherrypy.tools.json_in()
@@ -22,6 +26,9 @@ class BaseServer:
     # print(x.hex.upper())
     #
     guid = 'E72DD28502D64F76B5E698DC9247C220'
+
+    # Список команд, которые поддерживает сервер
+    command_list = []
 
     def __init__(self):
         # Set a custom response for errors.
@@ -96,13 +103,15 @@ class BaseServer:
         return json.dumps(rs)
 
     def run(self, port=9090):
+        print('Start server "{}": port={}'.format(self.name, port))
+        print(self.command_list)
+
         # Set port
         cherrypy.config.update({'server.socket_port': port})
 
         # Autoreload off
         cherrypy.config.update({'engine.autoreload.on': False})
 
-        print('Start server "{}": port={}'.format(self.name, port))
         try:
             cherrypy.quickstart(self)
 

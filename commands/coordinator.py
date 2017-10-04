@@ -4,7 +4,7 @@
 __author__ = 'ipetrash'
 
 
-from commands.base_server import BaseServer
+from commands.base_server import BaseServer, Command
 from commands import (
     generate_request,
     ALL_COMMAND_BY_URL,
@@ -35,6 +35,13 @@ def fix_command(text, all_commands):
 class CoordinatorServer(BaseServer):
     name = 'CoordinatorServer'
     guid = 'B57B73C8F8D442C48EDAFC951963D7A5'
+    command_list = [
+         Command(
+             command='команды',
+             uri='/execute',
+             description='Показать список команд'
+         ),
+    ]
 
     @BaseServer.expose
     @BaseServer.json_out
