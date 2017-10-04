@@ -6,6 +6,8 @@ __author__ = 'ipetrash'
 
 # TODO: команду hex2str и str2hex
 # TODO: команды hex2str и str2hex реализовать на одном сервере: HexConverter
+#       Мб через параметры задавать, типо /execute?hex2str и /execute?str2hex
+#       нужно только пробрасывать параметры в нужные сервера
 
 # TODO: использовать jsonschema для проверки запросов API
 
