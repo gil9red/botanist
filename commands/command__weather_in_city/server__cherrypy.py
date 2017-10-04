@@ -32,6 +32,7 @@ class WeatherServer(BaseServer):
 
         return rs
 
+
 if __name__ == '__main__':
     server = WeatherServer()
     server.run(port=55003)
