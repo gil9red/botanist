@@ -14,11 +14,7 @@ class DamnServer(BaseServer):
 
         self.name = 'DamnServer'
 
-    def _execute_body(self, rq=None):
-        if 'command' not in rq:
-            raise Exception("В запросе не найдено поле 'command'.")
-
-        command = rq['command']
+    def _execute_body(self, command):
         if not command:
             raise Exception("Неправильная команда 'ругнись': не указано на кого нужно ругнуться.")
 

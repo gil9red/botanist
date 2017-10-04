@@ -40,7 +40,12 @@ class BaseServer:
 
         print('[{}] Request: {}'.format(self.name, rq))
 
-        rs = self._execute_body(rq)
+        if 'command' not in rq:
+            raise Exception("В запросе не найдено поле 'command'.")
+
+        command = rq['command']
+
+        rs = self._execute_body(command)
         print('[{}] Response: {}'.format(self.name, rs))
 
         if type(rs) == str:
@@ -51,7 +56,7 @@ class BaseServer:
 
         return rs
 
-    def _execute_body(self, rq=None):
+    def _execute_body(self, command):
         raise Exception('_execute_body is not implemented!')
 
     def generate_response(self, result=None, ok=True, error=None, traceback=None):

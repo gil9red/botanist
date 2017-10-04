@@ -14,7 +14,7 @@ class FunServer(BaseServer):
 
         self.name = 'FunServer'
 
-    def _execute_body(self, rq=None):
+    def _execute_body(self, command):
         if DEBUG:
             result = 'COMMAND__FUN'
         else:
