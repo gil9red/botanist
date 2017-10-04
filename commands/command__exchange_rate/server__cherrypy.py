@@ -18,6 +18,7 @@ class ExchangeRateServer(BaseServer):
         if DEBUG:
             result = 'COMMAND__EXCHANGE_RATE'
         else:
+            # TODO: кэшировать команду -- пусть данные считаются "протухшими" через 6 часов
             from commands.command__exchange_rate import currency
             rate_list = currency.exchange_rate(['EUR', 'USD'])
             result = ', '.join(rate_list)
