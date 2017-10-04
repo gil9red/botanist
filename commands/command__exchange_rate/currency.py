@@ -57,10 +57,3 @@ if __name__ == '__main__':
     rate_list = exchange_rate(['EUR', 'USD'])
     text = ', '.join(rate_list)
     print(text)
-
-
-    # from datetime import date, timedelta
-    #
-    # date_req = date.today()
-    # value, rate_date = exchange_rate('USD', 'EUR' date_req)
-    # print('{}: USD: {}'.format(rate_date, value))
