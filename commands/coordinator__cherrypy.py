@@ -43,7 +43,7 @@ class CoordinatorServer(BaseServer):
 
         if as_result is not None:
             result = '\n'.join(
-                '{}: {}'.format(k, v) for k, v in sorted(ALL_COMMAND_NAME_BY_DESCRIPTION.items(), key=lambda x: x[0])
+                '✓ {}: {}'.format(k, v) for k, v in sorted(ALL_COMMAND_NAME_BY_DESCRIPTION.items(), key=lambda x: x[0])
             )
 
             rs = self.generate_response(result, ok=True)
