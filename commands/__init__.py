@@ -114,30 +114,7 @@ def execute(command):
     return rs['result']
 
 
-# TODO: удалить, после замены flask на cherrypy
-def generate_response(result=None, ok=True, error=None):
-    return {
-        'result': result,
-        'ok': ok,
-        'error': error,
-    }
-
-
 def generate_request(command=None):
     return {
         'command': command,
     }
-
-
-def get_request_data(request_flask):
-    request_text = request_flask.data.decode('utf-8')
-    print('request_text:', request_text)
-
-    import json
-    rq = json.loads(request_text)
-    print('rq:', rq)
-
-    if 'command' not in rq:
-        raise Exception("В запросе не найдено поле 'command'.")
-
-    return rq
