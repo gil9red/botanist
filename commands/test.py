@@ -22,6 +22,14 @@ result = commands.execute('команды')
 print(repr(result))
 print()
 
+result = commands.execute('курс валют')
+print(repr(result))
+print()
+
+result = commands.execute('Курс ВАлут')
+print(repr(result))
+print()
+
 result = commands.execute('насмеши')
 print(repr(result))
 print()
