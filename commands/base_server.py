@@ -82,6 +82,7 @@ class BaseServer:
         response.headers['Content-Type'] = 'application/json'
 
         error_text = traceback.strip().split('\n')[-1]
+        error_text = error_text.split(':', maxsplit=1)[1].strip()
         print('[{}] Error: {}\n\n{}'.format(self.name, error_text, traceback))
 
         rs = self.generate_response(
