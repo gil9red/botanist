@@ -7,10 +7,8 @@ __author__ = 'ipetrash'
 from base_server import BaseServer
 from commands import (
     generate_request,
-    get_request_data,
     ALL_COMMAND_BY_URL,
     ALL_COMMAND_NAME_BY_DESCRIPTION,
-    DEBUG_ALONE_COORDINATOR,
 )
 
 # TODO: поддержать флаг DEBUG_ALONE_COORDINATOR
