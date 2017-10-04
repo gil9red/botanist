@@ -81,6 +81,11 @@ ALL_COMMAND_MODULE = [
         'http://127.0.0.1:55003/execute',
         'Погода в указанном населенном пункте. Например: Бот, погода магнитогорск'
     ),
+    CommandModule(
+        'курс валют',
+        'http://127.0.0.1:55004/execute',
+        'Показать текущий курс евро и доллара'
+    ),
 ]
 ALL_COMMAND_BY_URL = {x.command: x.url for x in ALL_COMMAND_MODULE}
 ALL_COMMAND_NAME_BY_DESCRIPTION = {x.command: x.description for x in ALL_COMMAND_MODULE}
