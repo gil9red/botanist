@@ -115,7 +115,7 @@ def generate_response(result=None, ok=True, error=None):
     }
 
 
-def generate_request(command):
+def generate_request(command=None):
     return {
         'command': command,
     }
