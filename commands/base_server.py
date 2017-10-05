@@ -116,7 +116,7 @@ class BaseServer:
 
                 # Иначе, обновляем
                 else:
-                    connect.execute('UPDATE Server SET name=?, url=?', (self.name, self.url))
+                    connect.execute('UPDATE Server SET name=?, url=? WHERE guid=?', (self.name, self.url, self.guid))
 
                 # TODO: аналогично заполнить команды: command_list
 
