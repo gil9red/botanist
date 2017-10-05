@@ -59,22 +59,9 @@ DEBUG_ALONE_COORDINATOR = False
 # TODO: 'котики': ':3',
 
 
-def get_url_coordinator():
-    from db import create_connect
-    with create_connect() as connect:
-        url = connect.execute(
-            'SELECT Server.url || Command.uri FROM Command, Server '
-            'WHERE Command.server_guid = :guid AND Server.guid = :guid ',
-
-            #
-            {'guid': 'B57B73C8F8D442C48EDAFC951963D7A5'}
-        ).fetchone()[0]
-
-        return url
-
-
 def execute(command):
-    url = get_url_coordinator()
+    import db
+    url = db.get_url_coordinator()
 
     import requests
     rs = requests.post(url, json=generate_request(command))

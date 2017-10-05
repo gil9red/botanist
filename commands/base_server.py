@@ -104,31 +104,8 @@ class BaseServer:
             print('Start server "{}": {}:{} / {}'.format(self.name, self.host, self.port, self.url))
             print('    {}'.format(self.command_list))
 
-            # TODO: обернуть в db.py как функцию
             import db
-            with db.create_connect() as connect:
-                # Если не существует, добавляем запись
-                exist = connect.execute("SELECT 1 FROM Server WHERE guid = ?", (self.guid,)).fetchone()
-                if not exist:
-                    connect.execute(
-                        'INSERT INTO Server (name, guid, url) VALUES (?, ?, ?)', (self.name, self.guid, self.url)
-                    )
-
-                # Иначе, обновляем
-                else:
-                    connect.execute('UPDATE Server SET name=?, url=? WHERE guid=?', (self.name, self.url, self.guid))
-
-                # Очищение списка комманд
-                connect.execute("DELETE FROM Command WHERE server_guid = ?", (self.guid,))
-
-                # Заполнение команд сервера
-                for command in self.command_list:
-                    connect.execute(
-                        "INSERT INTO Command (name, uri, description, server_guid) VALUES (?, ?, ?, ?)",
-                        (command.name, command.uri, command.description, self.guid,)
-                    )
-
-                connect.commit()
+            db.fill_server_info(self)
 
         from threading import Thread
         thread = Thread(target=_wait_server_running)
