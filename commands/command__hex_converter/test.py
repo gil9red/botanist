@@ -5,8 +5,11 @@ __author__ = 'ipetrash'
 
 
 from commands import generate_request
+from commands.command__hex_converter.server import HexConverter
+from db import get_url_server
 
-url = 'http://127.0.0.1:9090'
+url = get_url_server(HexConverter.guid)
+
 
 import requests
 rs = requests.post(

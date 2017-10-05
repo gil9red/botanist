@@ -5,28 +5,27 @@ __author__ = 'ipetrash'
 
 
 from commands import generate_request
+from commands.command__weather_in_city.server import WeatherServer
+from db import get_execute_command_url_server
 
-url = 'http://127.0.0.1:29314/execute'
+url = get_execute_command_url_server(WeatherServer.guid)
+command_name = 'погода'
+
 
 import requests
-rs = requests.post(url, json=generate_request(command_name='погода', command='Магнитогорск')
-)
+rs = requests.post(url, json=generate_request(command_name, command='Магнитогорск'))
 print(rs.json())
 
-rs = requests.post(url, json=generate_request(command_name='погода', command='Челябинск')
-)
+rs = requests.post(url, json=generate_request(command_name, command='Челябинск'))
 print(rs.json())
 
-rs = requests.post(url, json=generate_request(command_name='погода', command='Москва')
-)
+rs = requests.post(url, json=generate_request(command_name, command='Москва'))
 print(rs.json())
 
-rs = requests.post(url, json=generate_request(command_name='погода', command='3421выаы:)')
-)
+rs = requests.post(url, json=generate_request(command_name, command='3421выаы:)'))
 print(rs.json())
 
-rs = requests.post(url, json=generate_request(command_name='погода', command='')
-)
+rs = requests.post(url, json=generate_request(command_name, command=''))
 print(rs.json())
 
 rs = requests.post(url)

@@ -5,17 +5,21 @@ __author__ = 'ipetrash'
 
 
 from commands import generate_request
+from commands.command__damn.server import DamnServer
+from db import get_execute_command_url_server
 
-url = 'http://127.0.0.1:55001/execute'
+url = get_execute_command_url_server(DamnServer.guid)
+command_name = 'ругнись'
+
 
 import requests
-rs = requests.post(url, json=generate_request(command_name='курс валют', command='Петя'))
+rs = requests.post(url, json=generate_request(command_name=command_name, command='Петя'))
 print(rs.json())
 
-rs = requests.post(url, json=generate_request(command_name='курс валют'))
+rs = requests.post(url, json=generate_request(command_name=command_name))
 print(rs.json())
 
-rs = requests.post(url, json=generate_request(command_name='курс валют', command=''))
+rs = requests.post(url, json=generate_request(command_name=command_name, command=''))
 print(rs.json())
 
 rs = requests.post(url, json={'status': 'ok'})

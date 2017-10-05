@@ -65,13 +65,14 @@ def get_all_command_name_by_url() -> {str: str}:
     return {name: url for name, _, url in get_commands()}
 
 
-def get_url_server(guid: str) -> str:
+def get_execute_command_url_server(guid: str) -> str:
     with create_connect() as connect:
-        url = connect.execute(
-            'SELECT Server.url || Command.uri FROM Command, Server '
-            'WHERE Command.server_guid = :guid AND Server.guid = :guid ',
+        url = connect.execute('''
+            SELECT Server.url || Command.uri 
+            FROM Command, Server 
+            WHERE Command.server_guid = :guid AND Server.guid = :guid
+            ''', {'guid': guid}
 
-            {'guid': guid}
         ).fetchone()
 
         if url is None:
@@ -80,8 +81,17 @@ def get_url_server(guid: str) -> str:
         return url[0]
 
 
+def get_url_server(guid: str) -> str:
+    with create_connect() as connect:
+        url = connect.execute('SELECT Server.url FROM Server WHERE Server.guid = :guid ', {'guid': guid}).fetchone()
+        if url is None:
+            return
+
+        return url[0]
+
+
 def get_url_coordinator():
-    return get_url_server('B57B73C8F8D442C48EDAFC951963D7A5')
+    return get_execute_command_url_server('B57B73C8F8D442C48EDAFC951963D7A5')
 
 
 def fill_server_info(server):
