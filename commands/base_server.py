@@ -34,6 +34,12 @@ class BaseServer:
         # Set a custom response for errors.
         self._cp_config = {'error_page.default': self.all_exception_handler}
 
+        self.host = None
+        self.port = None
+        self.url = None
+
+        cherrypy.engine.subscribe('start', self.on_start)
+
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def index(self):
@@ -84,6 +90,24 @@ class BaseServer:
 
         return rs
 
+    def on_start(self):
+        def _wait_server_running():
+            import time
+
+            # Wait running
+            while not cherrypy.server.running:
+                time.sleep(0.1)
+
+            self.host, self.port = cherrypy.server.bound_addr
+            self.url = cherrypy.server.description
+
+            print('Start server "{}": {}:{} / {}'.format(self.name, self.host, self.port, self.url))
+            print('    {}'.format(self.command_list))
+
+        from threading import Thread
+        thread = Thread(target=_wait_server_running)
+        thread.start()
+
     def all_exception_handler(self, status, message, traceback, version):
         response = cherrypy.response
         response.headers['Content-Type'] = 'application/json'
@@ -102,10 +126,7 @@ class BaseServer:
         import json
         return json.dumps(rs)
 
-    def run(self, port=9090):
-        print('Start server "{}": port={}'.format(self.name, port))
-        print(self.command_list)
-
+    def run(self, port=0):
         # Set port
         cherrypy.config.update({'server.socket_port': port})
 
@@ -121,4 +142,4 @@ class BaseServer:
 
 if __name__ == '__main__':
     server = BaseServer()
-    server.run(port=9090)
+    server.run(9090)
