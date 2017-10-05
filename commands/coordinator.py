@@ -5,13 +5,30 @@ __author__ = 'ipetrash'
 
 
 from commands.base_server import BaseServer, Command
-from commands import (
-    generate_request,
-    ALL_COMMAND_BY_URL,
-    ALL_COMMAND_NAME_BY_DESCRIPTION,
-)
+from commands import generate_request
 
 # TODO: поддержать флаг DEBUG_ALONE_COORDINATOR
+
+
+def get_commands() -> [(str, str, str)]:
+    from db import create_connect
+    with create_connect() as connect:
+        items = connect.execute(
+            'SELECT Command.name, Command.description, Server.url || Command.uri '
+            'FROM Command, Server '
+            'WHERE Command.server_guid = Server.guid '
+            'ORDER BY Command.name'
+        ).fetchall()
+
+        return items
+
+
+def get_all_command_name_by_description() -> {str: str}:
+    return {name: description for name, description, _ in get_commands()}
+
+
+def get_all_command_name_by_url() -> {str: str}:
+    return {name: url for name, _, url in get_commands()}
 
 
 # SOURCE: https://github.com/gil9red/SimplePyScripts/blob/460f3538ebc0fb78628ea885ac7d39481404fa1e/Damerau%E2%80%93Levenshtein_distance__misprints__%D0%BE%D0%BF%D0%B5%D1%87%D0%B0%D1%82%D0%BA%D0%B8/use__pyxdameraulevenshtein/fix_command.py
@@ -49,15 +66,17 @@ class CoordinatorServer(BaseServer):
     def get_commands(self, as_result=None):
         print(self.request.params)
 
+        all_command_name_by_description = get_all_command_name_by_description()
+
         if as_result is not None:
             result = '\n'.join(
-                '✓ {}: {}'.format(k, v) for k, v in sorted(ALL_COMMAND_NAME_BY_DESCRIPTION.items(), key=lambda x: x[0])
+                '✓ {}: {}'.format(k, v) for k, v in sorted(all_command_name_by_description.items(), key=lambda x: x[0])
             )
 
             rs = self.generate_response(result, ok=True)
             return rs
 
-        return ALL_COMMAND_NAME_BY_DESCRIPTION
+        return all_command_name_by_description
 
     def _execute_body(self, command):
         print('Execute command: "{}"'.format(command))
@@ -70,7 +89,8 @@ class CoordinatorServer(BaseServer):
         execute_command = command.lower()
         print('execute_command: "{}"'.format(execute_command))
 
-        command_name_list = list(ALL_COMMAND_BY_URL.keys())
+        all_command_by_url = get_all_command_name_by_url()
+        command_name_list = list(all_command_by_url.keys())
 
         # Если текущая команда не была найдена среди списка команд хотя бы по совпадению начальной строки,
         # пытаемся найти, учитывая, что в ней могут быть опечатки, иначе ругаемся на неизвестную команду
@@ -106,7 +126,7 @@ class CoordinatorServer(BaseServer):
         if execute_command == 'команды':
             return self.get_commands(as_result=True)
 
-        for command_name, url in ALL_COMMAND_BY_URL.items():
+        for command_name, url in all_command_by_url.items():
             if execute_command.startswith(command_name.lower()):
                 command_text = command[len(command_name):].strip()
                 print('Found server: {}, command name: "{}", command text: "{}"'.format(

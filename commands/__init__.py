@@ -61,46 +61,25 @@ DEBUG_ALONE_COORDINATOR = False
 # TODO: 'котики': ':3',
 
 
-# TODO: перенести настройки в базу
-from collections import namedtuple
-CommandModule = namedtuple('CommandModule', ['command', 'url', 'description'])
+def get_url_coordinator():
+    from db import create_connect
+    with create_connect() as connect:
+        url = connect.execute(
+            'SELECT Server.url || Command.uri FROM Command, Server '
+            'WHERE Command.server_guid = :guid AND Server.guid = :guid ',
 
-ALL_COMMAND_MODULE = [
-    CommandModule(
-        'команды',
-        'http://127.0.0.1:55000/execute',
-        'Показать список команд'
-    ),
-    CommandModule(
-        'ругнись',
-        'http://127.0.0.1:55001/execute',
-        'Напиши кого бот отругает. Например: Бот, ругнись петр иваныч'
-    ),
-    CommandModule(
-        'насмеши',
-        'http://127.0.0.1:55002/execute',
-        'Случайная цитата башорга'
-    ),
-    CommandModule(
-        'погода',
-        'http://127.0.0.1:55003/execute',
-        'Погода в указанном населенном пункте. Например: Бот, погода магнитогорск'
-    ),
-    CommandModule(
-        'курс валют',
-        'http://127.0.0.1:55004/execute',
-        'Показать текущий курс евро и доллара'
-    ),
-]
-ALL_COMMAND_BY_URL = {x.command: x.url for x in ALL_COMMAND_MODULE}
-ALL_COMMAND_NAME_BY_DESCRIPTION = {x.command: x.description for x in ALL_COMMAND_MODULE}
+            #
+            {'guid': 'B57B73C8F8D442C48EDAFC951963D7A5'}
+        ).fetchone()[0]
+
+        return url
 
 
 def execute(command):
-    # TODO: URL для запроса на координатор определять через базу,
-    #       зная CoordinatorServer.guid = B57B73C8F8D442C48EDAFC951963D7A5
+    url = get_url_coordinator()
+
     import requests
-    rs = requests.post('http://127.0.0.1:55000/execute', json=generate_request(command))
+    rs = requests.post(url, json=generate_request(command))
     print(rs.text)
 
     try:
