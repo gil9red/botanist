@@ -42,4 +42,4 @@ class WeatherServer(BaseServer):
 
 if __name__ == '__main__':
     server = WeatherServer()
-    server.run(port=55003)
+    server.run()

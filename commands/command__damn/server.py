@@ -42,4 +42,4 @@ class DamnServer(BaseServer):
 
 if __name__ == '__main__':
     server = DamnServer()
-    server.run(port=55001)
+    server.run()

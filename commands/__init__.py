@@ -4,8 +4,6 @@
 __author__ = 'ipetrash'
 
 
-# TODO: для всех серверов ввести случайный порт
-
 # TODO: команду hex2str и str2hex
 # TODO: команды hex2str и str2hex реализовать на одном сервере: HexConverter
 #       Мб через параметры задавать, типо /execute?hex2str и /execute?str2hex

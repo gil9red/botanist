@@ -39,4 +39,4 @@ class FunServer(BaseServer):
 
 if __name__ == '__main__':
     server = FunServer()
-    server.run(port=55002)
+    server.run()

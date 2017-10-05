@@ -168,4 +168,4 @@ class BaseServer:
 
 if __name__ == '__main__':
     server = BaseServer()
-    server.run(9090)
+    server.run()

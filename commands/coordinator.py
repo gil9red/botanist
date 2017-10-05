@@ -151,4 +151,4 @@ class CoordinatorServer(BaseServer):
 
 if __name__ == '__main__':
     server = CoordinatorServer()
-    server.run(port=55000)
+    server.run()

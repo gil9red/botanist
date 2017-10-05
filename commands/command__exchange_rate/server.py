@@ -41,4 +41,4 @@ class ExchangeRateServer(BaseServer):
 
 if __name__ == '__main__':
     server = ExchangeRateServer()
-    server.run(port=55004)
+    server.run()
