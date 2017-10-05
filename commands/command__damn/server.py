@@ -13,7 +13,7 @@ class DamnServer(BaseServer):
     guid = 'BD672810C4D8416FA0CE15B55487224D'
     command_list = [
          Command(
-             command='ругнись',
+             name='ругнись',
              uri='/execute',
              description='Напиши кого бот отругает. Например: Бот, ругнись петр иваныч'
          ),

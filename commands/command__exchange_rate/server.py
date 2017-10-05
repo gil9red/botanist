@@ -13,7 +13,7 @@ class ExchangeRateServer(BaseServer):
     guid = '21535ECEF2104BFD8F1CD1DC715309AA'
     command_list = [
          Command(
-             command='курс валют',
+             name='курс валют',
              uri='/execute',
              description='Показать текущий курс евро и доллара'
          ),

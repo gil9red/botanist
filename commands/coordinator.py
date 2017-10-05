@@ -37,7 +37,7 @@ class CoordinatorServer(BaseServer):
     guid = 'B57B73C8F8D442C48EDAFC951963D7A5'
     command_list = [
          Command(
-             command='команды',
+             name='команды',
              uri='/execute',
              description='Показать список команд'
          ),

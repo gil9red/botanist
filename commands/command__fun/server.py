@@ -13,7 +13,7 @@ class FunServer(BaseServer):
     guid = 'D24972621DAF4E35AA6BE68AB55BB46F'
     command_list = [
          Command(
-             command='насмеши',
+             name='насмеши',
              uri='/execute',
              description='Случайная цитата башорга'
          ),

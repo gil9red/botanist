@@ -13,7 +13,7 @@ class WeatherServer(BaseServer):
     guid = 'EF3D2E05CBAA49F2867C742EA7D856D0'
     command_list = [
          Command(
-             command='погода',
+             name='погода',
              uri='/execute',
              description='Погода в указанном населенном пункте. Например: Бот, погода магнитогорск'
          ),

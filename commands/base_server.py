@@ -9,7 +9,7 @@ import cherrypy
 
 
 from collections import namedtuple
-Command = namedtuple('Command', ['command', 'uri', 'description'])
+Command = namedtuple('Command', ['name', 'uri', 'description'])
 
 
 class BaseServer:
@@ -118,7 +118,15 @@ class BaseServer:
                 else:
                     connect.execute('UPDATE Server SET name=?, url=? WHERE guid=?', (self.name, self.url, self.guid))
 
-                # TODO: аналогично заполнить команды: command_list
+                # Очищение списка комманд
+                connect.execute("DELETE FROM Command WHERE server_guid = ?", (self.guid,))
+
+                # Заполнение команд сервера
+                for command in self.command_list:
+                    connect.execute(
+                        "INSERT INTO Command (name, uri, description, server_guid) VALUES (?, ?, ?, ?)",
+                        (command.name, command.uri, command.description, self.guid,)
+                    )
 
                 connect.commit()
 
