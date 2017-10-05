@@ -51,7 +51,7 @@ class BaseServer:
     @cherrypy.expose
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def execute(self):
+    def execute(self, **params):
         try:
             rq = cherrypy.request.json
         except:
@@ -62,9 +62,13 @@ class BaseServer:
         if 'command' not in rq:
             raise Exception("В запросе не найдено поле 'command'.")
 
-        command = rq['command']
+        if 'command_name' not in rq:
+            raise Exception("В запросе не найдено поле 'command_name'.")
 
-        rs = self._execute_body(command)
+        command = rq['command']
+        command_name = rq['command_name']
+
+        rs = self._execute_body(command, command_name, **params)
         print('[{}] Response: {}'.format(self.name, rs))
 
         if type(rs) == str:
@@ -75,7 +79,7 @@ class BaseServer:
 
         return rs
 
-    def _execute_body(self, command):
+    def _execute_body(self, command, command_name, **params):
         raise Exception('_execute_body is not implemented!')
 
     def generate_response(self, result=None, ok=True, error=None, traceback=None):

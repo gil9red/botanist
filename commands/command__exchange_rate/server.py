@@ -19,7 +19,7 @@ class ExchangeRateServer(BaseServer):
         ),
     ]
 
-    def _execute_body(self, command):
+    def _execute_body(self, command, command_name, **params):
         if DEBUG:
             result = 'COMMAND__EXCHANGE_RATE'
         else:

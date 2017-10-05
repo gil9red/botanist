@@ -4,11 +4,7 @@
 __author__ = 'ipetrash'
 
 
-# TODO: команду hex2str и str2hex
-# TODO: команды hex2str и str2hex реализовать на одном сервере: HexConverter
-#       Мб через параметры задавать, типо /execute?hex2str и /execute?str2hex
-#       нужно только пробрасывать параметры в нужные сервера
-
+# TODO: url для запросов тестов брать из базы
 # TODO: использовать jsonschema для проверки запросов API
 
 # Если True, тогда модули-команды вместо выполнения своей команды вернут эхо
@@ -64,7 +60,7 @@ def execute(command):
     url = db.get_url_coordinator()
 
     import requests
-    rs = requests.post(url, json=generate_request(command))
+    rs = requests.post(url, json=generate_request(command_name=None, command=command))
     print(rs.text)
 
     try:
@@ -82,7 +78,8 @@ def execute(command):
     return rs['result']
 
 
-def generate_request(command=None):
+def generate_request(command_name, command=None):
     return {
+        'command_name': command_name,
         'command': command,
     }

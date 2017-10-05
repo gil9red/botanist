@@ -19,7 +19,7 @@ class DamnServer(BaseServer):
         ),
     ]
 
-    def _execute_body(self, command):
+    def _execute_body(self, command, command_name, **params):
         if not command:
             raise Exception("Неправильная команда 'ругнись': не указано на кого нужно ругнуться.")
 

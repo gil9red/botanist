@@ -55,7 +55,7 @@ class CoordinatorServer(BaseServer):
 
         return all_command_name_by_description
 
-    def _execute_body(self, command):
+    def _execute_body(self, command, command_name, **params):
         print('Execute command: "{}"'.format(command))
 
         if DEBUG_ALONE_COORDINATOR:
@@ -117,7 +117,7 @@ class CoordinatorServer(BaseServer):
 
                 import requests
                 try:
-                    rs = requests.post(url, json=generate_request(command_text))
+                    rs = requests.post(url, json=generate_request(command_name, command_text))
                     return rs.json()
 
                 except requests.exceptions.ConnectionError:

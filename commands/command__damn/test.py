@@ -6,18 +6,20 @@ __author__ = 'ipetrash'
 
 from commands import generate_request
 
+url = 'http://127.0.0.1:55001/execute'
+
 import requests
-rs = requests.post('http://127.0.0.1:55001/execute', json=generate_request('Петя'))
+rs = requests.post(url, json=generate_request(command_name='курс валют', command='Петя'))
 print(rs.json())
 
-rs = requests.post('http://127.0.0.1:55001/execute', json=generate_request())
+rs = requests.post(url, json=generate_request(command_name='курс валют'))
 print(rs.json())
 
-rs = requests.post('http://127.0.0.1:55001/execute', json=generate_request(''))
+rs = requests.post(url, json=generate_request(command_name='курс валют', command=''))
 print(rs.json())
 
-rs = requests.post('http://127.0.0.1:55001/execute', json={'status': 'ok'})
+rs = requests.post(url, json={'status': 'ok'})
 print(rs.json())
 
-rs = requests.post('http://127.0.0.1:55001/execute', data=str({'status': 'ok'}))
+rs = requests.post(url, data=str({'status': 'ok'}))
 print(rs.json())

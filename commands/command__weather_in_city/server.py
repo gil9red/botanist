@@ -19,7 +19,7 @@ class WeatherServer(BaseServer):
         ),
     ]
 
-    def _execute_body(self, command):
+    def _execute_body(self, command, command_name, **params):
         if not command:
             raise Exception("Неправильная команда 'погода': не указан населенный пункт")
 
