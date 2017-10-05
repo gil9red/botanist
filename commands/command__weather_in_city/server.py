@@ -12,11 +12,11 @@ class WeatherServer(BaseServer):
     name = 'WeatherServer'
     guid = 'EF3D2E05CBAA49F2867C742EA7D856D0'
     command_list = [
-         Command(
-             name='погода',
-             uri='/execute',
-             description='Погода в указанном населенном пункте. Например: Бот, погода магнитогорск'
-         ),
+        Command(
+            name='погода',
+            uri='/execute',
+            description='Погода в указанном населенном пункте. Например: Бот, погода магнитогорск'
+        ),
     ]
 
     def _execute_body(self, command):

@@ -12,11 +12,11 @@ class FunServer(BaseServer):
     name = 'FunServer'
     guid = 'D24972621DAF4E35AA6BE68AB55BB46F'
     command_list = [
-         Command(
-             name='насмеши',
-             uri='/execute',
-             description='Случайная цитата башорга'
-         ),
+        Command(
+            name='насмеши',
+            uri='/execute',
+            description='Случайная цитата башорга'
+        ),
     ]
 
     def _execute_body(self, command):

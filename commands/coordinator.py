@@ -31,11 +31,11 @@ class CoordinatorServer(BaseServer):
     name = 'CoordinatorServer'
     guid = 'B57B73C8F8D442C48EDAFC951963D7A5'
     command_list = [
-         Command(
-             name='команды',
-             uri='/execute',
-             description='Показать список команд'
-         ),
+        Command(
+            name='команды',
+            uri='/execute',
+            description='Показать список команд'
+        ),
     ]
 
     @BaseServer.expose

@@ -12,11 +12,11 @@ class ExchangeRateServer(BaseServer):
     name = 'ExchangeRateServer'
     guid = '21535ECEF2104BFD8F1CD1DC715309AA'
     command_list = [
-         Command(
-             name='курс валют',
-             uri='/execute',
-             description='Показать текущий курс евро и доллара'
-         ),
+        Command(
+            name='курс валют',
+            uri='/execute',
+            description='Показать текущий курс евро и доллара'
+        ),
     ]
 
     def _execute_body(self, command):

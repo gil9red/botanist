@@ -12,11 +12,11 @@ class DamnServer(BaseServer):
     name = 'DamnServer'
     guid = 'BD672810C4D8416FA0CE15B55487224D'
     command_list = [
-         Command(
-             name='ругнись',
-             uri='/execute',
-             description='Напиши кого бот отругает. Например: Бот, ругнись петр иваныч'
-         ),
+        Command(
+            name='ругнись',
+            uri='/execute',
+            description='Напиши кого бот отругает. Например: Бот, ругнись петр иваныч'
+        ),
     ]
 
     def _execute_body(self, command):
