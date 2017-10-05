@@ -97,6 +97,8 @@ ALL_COMMAND_NAME_BY_DESCRIPTION = {x.command: x.description for x in ALL_COMMAND
 
 
 def execute(command):
+    # TODO: URL для запроса на координатор определять через базу,
+    #       зная CoordinatorServer.guid = B57B73C8F8D442C48EDAFC951963D7A5
     import requests
     rs = requests.post('http://127.0.0.1:55000/execute', json=generate_request(command))
     print(rs.text)
