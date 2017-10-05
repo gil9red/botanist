@@ -2,6 +2,6 @@ vk_api==9.1
 pyxDamerauLevenshtein==1.4.1
 numpy==1.11.1
 requests==2.10.0
-Flask==0.11.1
+CherryPy==11.0.0
 lxml==3.6.0
 beautifulsoup4==4.6.0
