@@ -9,6 +9,14 @@ result = commands.execute('команды')
 print(repr(result))
 print()
 
+result = commands.execute('str2hex Привет мир!')
+print(repr(result))
+print()
+
+result = commands.execute('hex2str CFF0E8E2E5F220ECE8F021')
+print(repr(result))
+print()
+
 result = commands.execute('курс валют')
 print(repr(result))
 print()
