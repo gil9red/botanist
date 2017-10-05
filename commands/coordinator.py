@@ -19,6 +19,7 @@ def fix_command(text, all_commands):
     import numpy as np
     array = np.array(all_commands)
 
+    # Использование алгоритма "Расстояние Дамерау — Левенштейна"
     from pyxdameraulevenshtein import normalized_damerau_levenshtein_distance_ndarray
     result = list(zip(all_commands, list(normalized_damerau_levenshtein_distance_ndarray(text, array))))
     # print('\n' + text, sorted(result, key=lambda x: x[1]))
