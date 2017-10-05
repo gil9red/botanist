@@ -4,19 +4,6 @@
 __author__ = 'ipetrash'
 
 
-# command = 'регнись петр иваныч регнись'
-# command_name = 'регнись'
-# word_list = command.split()
-#
-# for i in range(1, len(word_list) + 1):
-#     print(i, word_list[:i], ' '.join(word_list[:i]))
-#
-#     if command_name == ' '.join(word_list[:i]):
-#         print(command_name + ' ' + ' '.join(word_list[i:]))
-#         break
-#
-# quit()
-
 import commands
 result = commands.execute('команды')
 print(repr(result))
