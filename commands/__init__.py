@@ -16,6 +16,29 @@ DEBUG_ALONE_COORDINATOR = False
 
 # TODO: для logging.basicConfig определить filename для сбора всякие логов (проверить
 #       как сработает для уже установленых логов)
+# cherrypy.config.update({
+#     # Для каждого сервера можно реализовать:
+#     # Дополнительно можно к имени лога добавлять имя сервера и путь указывать полный, в корень проекта в папке logs
+#     # Например: mini_vk_bot/logs
+#     'log.access_file': "access.log",
+#     'log.error_file': "error.log",
+# })
+
+# TODO: добавить в main.py и base_server.py:
+# # При выводе юникодных символов в консоль винды
+# # Возможно, не только для винды, но и для любой платформы стоит использовать
+# # эту настройку -- мало какие проблемы могут встретиться
+# import sys
+# if sys.platform == 'win32':
+#     import codecs
+#
+#     try:
+#         sys.stdout = codecs.getwriter(sys.stdout.encoding)(sys.stdout.detach(), 'backslashreplace')
+#         sys.stderr = codecs.getwriter(sys.stderr.encoding)(sys.stderr.detach(), 'backslashreplace')
+#
+#     except AttributeError:
+#         # ignore "AttributeError: '_io.BufferedWriter' object has no attribute 'encoding'"
+#         pass
 
 
 # TODO: мб при ответе бота на команду выделять заголовок ответа подчеркиванием? т.е. бот после команды
