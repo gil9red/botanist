@@ -5,10 +5,10 @@ __author__ = 'ipetrash'
 
 
 from commands import generate_request
-from commands.command__hex_converter.server import HexConverter
+from commands.command__text_converter.server import TextConverter
 from db import get_url_server
 
-url = get_url_server(HexConverter.guid)
+url = get_url_server(TextConverter.guid)
 
 
 import requests
