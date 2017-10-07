@@ -106,7 +106,9 @@ class BaseServer:
             self.url = cherrypy.server.description
 
             print('Start server "{}": {}:{} / {}'.format(self.name, self.host, self.port, self.url))
-            print('    {}'.format(self.command_list))
+            print('Commands ({}):'.format(len(self.command_list)))
+            for command in self.command_list:
+                print('    {}'.format(command))
 
             import db
             db.fill_server_info(self)
