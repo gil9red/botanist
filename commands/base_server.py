@@ -68,6 +68,8 @@ class BaseServer:
         command = rq['command']
         command_name = rq['command_name']
 
+        # TODO: замерять время выполнения команд
+
         rs = self._execute_body(command, command_name, **params)
         print('[{}] Response: {}'.format(self.name, rs))
 
