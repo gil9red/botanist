@@ -9,5 +9,5 @@ start %PYTHON% commands\coordinator.py
 start %PYTHON% commands\command__damn\server.py
 start %PYTHON% commands\command__exchange_rate\server.py
 start %PYTHON% commands\command__fun\server.py
-start %PYTHON% commands\command__hex_converter\server.py
+start %PYTHON% commands\command__text_converter\server.py
 start %PYTHON% commands\command__weather_in_city\server.py
