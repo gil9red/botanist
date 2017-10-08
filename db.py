@@ -4,6 +4,8 @@
 __author__ = 'ipetrash'
 
 
+import typing
+
 DB_FILE_NAME = 'database.sqlite'
 
 # Установка полного пути к файлу базы данных, так чтобы он был
@@ -65,23 +67,28 @@ def get_all_command_name_by_url() -> {str: str}:
     return {name: url for name, _, url in get_commands()}
 
 
-def get_execute_command_url_server(guid: str) -> str:
+def get_execute_command_list_url_server(guid: str) -> [typing.Union[str, None]]:
     with create_connect() as connect:
-        url = connect.execute('''
+        url_list = connect.execute('''
             SELECT Server.url || Command.uri 
             FROM Command, Server 
             WHERE Command.server_guid = :guid AND Server.guid = :guid
             ''', {'guid': guid}
 
-        ).fetchone()
+        ).fetchall()
 
-        if url is None:
-            return
-
-        return url[0]
+        return [x for x, in url_list]
 
 
-def get_url_server(guid: str) -> str:
+def get_execute_command_url_server(guid: str) -> typing.Union[str, None]:
+    url_list = get_execute_command_list_url_server(guid)
+    if not url_list:
+        return
+
+    return url_list[0]
+
+
+def get_url_server(guid: str) -> typing.Union[str, None]:
     with create_connect() as connect:
         url = connect.execute('SELECT Server.url FROM Server WHERE Server.guid = :guid ', {'guid': guid}).fetchone()
         if url is None:
@@ -90,7 +97,7 @@ def get_url_server(guid: str) -> str:
         return url[0]
 
 
-def get_url_coordinator():
+def get_url_coordinator() -> typing.Union[str, None]:
     return get_execute_command_url_server('B57B73C8F8D442C48EDAFC951963D7A5')
 
 
