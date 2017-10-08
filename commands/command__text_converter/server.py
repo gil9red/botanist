@@ -78,8 +78,8 @@ class TextConverter(BaseServer):
             import traceback
             print('Error: {}\n\n{}'.format(e, traceback.format_exc()))
 
-            raise Exception('При выполнении команды "{}" произошла ошибка "{}". '
-                            'Проверь что данные правильные.'.format(command_name, e))
+            raise Exception('При выполнении команды "{}" произошла ошибка. '
+                            'Проверь что данные правильные. Текст ошибки: "{}".'.format(command_name, e))
 
         ok = result is not None
 
