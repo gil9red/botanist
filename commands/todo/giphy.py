@@ -11,11 +11,11 @@ URL_SEARCH = 'https://api.giphy.com/v1/gifs/search?api_key={}&limit=1&offset={}&
 API_KEY = '80efb56295eb4277bc18d52771529a10'
 
 
-import requests
-rs = requests.get('https://media1.giphy.com/media/PhudO5SeUmbQI/giphy.gif')
-open('file_name.gif', 'wb').write(rs.content)
-
-quit()
+# import requests
+# rs = requests.get('https://media1.giphy.com/media/PhudO5SeUmbQI/giphy.gif')
+# open('file_name.gif', 'wb').write(rs.content)
+#
+# quit()
 
 def get_gif(text):
     import random
@@ -26,10 +26,11 @@ def get_gif(text):
     import requests
     rs = requests.get(url)
     print(rs)
-    print(rs.json())
+    return rs.json()
 
 
 if __name__ == '__main__':
     print(get_gif('Котята'))
     print(get_gif('Cats'))
     print(get_gif('   '))
+    print(get_gif('dfsdfsdf'))
