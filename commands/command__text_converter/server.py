@@ -17,23 +17,24 @@ class TextConverter(BaseServer):
         Command(
             name='str2hex',
             uri='/execute?str2hex',
-            description='Конвертация строки в HEX'
+            description='Конвертация строки в HEX. Например: Бот, str2hex Привет!'
         ),
         Command(
             name='hex2str',
             uri='/execute?hex2str',
-            description='Конвертация из HEX в строку'
+            description='Конвертация из HEX в строку. Например: Бот, hex2str CFF0E8E2E5F221'
         ),
 
         Command(
             name='str2bin',
             uri='/execute?str2bin',
-            description='Конвертация из текстовой строки в бинарную'
+            description='Конвертация из текстовой строки в бинарную. Например: Бот, str2bin Привет!'
         ),
         Command(
             name='bin2str',
             uri='/execute?bin2str',
-            description='Конвертация из бинарной строки в текстовую'
+            description='Конвертация из бинарной строки в текстовую. Например: Бот, bin2str 11001111 11110000 '
+                        '11101000 11100010 11100101 11110010 00100001'
         ),
     ]
 
@@ -69,8 +70,17 @@ class TextConverter(BaseServer):
             raise Exception("Неправильная команда '{}': не найдена функция '{}', доступны следующие "
                             "функции: {}".format(command_name, func_name, ', '.join(self.name_by_func.keys())))
 
-        # Вызов функции по ее имени
-        result = self.name_by_func[func_name](command)
+        try:
+            # Вызов функции по ее имени
+            result = self.name_by_func[func_name](command)
+
+        except Exception as e:
+            import traceback
+            print('Error: {}\n\n{}'.format(e, traceback.format_exc()))
+
+            raise Exception('При выполнении команды "{}" произошла ошибка "{}". '
+                            'Проверь что данные правильные.'.format(command_name, e))
+
         ok = result is not None
 
         rs = self.generate_response(result, ok)
