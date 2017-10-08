@@ -47,6 +47,12 @@ def init_db():
         connect.commit()
 
 
+# TODO: завести в базе статистику команд таблицу в которой будет инфа о времени выполнения
+#       и названии команды
+def add_statistics():
+    pass
+
+
 def get_commands() -> [(str, str, str)]:
     with create_connect() as connect:
         items = connect.execute('''
