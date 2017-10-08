@@ -10,6 +10,10 @@ __author__ = 'ipetrash'
 # TODO: добавить команду Шифр Цезаря
 #       https://github.com/gil9red/SimplePyScripts/blob/8c6e56d3fb2503f491b65195fd92c5b97bea7d77/caesar_code/caesar_code.py
 
+# TODO: добавить команду получения случайного комикса cynicmansion.ru
+#       для получения комикса: https://github.com/gil9red/SimplePyScripts/blob/a317f43661786203047264f37b19ef45ead29f3d/get_random_comics__cynicmansion.ru/main.py
+#       для постинга в сообщении картинок: https://github.com/gil9red/SimplePyScripts/blob/bf1350489cbcbfc1315a4b3e9d2d48fd15d5e6df/vk_api__examples/send_images/main.py
+
 # TODO: добавить команду курс криптовалют
 # TODO: добавить команду Язык Йода: http://vexer.ru/jokez/joda.php
 # TODO: добавить команду для генерации в язык падонков
