@@ -2,6 +2,22 @@
 # -*- coding: utf-8 -*-
 
 
+# При выводе юникодных символов в консоль винды
+# Возможно, не только для винды, но и для любой платформы стоит использовать
+# эту настройку -- мало какие проблемы могут встретиться
+import sys
+if sys.platform == 'win32':
+    import codecs
+
+    try:
+        sys.stdout = codecs.getwriter(sys.stdout.encoding)(sys.stdout.detach(), 'backslashreplace')
+        sys.stderr = codecs.getwriter(sys.stderr.encoding)(sys.stderr.detach(), 'backslashreplace')
+
+    except AttributeError:
+        # ignore "AttributeError: '_io.BufferedWriter' object has no attribute 'encoding'"
+        pass
+
+
 # pip install cherrypy
 # https://github.com/cherrypy/cherrypy
 
