@@ -86,7 +86,8 @@ def messages_get(vk):
 
     messages_send_values = {
         'message': message,
-        'version': '5.67'
+        'version': '5.67',
+        'forward_messages': message_id,
     }
 
     # Если сообщение пришло из групповой беседы
