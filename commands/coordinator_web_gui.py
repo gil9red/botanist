@@ -22,7 +22,7 @@ class Root:
         command = rq['command']
 
         from commands import execute
-        rs = execute(command)
+        rs = execute(command, raw=True)
 
         return rs
 

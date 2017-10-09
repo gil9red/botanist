@@ -52,7 +52,7 @@ DEBUG_ALONE_COORDINATOR = False
 #       этот вебсервер будет вспомогательным, поможет тестировать запросы
 
 
-def execute(command):
+def execute(command, raw=False):
     import db
     url = db.get_url_coordinator()
 
@@ -63,6 +63,9 @@ def execute(command):
     try:
         rs = rs.json()
         print('rs:', rs)
+
+        if raw:
+            return rs
 
     except Exception as e:
         import traceback
