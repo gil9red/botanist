@@ -57,6 +57,8 @@ class BaseServer:
 
         cherrypy.engine.subscribe('start', self.on_start)
 
+        self.last_elapsed = None
+
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def index(self):
@@ -85,14 +87,16 @@ class BaseServer:
         command = rq['command']
         command_name = rq['command_name']
 
-        print('_execute_body(command="{}", command_name="{}", **param={})'.format(command, command_name, params))
+        print('_execute_body(command="{}", command_name="{}", **params={})'.format(command, command_name, params))
 
-        t = time.clock()
+        start_elapsed = time.clock()
 
-        rs = self._execute_body(command, command_name, **params)
+        try:
+            rs = self._execute_body(command, command_name, **params)
 
-        elapsed = time.clock() - t
-        print('  Elapsed time: {:.3f} secs'.format(elapsed))
+        finally:
+            self.last_elapsed = time.clock() - start_elapsed
+            print('  Elapsed time: {:.7f} secs'.format(self.last_elapsed))
 
         if type(rs) == str:
             rs = self.generate_response(
@@ -100,7 +104,7 @@ class BaseServer:
                 ok=True,
             )
 
-        rs['elapsed'] = elapsed
+        rs['elapsed'] = self.last_elapsed
 
         print('[{}] Response: {}'.format(self.name, rs))
         return rs
@@ -157,6 +161,7 @@ class BaseServer:
             ok=False,
             error=error_text,
             traceback=traceback,
+            elapsed=self.last_elapsed,
         )
 
         import json
