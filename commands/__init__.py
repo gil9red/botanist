@@ -24,44 +24,24 @@ DEBUG_ALONE_COORDINATOR = False
 #     'log.error_file': "error.log",
 # })
 
-# TODO: добавить в main.py:
-# # При выводе юникодных символов в консоль винды
-# # Возможно, не только для винды, но и для любой платформы стоит использовать
-# # эту настройку -- мало какие проблемы могут встретиться
-# import sys
-# if sys.platform == 'win32':
-#     import codecs
-#
-#     try:
-#         sys.stdout = codecs.getwriter(sys.stdout.encoding)(sys.stdout.detach(), 'backslashreplace')
-#         sys.stderr = codecs.getwriter(sys.stderr.encoding)(sys.stderr.detach(), 'backslashreplace')
-#
-#     except AttributeError:
-#         # ignore "AttributeError: '_io.BufferedWriter' object has no attribute 'encoding'"
-#         pass
-
-
-# TODO: мб при ответе бота на команду выделять заголовок ответа подчеркиванием? т.е. бот после команды
-#       пишет: "Результат выполнения команды <название команды>:\n<результат>" и это будет подчеркнуто
-#   ИЛИ:
-#       Пример: Бот: результат выполнения команды: "погода магнитогорск"
-#               23 C, облачно
-
 
 def execute(command, raw=False):
     import db
     url = db.get_url_coordinator()
 
     import requests
-    rs = requests.post(url, json=generate_request(command_name=None, command=command))
-    print(rs.text)
-
     try:
+        rs = requests.post(url, json=generate_request(command_name=None, command=command))
+        print(rs.text)
+
         rs = rs.json()
         print('rs:', rs)
 
         if raw:
             return rs
+
+    except requests.exceptions.ConnectionError:
+        return 'Сервер Координатора ({}) недоступен'.format(url)
 
     except Exception as e:
         import traceback
