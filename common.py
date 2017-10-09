@@ -46,5 +46,4 @@ def make_backslashreplace_console():
 TYPE_TEXT = 'text'
 TYPE_IMAGE = 'image'
 TYPE_GIF = 'gif'
-
-# TODO: дополнительно можно завести тип TYPE_LIST_IMAGE для возрата списка (вроде бы до 10) картинок
+TYPE_LIST_IMAGE = 'list_image'

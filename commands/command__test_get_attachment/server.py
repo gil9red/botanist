@@ -19,6 +19,11 @@ class TestAttachmentServer(BaseServer):
             description='Возвращает тестовую картинку',
         ),
         Command(
+            name='тест несколько картинок',
+            uri='/execute?' + common.TYPE_LIST_IMAGE,
+            description='Возвращает несколько тестовых картинок',
+        ),
+        Command(
             name='тест дай гифку',
             uri='/execute?' + common.TYPE_GIF,
             description='Возвращает тестовую гифку',
@@ -47,12 +52,20 @@ class TestAttachmentServer(BaseServer):
             with open('Jimm Kerry.gif', mode='rb') as f:
                 result = f.read()
 
+        elif func_name == common.TYPE_LIST_IMAGE:
+            result = []
+
+            import glob
+            for file_name in glob.glob('images/*.jpg'):
+                with open(file_name, mode='rb') as f:
+                    result.append(f.read())
+
         else:
             message = "Неправильная команда '{}': не найдена функция '{}', доступны следующие функции: {}"
             message = message.format(
                 command_name,
                 func_name,
-                ', '.join([common.TYPE_IMAGE, common.TYPE_GIF])
+                ', '.join([common.TYPE_IMAGE, common.TYPE_GIF, common.TYPE_LIST_IMAGE])
             )
             raise Exception(message)
 

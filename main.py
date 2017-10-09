@@ -119,21 +119,31 @@ def messages_get(vk):
         messages_send_values['user_id'] = from_user_id
 
     # TODO: Завести метод декодирования сообщения в зависимости от data_type
-    # TODO: Поддержать возможность передачи списка attachment
-    if data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
-        import base64
-        message = base64.b64decode(message.encode('utf-8'))
+    import base64
+    import io
 
-        import io
-        message = io.BytesIO(message)
+    if data_type == common.TYPE_LIST_IMAGE:
+        items = []
+
+        for item in message:
+            img = base64.b64decode(item.encode('utf-8'))
+            img_file = io.BytesIO(img)
+            items.append(img_file)
+
+        attachment = upload_images(vk, items)
+        messages_send_values['attachment'] = attachment
+
+    elif data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
+        img = base64.b64decode(message.encode('utf-8'))
+        img_file = io.BytesIO(img)
 
         if data_type == common.TYPE_IMAGE:
-            attachment = upload_images(vk, message)
+            attachment = upload_images(vk, img_file)
 
         else:
             # Нужно подсказать методу vk_api о типе документа
-            message.name = 'file.gif'
-            attachment = upload_doc(vk, message)
+            img_file.name = 'file.gif'
+            attachment = upload_doc(vk, img_file)
 
         messages_send_values['attachment'] = attachment
 
