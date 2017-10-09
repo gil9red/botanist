@@ -102,6 +102,7 @@ class BaseServer:
     def generate_response(self, result=None, ok=True, error=None, traceback=None,
                           elapsed=None, data_type=common.TYPE_TEXT):
         # TODO: Завести метод кодирования сообщения в зависимости от data_type
+        #       типа: create_message_from_data_type / get_message_from_data_type
         if type(result) == bytes and data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
             import base64
             result = base64.b64encode(result).decode('utf-8')
