@@ -117,9 +117,13 @@ class CoordinatorServer(BaseServer):
                     url, command_name, command_text)
                 )
 
+                rq = generate_request(command_name, command_text)
+                print('Generate request:', rq)
+
                 import requests
                 try:
-                    rs = requests.post(url, json=generate_request(command_name, command_text))
+                    rs = requests.post(url, json=rq)
+                    print('Response:', rs.text)
                     return rs.json()
 
                 except requests.exceptions.ConnectionError:
