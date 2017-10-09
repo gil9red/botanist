@@ -5,6 +5,8 @@ __author__ = 'ipetrash'
 
 
 # TODO: использовать jsonschema для проверки запросов API
+import typing
+import common
 
 # Если True, тогда модули-команды вместо выполнения своей команды вернут эхо
 DEBUG = False
@@ -25,36 +27,40 @@ DEBUG_ALONE_COORDINATOR = False
 # })
 
 
-def execute(command, raw=False):
+# TODO: упросить результат функции
+def execute(command: str, raw=False) -> typing.Union[dict, typing.Tuple[str, str], typing.Tuple[None, str]]:
     import db
     url = db.get_url_coordinator()
 
     import requests
+
     try:
         rs = requests.post(url, json=generate_request(command_name=None, command=command))
         print(rs.text)
 
+    except requests.exceptions.ConnectionError:
+        return 'Сервер Координатора ({}) недоступен'.format(url), common.TYPE_TEXT
+
+    # На всякий случай, вдруг не json придет, а html
+    try:
         rs = rs.json()
         print('rs:', rs)
 
         if raw:
             return rs
 
-    except requests.exceptions.ConnectionError:
-        return 'Сервер Координатора ({}) недоступен'.format(url)
-
     except Exception as e:
         import traceback
         print(e, traceback.format_exc(), rs.content)
-        return
+        return None, common.TYPE_TEXT
 
     if rs['error'] is not None:
-        return rs['error']
+        return rs['error'], rs['type']
 
-    return rs['result']
+    return rs['result'], rs['type']
 
 
-def generate_request(command_name, command=None):
+def generate_request(command_name: typing.Union[str, None], command: str=None) -> dict:
     return {
         'command_name': command_name,
         'command': command,

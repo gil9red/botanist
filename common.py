@@ -41,3 +41,8 @@ def make_backslashreplace_console():
         except AttributeError:
             # ignore "AttributeError: '_io.BufferedWriter' object has no attribute 'encoding'"
             pass
+
+
+TYPE_TEXT = 'text'
+TYPE_IMAGE = 'image'
+TYPE_GIF = 'gif'

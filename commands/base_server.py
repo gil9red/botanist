@@ -99,11 +99,18 @@ class BaseServer:
     def _execute_body(self, command, command_name, **params):
         raise Exception('_execute_body is not implemented!')
 
-    def generate_response(self, result=None, ok=True, error=None, traceback=None, elapsed=None):
+    def generate_response(self, result=None, ok=True, error=None, traceback=None,
+                          elapsed=None, data_type=common.TYPE_TEXT):
+        # TODO: Завести метод кодирования сообщения в зависимости от data_type
+        if type(result) == bytes and data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
+            import base64
+            result = base64.b64encode(result).decode('utf-8')
+
         from collections import OrderedDict
         rs = OrderedDict()
         rs['result'] = result
         rs['ok'] = ok
+        rs['type'] = data_type
         rs['error'] = error
         rs['traceback'] = traceback
         rs['server_name'] = self.name

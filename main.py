@@ -7,12 +7,12 @@ __author__ = 'ipetrash'
 # TODO: обрабатывать не последнее полученное сообщение, а пачку, например 100
 
 
-from common import get_logger, make_backslashreplace_console
-make_backslashreplace_console()
+import common
+common.make_backslashreplace_console()
 
 from config import LOGIN, PASSWORD
 
-log = get_logger('mini_vk_bot', file='bot.log')
+log = common.get_logger('mini_vk_bot', file='bot.log')
 
 
 # Отлов необработанныз исключений и закрытие
@@ -31,6 +31,26 @@ sys.excepthook = log_uncaught_exceptions
 
 import commands
 import time
+
+
+def upload_doc(vk, file_name):
+    import vk_api
+    upload = vk_api.VkUpload(vk)
+    rs = upload.document(file_name)
+
+    # Составление названия документа: https://vk.com/dev/messages.send
+    attachment = 'doc{owner_id}_{id}'.format(**rs[0])
+    return attachment
+
+
+def upload_images(vk, file_names):
+    import vk_api
+    upload = vk_api.VkUpload(vk)
+    rs = upload.photo_messages(file_names)
+
+    # Составление названия изображений: https://vk.com/dev/messages.send
+    attachment = ','.join('photo{owner_id}_{id}'.format(**item) for item in rs)
+    return attachment
 
 
 def messages_get(vk):
@@ -71,7 +91,7 @@ def messages_get(vk):
 
     # Выполнение команды
     try:
-        message = commands.execute(command)
+        message, data_type = commands.execute(command)
 
     except Exception as e:
         log.exception("Error:")
@@ -79,6 +99,7 @@ def messages_get(vk):
         import traceback
         message = 'При выполнении команды "{}" произошла ошибка: ' \
                   '"{}":\n\n{}'.format(command, e, traceback.format_exc())
+        data_type = common.TYPE_TEXT
 
     # Если ответа от бота нет
     if not message:
@@ -87,7 +108,6 @@ def messages_get(vk):
     log.debug('Message: "%s"', message)
 
     messages_send_values = {
-        'message': message,
         'version': '5.67',
         'forward_messages': message_id,
     }
@@ -98,8 +118,30 @@ def messages_get(vk):
     else:
         messages_send_values['user_id'] = from_user_id
 
+    # TODO: Завести метод декодирования сообщения в зависимости от data_type
+    # TODO: Поддержать возможность передачи списка attachment
+    if data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
+        import base64
+        message = base64.b64decode(message.encode('utf-8'))
+
+        import io
+        message = io.BytesIO(message)
+
+        if data_type == common.TYPE_IMAGE:
+            attachment = upload_images(vk, message)
+
+        else:
+            # Нужно подсказать методу vk_api о типе документа
+            message.name = 'file.gif'
+            attachment = upload_doc(vk, message)
+
+        messages_send_values['attachment'] = attachment
+
+    else:
+        messages_send_values['message'] = message
+
     print('messages_send_values:', messages_send_values)
-    # quit()
+
     last_message_bot_id = vk.method('messages.send', messages_send_values)
     messages_get_values['last_message_id'] = last_message_bot_id
 
