@@ -7,8 +7,10 @@ __author__ = 'ipetrash'
 # TODO: обрабатывать не последнее полученное сообщение, а пачку, например 100
 
 
+from common import get_logger, make_backslashreplace_console
+make_backslashreplace_console()
+
 from config import LOGIN, PASSWORD
-from common import get_logger
 
 log = get_logger('mini_vk_bot', file='bot.log')
 
@@ -96,6 +98,8 @@ def messages_get(vk):
     else:
         messages_send_values['user_id'] = from_user_id
 
+    print('messages_send_values:', messages_send_values)
+    # quit()
     last_message_bot_id = vk.method('messages.send', messages_send_values)
     messages_get_values['last_message_id'] = last_message_bot_id
 
