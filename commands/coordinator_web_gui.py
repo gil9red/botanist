@@ -4,10 +4,6 @@
 __author__ = 'ipetrash'
 
 
-# TODO: отобразить список команд на странице
-# TODO: запомнить в файлик последние 10 команд
-
-
 import cherrypy
 
 
@@ -28,7 +24,7 @@ class Root:
 
     @cherrypy.expose
     def index(self):
-        return """
+        yield """
 <html>
     <head>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
@@ -43,6 +39,22 @@ class Root:
             .boolean { color: blue; }
             .null { color: magenta; }
             .key { color: red; }
+            
+            table {
+                border-collapse: collapse; /* Убираем двойные линии между ячейками */
+            }
+                /* Увеличим заголовок таблиц */
+                table > caption {
+                    font-size: 150%;
+                }
+    
+                th {
+                    font-size: 120%;
+                }
+                td, th {
+                    border: 1px double #333; /* Рамка таблицы */
+                    padding: 5px;
+                }
         </style>
     </head>
 
@@ -113,7 +125,23 @@ class Root:
                 });
             }
         </script>
+        """
         
+        from db import get_all_command_name_by_description
+
+        table_command = '<table>'
+        table_command += '<tr><th>Команда</th><th>Описание</th></tr>'
+
+        for name, description in get_all_command_name_by_description().items():
+            row = '<tr><td>{}</td><td>{}</td></tr>'.format(name, description)
+            table_command += row
+
+        table_command += '</table>'
+
+        yield table_command
+
+        yield """
+        <br>
         <input type='textbox' id='update_box' value='str2hex Привет Мир!' size='100' />
         <input type='submit' value='execute' onClick='execute(); return false' />
         
