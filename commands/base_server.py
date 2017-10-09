@@ -20,9 +20,9 @@ if sys.platform == 'win32':
 
 # pip install cherrypy
 # https://github.com/cherrypy/cherrypy
-
 import cherrypy
 
+import time
 
 from collections import namedtuple
 Command = namedtuple('Command', ['name', 'uri', 'description', 'priority'])
@@ -85,9 +85,17 @@ class BaseServer:
         command = rq['command']
         command_name = rq['command_name']
 
-        # TODO: замерять время выполнения команд
+        print('_execute_body(command="{}", command_name="{}", **param={})'.format(command, command_name, params))
+
+        # TODO: замерять время выполнения команд, проверить что elapsed в generate_response заполняется везде
+        t = time.clock()
 
         rs = self._execute_body(command, command_name, **params)
+
+        elapsed = time.clock() - t
+
+        print('  Elapsed time: {:.3f} secs'.format(elapsed))
+
         print('[{}] Response: {}'.format(self.name, rs))
 
         if type(rs) == str:
@@ -96,12 +104,14 @@ class BaseServer:
                 ok=True,
             )
 
+        rs['elapsed'] = elapsed
+
         return rs
 
     def _execute_body(self, command, command_name, **params):
         raise Exception('_execute_body is not implemented!')
 
-    def generate_response(self, result=None, ok=True, error=None, traceback=None):
+    def generate_response(self, result=None, ok=True, error=None, traceback=None, elapsed=None):
         from collections import OrderedDict
         rs = OrderedDict()
         rs['result'] = result
@@ -110,6 +120,7 @@ class BaseServer:
         rs['traceback'] = traceback
         rs['server_name'] = self.name
         rs['server_guid'] = self.guid
+        rs['elapsed'] = elapsed
 
         return rs
 
