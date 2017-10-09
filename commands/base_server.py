@@ -87,16 +87,12 @@ class BaseServer:
 
         print('_execute_body(command="{}", command_name="{}", **param={})'.format(command, command_name, params))
 
-        # TODO: замерять время выполнения команд, проверить что elapsed в generate_response заполняется везде
         t = time.clock()
 
         rs = self._execute_body(command, command_name, **params)
 
         elapsed = time.clock() - t
-
         print('  Elapsed time: {:.3f} secs'.format(elapsed))
-
-        print('[{}] Response: {}'.format(self.name, rs))
 
         if type(rs) == str:
             rs = self.generate_response(
@@ -106,6 +102,7 @@ class BaseServer:
 
         rs['elapsed'] = elapsed
 
+        print('[{}] Response: {}'.format(self.name, rs))
         return rs
 
     def _execute_body(self, command, command_name, **params):
