@@ -17,24 +17,28 @@ class TextConverter(BaseServer):
         Command(
             name='str2hex',
             uri='/execute?str2hex',
-            description='Конвертация строки в HEX. Например: Бот, str2hex Привет!'
+            description='Конвертация строки в HEX. Например: Бот, str2hex Привет!',
+            priority=6,
         ),
         Command(
             name='hex2str',
             uri='/execute?hex2str',
-            description='Конвертация из HEX в строку. Например: Бот, hex2str CFF0E8E2E5F221'
+            description='Конвертация из HEX в строку. Например: Бот, hex2str CFF0E8E2E5F221',
+            priority=6,
         ),
 
         Command(
             name='str2bin',
             uri='/execute?str2bin',
-            description='Конвертация из текстовой строки в бинарную. Например: Бот, str2bin Привет!'
+            description='Конвертация из текстовой строки в бинарную. Например: Бот, str2bin Привет!',
+            priority=5,
         ),
         Command(
             name='bin2str',
             uri='/execute?bin2str',
             description='Конвертация из бинарной строки в текстовую. Например: Бот, bin2str 11001111 11110000 '
-                        '11101000 11100010 11100101 11110010 00100001'
+                        '11101000 11100010 11100101 11110010 00100001',
+            priority=5,
         ),
     ]
 

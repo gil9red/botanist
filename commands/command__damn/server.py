@@ -15,7 +15,8 @@ class DamnServer(BaseServer):
         Command(
             name='ругнись',
             uri='/execute',
-            description='Напиши кого бот отругает. Например: Бот, ругнись петр иваныч'
+            description='Напиши кого бот отругает. Например: Бот, ругнись петр иваныч',
+            priority=7,
         ),
     ]
 

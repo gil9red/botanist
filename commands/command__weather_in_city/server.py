@@ -15,7 +15,8 @@ class WeatherServer(BaseServer):
         Command(
             name='погода',
             uri='/execute',
-            description='Погода в указанном населенном пункте. Например: Бот, погода магнитогорск'
+            description='Погода в указанном населенном пункте. Например: Бот, погода магнитогорск',
+            priority=10,
         ),
     ]
 

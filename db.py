@@ -39,6 +39,7 @@ def init_db():
                 name TEXT NOT NULL,
                 uri TEXT NOT NULL,
                 description TEXT NOT NULL,
+                priority INTEGER NOT NULL,
                 server_guid TEXT NOT NULL
             );
             
@@ -59,18 +60,33 @@ def get_commands() -> [(str, str, str)]:
             SELECT Command.name, Command.description, Server.url || Command.uri 
             FROM Command, Server 
             WHERE Command.server_guid = Server.guid 
-            ORDER BY Command.name
+            
+            -- Сортировка по приоритету по убыванию и сортировка по названию по возрастанию
+            ORDER BY Command.priority desc, Command.name asc
+
         ''').fetchall()
 
         return items
 
 
-def get_all_command_name_by_description() -> {str: str}:
-    return {name: description for name, description, _ in get_commands()}
+def get_all_command_name_by_description() -> typing.Dict[str, str]:
+    from collections import OrderedDict
+    items = OrderedDict()
+
+    for name, description, _ in get_commands():
+        items[name] = description
+
+    return items
 
 
-def get_all_command_name_by_url() -> {str: str}:
-    return {name: url for name, _, url in get_commands()}
+def get_all_command_name_by_url() -> typing.Dict[str, str]:
+    from collections import OrderedDict
+    items = OrderedDict()
+
+    for name, _, url in get_commands():
+        items[name] = url
+
+    return items
 
 
 def get_execute_command_list_url_server(guid: str) -> [typing.Union[str, None]]:
@@ -126,8 +142,8 @@ def fill_server_info(server):
         # Заполнение команд сервера
         for command in server.command_list:
             connect.execute(
-                "INSERT INTO Command (name, uri, description, server_guid) VALUES (?, ?, ?, ?)",
-                (command.name, command.uri, command.description, server.guid,)
+                "INSERT INTO Command (name, uri, description, priority, server_guid) VALUES (?, ?, ?, ?, ?)",
+                (command.name, command.uri, command.description, command.priority, server.guid,)
             )
 
         connect.commit()

@@ -9,7 +9,8 @@ import cherrypy
 
 
 from collections import namedtuple
-Command = namedtuple('Command', ['name', 'uri', 'description'])
+Command = namedtuple('Command', ['name', 'uri', 'description', 'priority'])
+Command.__new__.__defaults__ = (None, None, None, 0)
 
 
 class BaseServer:

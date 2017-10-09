@@ -15,7 +15,8 @@ class ExchangeRateServer(BaseServer):
         Command(
             name='курс валют',
             uri='/execute',
-            description='Показать текущий курс евро и доллара'
+            description='Показать текущий курс евро и доллара',
+            priority=9,
         ),
     ]
 

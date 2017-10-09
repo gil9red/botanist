@@ -35,7 +35,8 @@ class CoordinatorServer(BaseServer):
         Command(
             name='команды',
             uri='/execute',
-            description='Показать список команд'
+            description='Показать список команд',
+            priority=999
         ),
     ]
 
@@ -48,7 +49,7 @@ class CoordinatorServer(BaseServer):
 
         if as_result is not None:
             result = '\n'.join(
-                '✓ {}: {}'.format(k, v) for k, v in sorted(all_command_name_by_description.items(), key=lambda x: x[0])
+                '✓ {}: {}'.format(k, v) for k, v in all_command_name_by_description.items()
             )
 
             rs = self.generate_response(result, ok=True)
