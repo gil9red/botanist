@@ -157,6 +157,9 @@ class Root:
 
 
 if __name__ == '__main__':
+    # Set port
+    cherrypy.config.update({'server.socket_port': 9090})
+
     # Autoreload off
     cherrypy.config.update({'engine.autoreload.on': False})
 
