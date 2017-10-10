@@ -158,7 +158,7 @@ class BaseServer:
             self.host, self.port = cherrypy.server.bound_addr
             self.url = cherrypy.server.description
 
-            print('Start server "{}": {}:{} / {}'.format(self.name, self.host, self.port, self.url))
+            print('Started server "{}": {}:{} / {}'.format(self.name, self.host, self.port, self.url))
             print('Commands ({}):'.format(len(self.command_list)))
             for command in self.command_list:
                 print('    {}'.format(command))
@@ -189,6 +189,8 @@ class BaseServer:
         return json.dumps(rs)
 
     def run(self, port=0):
+        print('Start {}, port={}'.format(self.name, port))
+
         # Set port
         cherrypy.config.update({'server.socket_port': port})
 
