@@ -47,8 +47,10 @@ class TestAttachmentServer(BaseServer):
         elif func_name == common.TYPE_LIST_IMAGE:
             result = []
 
+            file_name_pattern = str(current_dir / 'images/*.jpg')
+
             import glob
-            for file_name in glob.glob(current_dir / 'images/*.jpg'):
+            for file_name in glob.glob(file_name_pattern):
                 with open(file_name, mode='rb') as f:
                     result.append(f.read())
 
