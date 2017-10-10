@@ -56,12 +56,6 @@ def upload_images(vk, file_names):
 def messages_get(vk):
     command_prefix = 'Бот,'
 
-    messages_get_values = {
-        'count': 1,
-        'time_offset': 60,
-        'version': '5.68'
-    }
-
     rs = vk.method('messages.get', messages_get_values)
     # log.debug(rs)
 
@@ -161,6 +155,12 @@ if __name__ == '__main__':
     vk = vk_api.VkApi(login=LOGIN, password=PASSWORD)
     vk.auth()
     log.debug("Бот запущен")
+
+    messages_get_values = {
+        'count': 1,
+        'time_offset': 60,
+        'version': '5.68'
+    }
 
     while True:
         try:
