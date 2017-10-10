@@ -30,6 +30,7 @@ def init_db():
                 name TEXT NOT NULL,
                 guid TEXT NOT NULL,
                 url TEXT NOT NULL,
+                file_name TEXT NOT NULL,
 
                 CONSTRAINT name_guid UNIQUE (guid)
             );
@@ -129,12 +130,14 @@ def fill_server_info(server):
         exist = connect.execute("SELECT 1 FROM Server WHERE guid = ?", (server.guid,)).fetchone()
         if not exist:
             connect.execute(
-                'INSERT INTO Server (name, guid, url) VALUES (?, ?, ?)', (server.name, server.guid, server.url)
+                'INSERT INTO Server (name, guid, url, file_name) VALUES (?, ?, ?, ?)',
+                (server.name, server.guid, server.url, server.file_name)
             )
 
         # Иначе, обновляем
         else:
-            connect.execute('UPDATE Server SET name=?, url=? WHERE guid=?', (server.name, server.url, server.guid))
+            connect.execute('UPDATE Server SET name=?, url=?, file_name=? WHERE guid=?',
+                            (server.name, server.url, server.file_name, server.guid))
 
         # Очищение списка комманд
         connect.execute("DELETE FROM Command WHERE server_guid = ?", (server.guid,))

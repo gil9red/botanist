@@ -4,6 +4,7 @@
 __author__ = 'ipetrash'
 
 
+import os
 from commands.base_server import BaseServer, Command
 from commands.command__text_converter.hex2str import hex2str, str2hex
 from commands.command__text_converter.bin2str import bin2str, str2bin
@@ -40,6 +41,9 @@ class TextConverter(BaseServer):
             priority=5,
         ),
     ]
+
+    # Путь к файлу сервера
+    file_name = os.path.abspath(__file__)
 
     name_by_func = {
         'hex2str': hex2str,

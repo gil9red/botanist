@@ -4,6 +4,7 @@
 __author__ = 'ipetrash'
 
 
+import os
 from commands.base_server import BaseServer, Command
 from commands import generate_request
 import db
@@ -39,6 +40,9 @@ class CoordinatorServer(BaseServer):
             priority=999
         ),
     ]
+
+    # Путь к файлу сервера
+    file_name = os.path.abspath(__file__)
 
     @BaseServer.expose
     @BaseServer.json_out

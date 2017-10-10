@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
+import os
 import time
 
 from collections import namedtuple
@@ -22,8 +23,7 @@ import cherrypy
 #       мб сделать у координатора поток, который будет пинговать сервера команд и записывать об этом
 #       инфу в базу?
 # TODO: добавить в таблицу поле последнего запроса сервера, т.е. когда сервер получил запрос, он обновляет то поле
-#
-# TODO: каждый сервер записывает в базу свой путь
+
 # TODO: сделать доработку, чтобы у каждого сервера был путь в корень проекта в sys.path
 #       После убрать из батника set PYTHONPATH=.
 
@@ -45,6 +45,9 @@ class BaseServer:
 
     # Список команд, которые поддерживает сервер
     command_list = []
+
+    # Путь к файлу сервера
+    file_name = os.path.abspath(__file__)
 
     def __init__(self):
         # Set a custom response for errors.

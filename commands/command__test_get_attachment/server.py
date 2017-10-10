@@ -4,6 +4,7 @@
 __author__ = 'ipetrash'
 
 
+import os
 from commands.base_server import BaseServer, Command
 import common
 
@@ -28,6 +29,9 @@ class TestAttachmentServer(BaseServer):
             description='Возвращает тестовую гифку',
         ),
     ]
+
+    # Путь к файлу сервера
+    file_name = os.path.abspath(__file__)
 
     def _execute_body(self, command, command_name, **params):
         function_list = list(params.keys())

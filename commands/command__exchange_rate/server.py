@@ -4,6 +4,7 @@
 __author__ = 'ipetrash'
 
 
+import os
 from commands.base_server import BaseServer, Command
 
 
@@ -18,6 +19,9 @@ class ExchangeRateServer(BaseServer):
             priority=9,
         ),
     ]
+
+    # Путь к файлу сервера
+    file_name = os.path.abspath(__file__)
 
     def _execute_body(self, command, command_name, **params):
         # TODO: кэшировать команду -- пусть данные считаются "протухшими" через 6 часов

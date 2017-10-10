@@ -4,6 +4,7 @@
 __author__ = 'ipetrash'
 
 
+import os
 from commands.base_server import BaseServer, Command
 
 
@@ -18,6 +19,9 @@ class DamnServer(BaseServer):
             priority=7,
         ),
     ]
+
+    # Путь к файлу сервера
+    file_name = os.path.abspath(__file__)
 
     def _execute_body(self, command, command_name, **params):
         if not command:
