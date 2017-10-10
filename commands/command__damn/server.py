@@ -5,7 +5,6 @@ __author__ = 'ipetrash'
 
 
 from commands.base_server import BaseServer, Command
-from commands import DEBUG
 
 
 class DamnServer(BaseServer):
@@ -24,18 +23,10 @@ class DamnServer(BaseServer):
         if not command:
             raise Exception("Неправильная команда 'ругнись': не указано на кого нужно ругнуться.")
 
-        if DEBUG:
-            result = command.upper()
-        else:
-            from commands.command__damn.damn import damn
-            result = damn(command)
+        from commands.command__damn.damn import damn
+        result = damn(command)
 
         rs = self.generate_response(result)
-        if DEBUG:
-            print('  rs[DEBUG]:', rs)
-        else:
-            print('  rs:', rs)
-
         return rs
 
 

@@ -8,17 +8,10 @@ __author__ = 'ipetrash'
 import typing
 import common
 
-# TODO: для отладки возвращать эхо из (command_name + " " + command).upper(),
-#       реализацию перенести в BaseServer.execute
-# TODO: удалить DEBUG_ALONE_COORDINATOR и использовать вместо него DEBUG
 
-# Если True, тогда модули-команды вместо выполнения своей команды вернут эхо
+# Если True, тогда модули-команды вместо выполнения своей команды вернут эхо в верхнем регистре
 DEBUG = False
 # DEBUG = True
-
-# Если True, тогда координатор не отправляет команду, а сразу отвечает эхом
-DEBUG_ALONE_COORDINATOR = False
-# DEBUG_ALONE_COORDINATOR = True
 
 # TODO: для logging.basicConfig определить filename для сбора всякие логов (проверить
 #       как сработает для уже установленых логов)

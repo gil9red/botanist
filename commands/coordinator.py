@@ -5,7 +5,7 @@ __author__ = 'ipetrash'
 
 
 from commands.base_server import BaseServer, Command
-from commands import generate_request, DEBUG_ALONE_COORDINATOR
+from commands import generate_request
 import db
 
 
@@ -59,11 +59,6 @@ class CoordinatorServer(BaseServer):
 
     def _execute_body(self, command, command_name, **params):
         print('Execute command: "{}"'.format(command))
-
-        if DEBUG_ALONE_COORDINATOR:
-            rs = self.generate_response(command.upper())
-            print('rs[DEBUG_ALONE_COORDINATOR]: ', rs)
-            return rs
 
         # Если команды нет, показываем список команд
         if not command.strip():

@@ -5,7 +5,6 @@ __author__ = 'ipetrash'
 
 
 from commands.base_server import BaseServer, Command
-from commands import DEBUG
 
 
 class WeatherServer(BaseServer):
@@ -24,18 +23,10 @@ class WeatherServer(BaseServer):
         if not command:
             raise Exception("Неправильная команда 'погода': не указан населенный пункт")
 
-        if DEBUG:
-            result = command.upper()
-        else:
-            from commands.command__weather_in_city.weather_in_city import get_weather
-            result = get_weather(command)
+        from commands.command__weather_in_city.weather_in_city import get_weather
+        result = get_weather(command)
 
         rs = self.generate_response(result)
-        if DEBUG:
-            print('  rs[DEBUG]:', rs)
-        else:
-            print('  rs:', rs)
-
         return rs
 
 

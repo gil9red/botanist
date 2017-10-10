@@ -11,6 +11,8 @@ Command.__new__.__defaults__ = (None, None, None, 0)
 import common
 common.make_backslashreplace_console()
 
+from commands import DEBUG
+
 # pip install cherrypy
 # https://github.com/cherrypy/cherrypy
 import cherrypy
@@ -79,7 +81,14 @@ class BaseServer:
         start_elapsed = time.clock()
 
         try:
-            rs = self._execute_body(command, command_name, **params)
+            # Для всех серверов, кроме Координатора возвращается дебажное сообщение.
+            # Т.е. только Координатор обрабатывает запрос "как надо", а остальные, кто получит
+            # сообщение вернут эхо
+            # 'B57B73C8F8D442C48EDAFC951963D7A5' -- Координатор
+            if DEBUG and self.guid != 'B57B73C8F8D442C48EDAFC951963D7A5':
+                rs = '{} {}'.format(command_name, command).upper()
+            else:
+                rs = self._execute_body(command, command_name, **params)
 
         finally:
             self.last_elapsed = time.clock() - start_elapsed
@@ -90,7 +99,11 @@ class BaseServer:
 
         rs['elapsed'] = self.last_elapsed
 
-        print('[{}] Response: {}'.format(self.name, rs))
+        if DEBUG:
+            print('[{}] Response[DEBUG]: {}'.format(self.name, rs))
+        else:
+            print('[{}] Response: {}'.format(self.name, rs))
+
         return rs
 
     def _execute_body(self, command, command_name, **params):

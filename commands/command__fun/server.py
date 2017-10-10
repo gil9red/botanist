@@ -5,7 +5,6 @@ __author__ = 'ipetrash'
 
 
 from commands.base_server import BaseServer, Command
-from commands import DEBUG
 
 
 class FunServer(BaseServer):
@@ -21,18 +20,10 @@ class FunServer(BaseServer):
     ]
 
     def _execute_body(self, command, command_name, **params):
-        if DEBUG:
-            result = 'COMMAND__FUN'
-        else:
-            from commands.command__fun.fun import get_random_quote
-            result = get_random_quote()
+        from commands.command__fun.fun import get_random_quote
+        result = get_random_quote()
 
         rs = self.generate_response(result)
-        if DEBUG:
-            print('  rs[DEBUG]:', rs)
-        else:
-            print('  rs:', rs)
-
         return rs
 
 

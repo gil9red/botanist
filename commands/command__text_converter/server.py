@@ -5,7 +5,6 @@ __author__ = 'ipetrash'
 
 
 from commands.base_server import BaseServer, Command
-from commands import DEBUG
 from commands.command__text_converter.hex2str import hex2str, str2hex
 from commands.command__text_converter.bin2str import bin2str, str2bin
 
@@ -50,15 +49,6 @@ class TextConverter(BaseServer):
     }
 
     def _execute_body(self, command, command_name, **params):
-        if DEBUG:
-            rs = self.generate_response(result=command.upper())
-            if DEBUG:
-                print('  rs[DEBUG]:', rs)
-            else:
-                print('  rs:', rs)
-
-            return rs
-
         if not command:
             raise Exception("Неправильная команда '{}': не указан текст".format(command_name))
 
@@ -85,8 +75,6 @@ class TextConverter(BaseServer):
                             'Проверь что данные правильные. Текст ошибки: "{}".'.format(command_name, e))
 
         rs = self.generate_response(result)
-        print('  rs:', rs)
-
         return rs
 
 

@@ -5,7 +5,6 @@ __author__ = 'ipetrash'
 
 
 from commands.base_server import BaseServer, Command
-from commands import DEBUG
 import common
 
 
@@ -31,15 +30,6 @@ class TestAttachmentServer(BaseServer):
     ]
 
     def _execute_body(self, command, command_name, **params):
-        if DEBUG:
-            rs = self.generate_response(result=command.upper())
-            if DEBUG:
-                print('  rs[DEBUG]:', rs)
-            else:
-                print('  rs:', rs)
-
-            return rs
-
         function_list = list(params.keys())
         func_name = function_list[0]
 
@@ -69,8 +59,6 @@ class TestAttachmentServer(BaseServer):
             raise Exception(message)
 
         rs = self.generate_response(result, data_type=func_name)
-        print('  rs:', rs)
-
         return rs
 
 
