@@ -12,6 +12,10 @@ __author__ = 'ipetrash'
 #
 # Проверять TYPE_IMAGE/TYPE_GIF/TYPE_LIST_IMAGE через command__test_get_attachment
 
+# TODO: добавить таблицу серверов и показывать из базы информацию о них.
+#       круто будет выглядеть когда на странице можно увидеть какие из серверов запущены,
+#       а какие нет.
+
 import cherrypy
 
 
