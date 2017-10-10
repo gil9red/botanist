@@ -4,6 +4,14 @@
 __author__ = 'ipetrash'
 
 
+# TODO: обрабатывать типы данных:
+#   TYPE_TEXT = 'text'
+#   TYPE_IMAGE = 'image'
+#   TYPE_GIF = 'gif'
+#   TYPE_LIST_IMAGE = 'list_image'
+#
+# Проверять TYPE_IMAGE/TYPE_GIF/TYPE_LIST_IMAGE через command__test_get_attachment
+
 import cherrypy
 
 
