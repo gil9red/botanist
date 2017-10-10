@@ -33,19 +33,22 @@ class TestAttachmentServer(BaseServer):
         function_list = list(params.keys())
         func_name = function_list[0]
 
+        import pathlib
+        current_dir = pathlib.Path(__file__).parent
+
         if func_name == common.TYPE_IMAGE:
-            with open('Jimm Kerry.jpg', mode='rb') as f:
+            with open(current_dir / 'Jimm Kerry.jpg', mode='rb') as f:
                 result = f.read()
 
         elif func_name == common.TYPE_GIF:
-            with open('Jimm Kerry.gif', mode='rb') as f:
+            with open(current_dir / 'Jimm Kerry.gif', mode='rb') as f:
                 result = f.read()
 
         elif func_name == common.TYPE_LIST_IMAGE:
             result = []
 
             import glob
-            for file_name in glob.glob('images/*.jpg'):
+            for file_name in glob.glob(current_dir / 'images/*.jpg'):
                 with open(file_name, mode='rb') as f:
                     result.append(f.read())
 
