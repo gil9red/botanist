@@ -103,13 +103,14 @@ class BaseServer:
                           elapsed=None, data_type=common.TYPE_TEXT):
         # TODO: Завести метод кодирования сообщения в зависимости от data_type
         #       типа: create_message_from_data_type / get_message_from_data_type
-        import base64
+        if result:
+            import base64
 
-        if data_type == common.TYPE_LIST_IMAGE:
-            result = [base64.b64encode(x).decode('utf-8') for x in result]
+            if data_type == common.TYPE_LIST_IMAGE:
+                result = [base64.b64encode(x).decode('utf-8') for x in result]
 
-        elif data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
-            result = base64.b64encode(result).decode('utf-8')
+            elif data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
+                result = base64.b64encode(result).decode('utf-8')
 
         from collections import OrderedDict
         rs = OrderedDict()
