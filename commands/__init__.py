@@ -28,6 +28,8 @@ DEBUG = False
 def execute(command: str, raw=False) -> typing.Union[dict, typing.Tuple[str, str], typing.Tuple[None, str]]:
     import db
     url = db.get_url_coordinator()
+    if not url:
+        return 'Не удалось получить адрес Координатора', common.TYPE_TEXT
 
     import requests
 
