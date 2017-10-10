@@ -51,8 +51,12 @@ def execute(command: str, raw=False) -> typing.Union[dict, typing.Tuple[str, str
 
     except Exception as e:
         import traceback
-        print(e, traceback.format_exc(), rs.content)
-        return None, common.TYPE_TEXT
+        message = 'При выполнении команды "{}" произошла ошибка: ' \
+                  '"{}":\n\n{}'.format(command, e, traceback.format_exc())
+
+        print(message + '\n\nrs.content:\n{}'.format(rs.content))
+
+        return message, common.TYPE_TEXT
 
     if rs['error'] is not None:
         return rs['error'], rs['type']
