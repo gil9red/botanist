@@ -8,6 +8,9 @@ __author__ = 'ipetrash'
 import typing
 import common
 
+# TODO: для отладки возвращать эхо из (command_name + " " + command).upper()
+# TODO: удалить DEBUG_ALONE_COORDINATOR и использовать вместо него DEBUG
+
 # Если True, тогда модули-команды вместо выполнения своей команды вернут эхо
 DEBUG = False
 # DEBUG = True
