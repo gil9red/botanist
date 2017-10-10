@@ -52,7 +52,7 @@ class CoordinatorServer(BaseServer):
                 '✓ {}: {}'.format(k, v) for k, v in all_command_name_by_description.items()
             )
 
-            rs = self.generate_response(result, ok=True)
+            rs = self.generate_response(result)
             return rs
 
         return all_command_name_by_description
@@ -61,7 +61,7 @@ class CoordinatorServer(BaseServer):
         print('Execute command: "{}"'.format(command))
 
         if DEBUG_ALONE_COORDINATOR:
-            rs = self.generate_response(command.upper(), ok=True)
+            rs = self.generate_response(command.upper())
             print('rs[DEBUG_ALONE_COORDINATOR]: ', rs)
             return rs
 
@@ -101,7 +101,7 @@ class CoordinatorServer(BaseServer):
                 result = 'Получена неизвестная команда "{}".\n' \
                          'Чтобы узнать доступные команды введи: Бот, команды'.format(command)
 
-                rs = self.generate_response(result, ok=True)
+                rs = self.generate_response(result)
                 print('  rs:', rs)
 
                 return rs
@@ -129,11 +129,11 @@ class CoordinatorServer(BaseServer):
                 except requests.exceptions.ConnectionError:
                     error = 'Сервер команды "{}" ({}) недоступен'.format(command_name, url)
 
-                    rs = self.generate_response(result=None, ok=False, error=error)
+                    rs = self.generate_response(error=error)
                     return rs
 
         error = 'Что-то пошло не так: команда "{}" не была распознана'.format(command)
-        rs = self.generate_response(result=None, ok=False, error=error)
+        rs = self.generate_response(error=error)
         return rs
 
 

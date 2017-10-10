@@ -30,9 +30,7 @@ class WeatherServer(BaseServer):
             from commands.command__weather_in_city.weather_in_city import get_weather
             result = get_weather(command)
 
-        ok = result is not None
-
-        rs = self.generate_response(result, ok)
+        rs = self.generate_response(result)
         if DEBUG:
             print('  rs[DEBUG]:', rs)
         else:

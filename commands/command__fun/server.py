@@ -27,9 +27,7 @@ class FunServer(BaseServer):
             from commands.command__fun.fun import get_random_quote
             result = get_random_quote()
 
-        ok = result is not None
-
-        rs = self.generate_response(result, ok)
+        rs = self.generate_response(result)
         if DEBUG:
             print('  rs[DEBUG]:', rs)
         else:

@@ -86,10 +86,7 @@ class BaseServer:
             print('  Elapsed time: {:.7f} secs'.format(self.last_elapsed))
 
         if type(rs) == str:
-            rs = self.generate_response(
-                result=rs,
-                ok=True,
-            )
+            rs = self.generate_response(result=rs)
 
         rs['elapsed'] = self.last_elapsed
 
@@ -99,7 +96,7 @@ class BaseServer:
     def _execute_body(self, command, command_name, **params):
         raise Exception('_execute_body is not implemented!')
 
-    def generate_response(self, result=None, ok=True, error=None, traceback=None,
+    def generate_response(self, result=None, error=None, traceback=None,
                           elapsed=None, data_type=common.TYPE_TEXT):
         # TODO: Завести метод кодирования сообщения в зависимости от data_type
         #       типа: create_message_from_data_type / get_message_from_data_type
@@ -115,7 +112,6 @@ class BaseServer:
         from collections import OrderedDict
         rs = OrderedDict()
         rs['result'] = result
-        rs['ok'] = ok
         rs['type'] = data_type
         rs['error'] = error
         rs['traceback'] = traceback
@@ -158,7 +154,6 @@ class BaseServer:
 
         rs = self.generate_response(
             result=None,
-            ok=False,
             error=error_text,
             traceback=traceback,
             elapsed=self.last_elapsed,

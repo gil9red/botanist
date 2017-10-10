@@ -51,8 +51,7 @@ class TextConverter(BaseServer):
 
     def _execute_body(self, command, command_name, **params):
         if DEBUG:
-            result = command.upper()
-            rs = self.generate_response(result, ok=True)
+            rs = self.generate_response(result=command.upper())
             if DEBUG:
                 print('  rs[DEBUG]:', rs)
             else:
@@ -85,9 +84,7 @@ class TextConverter(BaseServer):
             raise Exception('При выполнении команды "{}" произошла ошибка. '
                             'Проверь что данные правильные. Текст ошибки: "{}".'.format(command_name, e))
 
-        ok = result is not None
-
-        rs = self.generate_response(result, ok)
+        rs = self.generate_response(result)
         print('  rs:', rs)
 
         return rs

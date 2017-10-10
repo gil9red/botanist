@@ -29,9 +29,7 @@ class ExchangeRateServer(BaseServer):
             rate_list = currency.exchange_rate(['EUR', 'USD'])
             result = ', '.join(rate_list)
 
-        ok = result is not None
-
-        rs = self.generate_response(result, ok)
+        rs = self.generate_response(result)
         if DEBUG:
             print('  rs[DEBUG]:', rs)
         else:

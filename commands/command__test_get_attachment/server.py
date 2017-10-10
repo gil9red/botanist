@@ -32,8 +32,7 @@ class TestAttachmentServer(BaseServer):
 
     def _execute_body(self, command, command_name, **params):
         if DEBUG:
-            result = command.upper()
-            rs = self.generate_response(result, ok=True)
+            rs = self.generate_response(result=command.upper())
             if DEBUG:
                 print('  rs[DEBUG]:', rs)
             else:
@@ -69,7 +68,7 @@ class TestAttachmentServer(BaseServer):
             )
             raise Exception(message)
 
-        rs = self.generate_response(result, ok=True, data_type=func_name)
+        rs = self.generate_response(result, data_type=func_name)
         print('  rs:', rs)
 
         return rs

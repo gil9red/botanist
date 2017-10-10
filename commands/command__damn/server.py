@@ -30,9 +30,7 @@ class DamnServer(BaseServer):
             from commands.command__damn.damn import damn
             result = damn(command)
 
-        ok = result is not None
-
-        rs = self.generate_response(result, ok)
+        rs = self.generate_response(result)
         if DEBUG:
             print('  rs[DEBUG]:', rs)
         else:
