@@ -18,6 +18,12 @@ from commands import DEBUG
 import cherrypy
 
 
+# TODO: нужно завести для каждого сервера в таблице поля: доступность и время последней доступности
+# TODO: каждый сервер записывает в базу свой путь
+# TODO: сделать доработку, чтобы у каждого сервера был путь в корень проекта в sys.path
+#       После убрать из батника set PYTHONPATH=.
+
+
 class BaseServer:
     expose = cherrypy.expose
     json_in = cherrypy.tools.json_in()
