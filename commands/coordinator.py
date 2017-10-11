@@ -143,8 +143,7 @@ class CoordinatorServer(BaseServer):
             while True:
                 for name, guid, url, _ in db.get_all_server():
                     try:
-                        # TODO: Оценить таймаут, обычно запрос занимает меньше 1 секунды
-                        requests.get(url, timeout=1)
+                        requests.get(url, timeout=0.1)
                         availability = True
 
                     except requests.exceptions.ConnectionError:
