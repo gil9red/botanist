@@ -30,8 +30,18 @@ def init_db():
                 name TEXT NOT NULL,
                 guid TEXT NOT NULL,
                 url TEXT NOT NULL,
+                
+                -- Полный путь к файлу сервера
                 file_name TEXT NOT NULL,
+                
+                -- Дата последнего запроса к серверу
                 datetime_last_request DATETIME,
+                
+                -- Доступность
+                availability BOOLEAN DEFAULT 0,
+
+                -- Время последней доступности
+                datetime_last_availability DATETIME,
 
                 CONSTRAINT name_guid UNIQUE (guid)
             );
@@ -112,6 +122,11 @@ def get_execute_command_url_server(guid: str) -> typing.Union[str, None]:
     return url_list[0]
 
 
+def get_all_server() -> typing.List[typing.Tuple[str, str, str, str]]:
+    with create_connect() as connect:
+        return connect.execute('SELECT name, guid, url, file_name FROM Server').fetchall()
+
+
 def get_url_server(guid: str) -> typing.Union[str, None]:
     with create_connect() as connect:
         url = connect.execute('SELECT Server.url FROM Server WHERE Server.guid = :guid ', {'guid': guid}).fetchone()
@@ -156,6 +171,17 @@ def fill_server_info(server):
 def update_datetime_last_request(server):
     with create_connect() as connect:
         connect.execute('UPDATE Server SET datetime_last_request=CURRENT_TIMESTAMP WHERE guid=?', (server.guid,))
+        connect.commit()
+
+
+def update_availability(server_guid: str, availability: bool):
+    with create_connect() as connect:
+        if availability:
+            sql = 'UPDATE Server SET availability=1, datetime_last_availability=CURRENT_TIMESTAMP WHERE guid=?'
+        else:
+            sql = 'UPDATE Server SET availability=0 WHERE guid=?'
+
+        connect.execute(sql, (server_guid,))
         connect.commit()
 
 

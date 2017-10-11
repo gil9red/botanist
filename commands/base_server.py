@@ -21,10 +21,6 @@ from commands import DEBUG
 import cherrypy
 
 
-# TODO: нужно завести для каждого сервера в таблице поля: доступность и время последней доступности
-#       мб сделать у координатора поток, который будет пинговать сервера команд и записывать об этом
-#       инфу в базу?
-
 # TODO: проверить все места с .json() -- нужно сделать так, чтобы у данных сохранялся порядок полей,
 #       а т.к. .json() возвращает простой словарь, то поэтому порядок не сохраняется
 #       Как вариант, можно ответ от requests парсить через стандартный модуль json,
@@ -195,6 +191,9 @@ class BaseServer:
         import json
         return json.dumps(rs)
 
+    def _before_run(self):
+        pass
+
     def run(self, port=0):
         print('Start {}, port={}'.format(self.name, port))
 
@@ -203,6 +202,8 @@ class BaseServer:
 
         # Autoreload off
         cherrypy.config.update({'engine.autoreload.on': False})
+
+        self._before_run()
 
         try:
             cherrypy.quickstart(self)

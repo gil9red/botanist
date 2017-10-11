@@ -134,6 +134,34 @@ class CoordinatorServer(BaseServer):
         rs = self.generate_response(error=error)
         return rs
 
+    def _before_run(self):
+        def _thread_func():
+            import time
+            import db
+            import requests
+
+            while True:
+                for name, guid, url, _ in db.get_all_server():
+                    try:
+                        # TODO: Оценить таймаут, обычно запрос занимает меньше 1 секунды
+                        requests.get(url, timeout=1)
+                        availability = True
+
+                    except requests.exceptions.ConnectionError:
+                        availability = False
+
+                    # TODO: лучше это логировать в отдельный файл, т.к. логировать
+                    #       будет много и часто и общий лог засорять не нужно
+                    print('name: "{}", availability={}'.format(name, availability))
+                    db.update_availability(guid, availability)
+
+                print('\n')
+                time.sleep(5)
+
+        from threading import Thread
+        thread = Thread(target=_thread_func)
+        thread.start()
+
 
 if __name__ == '__main__':
     server = CoordinatorServer()
