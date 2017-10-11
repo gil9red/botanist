@@ -26,7 +26,7 @@ class ExchangeRateServer(BaseServer):
     file_name = os.path.abspath(__file__)
 
     def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
-        # TODO: кэшировать команду -- пусть данные считаются "протухшими" через 6 часов
+        # TODO: кэшировать команду -- пусть данные считаются "протухшими" через 1 час
         from commands.command__exchange_rate import currency
         rate_list = currency.exchange_rate(['EUR', 'USD'])
         result = ', '.join(rate_list)
