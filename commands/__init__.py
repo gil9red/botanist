@@ -24,12 +24,11 @@ DEBUG = False
 # })
 
 
-# TODO: упросить результат функции
-def execute(command: str, raw=False) -> typing.Union[dict, typing.Tuple[str, str], typing.Tuple[None, str]]:
+def execute(command: str) -> dict:
     import db
     url = db.get_url_coordinator()
     if not url:
-        return 'Не удалось получить адрес Координатора', common.TYPE_TEXT
+        raise Exception('Не удалось получить адрес Координатора')
 
     import requests
 
@@ -38,15 +37,14 @@ def execute(command: str, raw=False) -> typing.Union[dict, typing.Tuple[str, str
         print(rs.text)
 
     except requests.exceptions.ConnectionError:
-        return 'Сервер Координатора ({}) недоступен'.format(url), common.TYPE_TEXT
+        raise Exception('Сервер Координатора ({}) недоступен'.format(url))
 
     # На всякий случай, вдруг не json придет, а html
     try:
         rs = rs.json()
         print('rs:', rs)
 
-        if raw:
-            return rs
+        return rs
 
     except Exception as e:
         import traceback
@@ -55,12 +53,7 @@ def execute(command: str, raw=False) -> typing.Union[dict, typing.Tuple[str, str
 
         print(message + '\n\nrs.content:\n{}'.format(rs.content))
 
-        return message, common.TYPE_TEXT
-
-    if rs['error'] is not None:
-        return rs['error'], rs['type']
-
-    return rs['result'], rs['type']
+        raise Exception(message)
 
 
 def generate_request(command_name: typing.Union[str, None], command: str=None) -> dict:

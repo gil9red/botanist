@@ -12,6 +12,8 @@ __author__ = 'ipetrash'
 #
 # Проверять TYPE_IMAGE/TYPE_GIF/TYPE_LIST_IMAGE через command__test_get_attachment
 
+# TODO: добавить кнопку скрытия значения в attachment
+
 # TODO: добавить таблицу серверов и показывать из базы информацию о них.
 #       круто будет выглядеть когда на странице можно увидеть какие из серверов запущены,
 #       а какие нет.
@@ -30,7 +32,19 @@ class Root:
         command = rq['command']
 
         from commands import execute
-        rs = execute(command, raw=True)
+
+        try:
+            rs = execute(command)
+
+        except Exception as e:
+            import traceback
+
+            from collections import OrderedDict
+            result = OrderedDict()
+            result['error'] = str(e)
+            result['traceback'] = traceback.format_exc()
+
+            return result
 
         return rs
 

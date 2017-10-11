@@ -40,16 +40,20 @@ class TestAttachmentServer(BaseServer):
         import pathlib
         current_dir = pathlib.Path(__file__).parent
 
+        result = None
+
         if func_name == common.TYPE_IMAGE:
             file = current_dir / 'Jimm Kerry.jpg'
-            result = file.read_bytes()
+            result = 'Jimm Kerry.jpg'
+            attachment = file.read_bytes()
 
         elif func_name == common.TYPE_GIF:
             file = current_dir / 'Jimm Kerry.gif'
-            result = file.read_bytes()
+            result = 'Jimm Kerry.gif'
+            attachment = file.read_bytes()
 
         elif func_name == common.TYPE_LIST_IMAGE:
-            result = [file.read_bytes() for file in current_dir.glob('images/*.jpg')]
+            attachment = [file.read_bytes() for file in current_dir.glob('images/*.jpg')]
 
         else:
             message = "Неправильная команда '{}': не найдена функция '{}', доступны следующие функции: {}"
@@ -60,7 +64,7 @@ class TestAttachmentServer(BaseServer):
             )
             raise Exception(message)
 
-        rs = self.generate_response(result, data_type=func_name)
+        rs = self.generate_response(result, attachment=attachment, data_type=func_name)
         return rs
 
 

@@ -85,7 +85,16 @@ def messages_get(vk):
 
     # Выполнение команды
     try:
-        message, data_type = commands.execute(command)
+        rs = commands.execute(command)
+
+        # Сначала предполагаем что могла вернуться ошибка, если нет, тогда
+        # смотрим в результат
+        message = rs['error']
+        if not message:
+            message = rs['result']
+
+        attachment = rs['attachment']
+        data_type = rs['type']
 
     except Exception as e:
         log.exception("Error:")
@@ -94,13 +103,15 @@ def messages_get(vk):
         message = 'При выполнении команды "{}" произошла ошибка: ' \
                   '"{}":\n\n{}'.format(command, e, traceback.format_exc())
         data_type = common.TYPE_TEXT
+        attachment = None
 
     # Если ответа от бота нет
-    if not message:
+    if not message and not attachment:
         message = 'Не получилось выполнить команду "{}" :( Попробуй позже повторить :)'.format(command)
 
     log.debug('Message: "%s"', message)
 
+    # Подготавливаем словарь с параметрами запроса
     messages_send_values = {
         'version': '5.67',
         'forward_messages': message_id,
@@ -116,32 +127,37 @@ def messages_get(vk):
     import base64
     import io
 
-    if data_type == common.TYPE_LIST_IMAGE:
-        items = []
+    # Если пришел прикрепленный файл
+    if attachment:
+        # Список картинок
+        if data_type == common.TYPE_LIST_IMAGE:
+            items = []
 
-        for item in message:
-            img = base64.b64decode(item.encode('utf-8'))
+            for item in message:
+                img = base64.b64decode(item.encode('utf-8'))
+                img_file = io.BytesIO(img)
+                items.append(img_file)
+
+            attachment = upload_images(vk, items)
+            messages_send_values['attachment'] = attachment
+
+        # Картинка или гифка
+        elif data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
+            img = base64.b64decode(message.encode('utf-8'))
             img_file = io.BytesIO(img)
-            items.append(img_file)
 
-        attachment = upload_images(vk, items)
-        messages_send_values['attachment'] = attachment
+            if data_type == common.TYPE_IMAGE:
+                attachment = upload_images(vk, img_file)
 
-    elif data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
-        img = base64.b64decode(message.encode('utf-8'))
-        img_file = io.BytesIO(img)
+            else:
+                # Нужно подсказать методу vk_api о типе документа
+                img_file.name = 'file.gif'
+                attachment = upload_doc(vk, img_file)
 
-        if data_type == common.TYPE_IMAGE:
-            attachment = upload_images(vk, img_file)
+            messages_send_values['attachment'] = attachment
 
-        else:
-            # Нужно подсказать методу vk_api о типе документа
-            img_file.name = 'file.gif'
-            attachment = upload_doc(vk, img_file)
-
-        messages_send_values['attachment'] = attachment
-
-    else:
+    # Сообщение может быть само по себе или вместе с attachment
+    if message:
         messages_send_values['message'] = message
 
     print('messages_send_values:', messages_send_values)

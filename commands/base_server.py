@@ -24,6 +24,9 @@ import cherrypy
 #       мб сделать у координатора поток, который будет пинговать сервера команд и записывать об этом
 #       инфу в базу?
 
+# TODO: проверить все места с .json() -- нужно сделать так, чтобы у данных сохранялся порядок полей,
+#       а т.к. .json() возвращает простой словарь, то поэтому порядок не сохраняется
+
 # TODO: сделать доработку, чтобы у каждого сервера был путь в корень проекта в sys.path
 #       После убрать из батника set PYTHONPATH=.
 
@@ -124,24 +127,27 @@ class BaseServer:
     def _execute_body(self, command, command_name, **params):
         raise Exception('_execute_body is not implemented!')
 
+    # TODO: упорядочить параметры, чтобы после result шел attachment, нужно проверить что во всех
+    #       местах использования метода result вызывается по имени
     def generate_response(self, result=None, error=None, traceback=None,
-                          elapsed=None, data_type=common.TYPE_TEXT):
+                          elapsed=None, data_type=common.TYPE_TEXT, attachment=None):
         # TODO: Завести метод кодирования сообщения в зависимости от data_type
         #       типа: create_message_from_data_type / get_message_from_data_type
-        if result:
+        if attachment:
             import base64
 
             if data_type == common.TYPE_LIST_IMAGE:
-                result = [base64.b64encode(x).decode('utf-8') for x in result]
+                attachment = [base64.b64encode(x).decode('utf-8') for x in attachment]
 
             elif data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
-                result = base64.b64encode(result).decode('utf-8')
+                attachment = base64.b64encode(attachment).decode('utf-8')
 
         from collections import OrderedDict
         rs = OrderedDict()
         rs['result'] = result
-        rs['type'] = data_type
+        rs['attachment'] = attachment
         rs['error'] = error
+        rs['type'] = data_type
         rs['traceback'] = traceback
         rs['server_name'] = self.name
         rs['server_guid'] = self.guid
