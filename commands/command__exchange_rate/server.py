@@ -5,6 +5,8 @@ __author__ = 'ipetrash'
 
 
 import os
+import typing
+
 from commands.base_server import BaseServer, Command
 
 
@@ -23,13 +25,13 @@ class ExchangeRateServer(BaseServer):
     # Путь к файлу сервера
     file_name = os.path.abspath(__file__)
 
-    def _execute_body(self, command, command_name, **params):
+    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         # TODO: кэшировать команду -- пусть данные считаются "протухшими" через 6 часов
         from commands.command__exchange_rate import currency
         rate_list = currency.exchange_rate(['EUR', 'USD'])
         result = ', '.join(rate_list)
 
-        rs = self.generate_response(result)
+        rs = self.generate_response(result=result)
         return rs
 
 

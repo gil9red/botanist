@@ -4,6 +4,7 @@
 
 import os
 import time
+import typing
 
 from collections import namedtuple
 Command = namedtuple('Command', ['name', 'uri', 'description', 'priority'])
@@ -66,7 +67,7 @@ class BaseServer:
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def index(self):
+    def index(self) -> dict:
         return {
             'name': self.name,
             'guid': self.guid,
@@ -75,7 +76,7 @@ class BaseServer:
     @cherrypy.expose
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def execute(self, **params):
+    def execute(self, **params) -> dict:
         db.update_datetime_last_request(self)
 
         try:
@@ -124,13 +125,13 @@ class BaseServer:
 
         return rs
 
-    def _execute_body(self, command, command_name, **params):
+    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         raise Exception('_execute_body is not implemented!')
 
     # TODO: упорядочить параметры, чтобы после result шел attachment, нужно проверить что во всех
     #       местах использования метода result вызывается по имени
     def generate_response(self, result=None, error=None, traceback=None,
-                          elapsed=None, data_type=common.TYPE_TEXT, attachment=None):
+                          elapsed=None, data_type=common.TYPE_TEXT, attachment=None) -> dict:
         # TODO: Завести метод кодирования сообщения в зависимости от data_type
         #       типа: create_message_from_data_type / get_message_from_data_type
         if attachment:
@@ -177,7 +178,7 @@ class BaseServer:
         thread = Thread(target=_wait_server_running)
         thread.start()
 
-    def all_exception_handler(self, status, message, traceback, version):
+    def all_exception_handler(self, status, message, traceback, version) -> dict:
         response = cherrypy.response
         response.headers['Content-Type'] = 'application/json'
 
@@ -186,7 +187,6 @@ class BaseServer:
         print('[{}] Error: {}\n\n{}'.format(self.name, error_text, traceback))
 
         rs = self.generate_response(
-            result=None,
             error=error_text,
             traceback=traceback,
             elapsed=self.last_elapsed,

@@ -5,6 +5,8 @@ __author__ = 'ipetrash'
 
 
 import os
+import typing
+
 from commands.base_server import BaseServer, Command
 from commands import generate_request
 import db
@@ -64,7 +66,7 @@ class CoordinatorServer(BaseServer):
 
         return all_command_name_by_description
 
-    def _execute_body(self, command, command_name, **params):
+    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         print('Execute command: "{}"'.format(command))
 
         # Если команды нет, показываем список команд

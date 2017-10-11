@@ -5,6 +5,7 @@ __author__ = 'ipetrash'
 
 
 import os
+import typing
 from commands.base_server import BaseServer, Command
 
 
@@ -23,11 +24,11 @@ class FunServer(BaseServer):
     # Путь к файлу сервера
     file_name = os.path.abspath(__file__)
 
-    def _execute_body(self, command, command_name, **params):
+    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         from commands.command__fun.fun import get_random_quote
         result = get_random_quote()
 
-        rs = self.generate_response(result)
+        rs = self.generate_response(result=result)
         return rs
 
 

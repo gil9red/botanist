@@ -5,6 +5,8 @@ __author__ = 'ipetrash'
 
 
 import os
+import typing
+
 from commands.base_server import BaseServer, Command
 
 
@@ -23,14 +25,14 @@ class WeatherServer(BaseServer):
     # Путь к файлу сервера
     file_name = os.path.abspath(__file__)
 
-    def _execute_body(self, command, command_name, **params):
+    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         if not command:
             raise Exception("Неправильная команда 'погода': не указан населенный пункт")
 
         from commands.command__weather_in_city.weather_in_city import get_weather
         result = get_weather(command)
 
-        rs = self.generate_response(result)
+        rs = self.generate_response(result=result)
         return rs
 
 

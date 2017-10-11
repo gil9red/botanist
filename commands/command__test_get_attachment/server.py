@@ -5,6 +5,8 @@ __author__ = 'ipetrash'
 
 
 import os
+import typing
+
 from commands.base_server import BaseServer, Command
 import common
 
@@ -33,7 +35,7 @@ class TestAttachmentServer(BaseServer):
     # Путь к файлу сервера
     file_name = os.path.abspath(__file__)
 
-    def _execute_body(self, command, command_name, **params):
+    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         function_list = list(params.keys())
         func_name = function_list[0]
 
@@ -64,7 +66,7 @@ class TestAttachmentServer(BaseServer):
             )
             raise Exception(message)
 
-        rs = self.generate_response(result, attachment=attachment, data_type=func_name)
+        rs = self.generate_response(result=result, attachment=attachment, data_type=func_name)
         return rs
 
 

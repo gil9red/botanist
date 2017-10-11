@@ -5,6 +5,8 @@ __author__ = 'ipetrash'
 
 
 import os
+import typing
+
 from commands.base_server import BaseServer, Command
 from commands.command__text_converter.hex2str import hex2str, str2hex
 from commands.command__text_converter.bin2str import bin2str, str2bin
@@ -52,7 +54,7 @@ class TextConverter(BaseServer):
         'str2bin': str2bin,
     }
 
-    def _execute_body(self, command, command_name, **params):
+    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         if not command:
             raise Exception("Неправильная команда '{}': не указан текст".format(command_name))
 
@@ -78,7 +80,7 @@ class TextConverter(BaseServer):
             raise Exception('При выполнении команды "{}" произошла ошибка. '
                             'Проверь что данные правильные. Текст ошибки: "{}".'.format(command_name, e))
 
-        rs = self.generate_response(result)
+        rs = self.generate_response(result=result)
         return rs
 
 
