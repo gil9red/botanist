@@ -36,6 +36,7 @@ class Root:
 
     @cherrypy.expose
     def index(self):
+        # TODO: добавить модуль генерации по шаблону, например jinja2
         yield """
 <html>
     <head>
