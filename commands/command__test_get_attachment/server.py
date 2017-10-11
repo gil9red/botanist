@@ -41,22 +41,15 @@ class TestAttachmentServer(BaseServer):
         current_dir = pathlib.Path(__file__).parent
 
         if func_name == common.TYPE_IMAGE:
-            with open(current_dir / 'Jimm Kerry.jpg', mode='rb') as f:
-                result = f.read()
+            file = current_dir / 'Jimm Kerry.jpg'
+            result = file.read_bytes()
 
         elif func_name == common.TYPE_GIF:
-            with open(current_dir / 'Jimm Kerry.gif', mode='rb') as f:
-                result = f.read()
+            file = current_dir / 'Jimm Kerry.gif'
+            result = file.read_bytes()
 
         elif func_name == common.TYPE_LIST_IMAGE:
-            result = []
-
-            file_name_pattern = str(current_dir / 'images/*.jpg')
-
-            import glob
-            for file_name in glob.glob(file_name_pattern):
-                with open(file_name, mode='rb') as f:
-                    result.append(f.read())
+            result = [file.read_bytes() for file in current_dir.glob('images/*.jpg')]
 
         else:
             message = "Неправильная команда '{}': не найдена функция '{}', доступны следующие функции: {}"
