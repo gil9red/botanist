@@ -4,6 +4,9 @@
 __author__ = 'ipetrash'
 
 
+import typing
+
+
 def get_logger(name, file='log.txt', encoding='utf-8', log_stdout=True, log_file=True):
     import logging
     log = logging.getLogger(name)
@@ -47,3 +50,73 @@ TYPE_TEXT = 'text'
 TYPE_IMAGE = 'image'
 TYPE_GIF = 'gif'
 TYPE_LIST_IMAGE = 'list_image'
+
+
+def create_attachment(attachment: typing.Union[bytes, typing.List[bytes]], data_type: str) -> typing.Union[str, typing.List[str]]:
+    import base64
+
+    if data_type == TYPE_LIST_IMAGE:
+        attachment = [base64.b64encode(x).decode('utf-8') for x in attachment]
+
+    elif data_type in [TYPE_IMAGE, TYPE_GIF]:
+        attachment = base64.b64encode(attachment).decode('utf-8')
+
+    else:
+        raise Exception('Unknown data_type="{}"'.format(data_type))
+
+    return attachment
+
+
+def upload_images(vk, file_names) -> str:
+    import vk_api
+    upload = vk_api.VkUpload(vk)
+    rs = upload.photo_messages(file_names)
+
+    # Составление названия изображений: https://vk.com/dev/messages.send
+    attachment = ','.join('photo{owner_id}_{id}'.format(**item) for item in rs)
+    return attachment
+
+
+def upload_doc(vk, file_name) -> str:
+    import vk_api
+    upload = vk_api.VkUpload(vk)
+    rs = upload.document(file_name)
+
+    # Составление названия документа: https://vk.com/dev/messages.send
+    attachment = 'doc{owner_id}_{id}'.format(**rs[0])
+    return attachment
+
+
+def get_vk_attachment(vk, attachment: str, data_type: str) -> str:
+    import base64
+    import io
+
+    # Список картинок
+    if data_type == TYPE_LIST_IMAGE:
+        items = []
+
+        for item in attachment:
+            img = base64.b64decode(item.encode('utf-8'))
+            img_file = io.BytesIO(img)
+            items.append(img_file)
+
+        attachment = upload_images(vk, items)
+        return attachment
+
+    # Картинка или гифка
+    elif data_type in [TYPE_IMAGE, TYPE_GIF]:
+        img = base64.b64decode(attachment.encode('utf-8'))
+        img_file = io.BytesIO(img)
+
+        if data_type == TYPE_IMAGE:
+            attachment = upload_images(vk, img_file)
+
+        else:
+            # Нужно подсказать методу vk_api о типе документа
+            img_file.name = 'file.gif'
+            attachment = upload_doc(vk, img_file)
+
+        return attachment
+
+    else:
+        raise Exception('Unknown data_type="{}"'.format(data_type))

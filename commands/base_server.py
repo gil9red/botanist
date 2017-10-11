@@ -128,16 +128,8 @@ class BaseServer:
 
     def generate_response(self, result=None, attachment=None, error=None, traceback=None,
                           elapsed=None, data_type=common.TYPE_TEXT) -> dict:
-        # TODO: Завести метод кодирования сообщения в зависимости от data_type
-        #       типа: create_message_from_data_type / get_message_from_data_type
         if attachment:
-            import base64
-
-            if data_type == common.TYPE_LIST_IMAGE:
-                attachment = [base64.b64encode(x).decode('utf-8') for x in attachment]
-
-            elif data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
-                attachment = base64.b64encode(attachment).decode('utf-8')
+            attachment = common.create_attachment(attachment, data_type)
 
         from collections import OrderedDict
         rs = OrderedDict()

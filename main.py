@@ -33,26 +33,6 @@ import commands
 import time
 
 
-def upload_doc(vk, file_name):
-    import vk_api
-    upload = vk_api.VkUpload(vk)
-    rs = upload.document(file_name)
-
-    # Составление названия документа: https://vk.com/dev/messages.send
-    attachment = 'doc{owner_id}_{id}'.format(**rs[0])
-    return attachment
-
-
-def upload_images(vk, file_names):
-    import vk_api
-    upload = vk_api.VkUpload(vk)
-    rs = upload.photo_messages(file_names)
-
-    # Составление названия изображений: https://vk.com/dev/messages.send
-    attachment = ','.join('photo{owner_id}_{id}'.format(**item) for item in rs)
-    return attachment
-
-
 def messages_get(vk):
     command_prefix = 'Бот,'
 
@@ -123,38 +103,10 @@ def messages_get(vk):
     else:
         messages_send_values['user_id'] = from_user_id
 
-    # TODO: Завести метод декодирования сообщения в зависимости от data_type
-    import base64
-    import io
-
-    # Если пришел прикрепленный файл
+    # Если пришел прикрепленный файл/файлы
     if attachment:
-        # Список картинок
-        if data_type == common.TYPE_LIST_IMAGE:
-            items = []
-
-            for item in message:
-                img = base64.b64decode(item.encode('utf-8'))
-                img_file = io.BytesIO(img)
-                items.append(img_file)
-
-            attachment = upload_images(vk, items)
-            messages_send_values['attachment'] = attachment
-
-        # Картинка или гифка
-        elif data_type in [common.TYPE_IMAGE, common.TYPE_GIF]:
-            img = base64.b64decode(message.encode('utf-8'))
-            img_file = io.BytesIO(img)
-
-            if data_type == common.TYPE_IMAGE:
-                attachment = upload_images(vk, img_file)
-
-            else:
-                # Нужно подсказать методу vk_api о типе документа
-                img_file.name = 'file.gif'
-                attachment = upload_doc(vk, img_file)
-
-            messages_send_values['attachment'] = attachment
+        attachment = common.get_vk_attachment(vk, attachment, data_type)
+        messages_send_values['attachment'] = attachment
 
     # Сообщение может быть само по себе или вместе с attachment
     if message:
