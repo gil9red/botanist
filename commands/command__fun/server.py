@@ -28,8 +28,7 @@ class FunServer(BaseServer):
         from commands.command__fun.fun import get_random_quote
         result = get_random_quote()
 
-        rs = self.generate_response(result=result)
-        return rs
+        return result
 
 
 if __name__ == '__main__':

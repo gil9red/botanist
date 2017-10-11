@@ -80,8 +80,7 @@ class TextConverter(BaseServer):
             raise Exception('При выполнении команды "{}" произошла ошибка. '
                             'Проверь что данные правильные. Текст ошибки: "{}".'.format(command_name, e))
 
-        rs = self.generate_response(result=result)
-        return rs
+        return result
 
 
 if __name__ == '__main__':

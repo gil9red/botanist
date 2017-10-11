@@ -31,8 +31,7 @@ class ExchangeRateServer(BaseServer):
         rate_list = currency.exchange_rate(['EUR', 'USD'])
         result = ', '.join(rate_list)
 
-        rs = self.generate_response(result=result)
-        return rs
+        return result
 
 
 if __name__ == '__main__':

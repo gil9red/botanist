@@ -48,7 +48,7 @@ class CoordinatorServer(BaseServer):
 
     @BaseServer.expose
     @BaseServer.json_out
-    def get_commands(self, as_result=None):
+    def get_commands(self, as_result=None) -> dict:
         print(self.request.params)
 
         all_command_name_by_description = db.get_all_command_name_by_description()
@@ -58,9 +58,6 @@ class CoordinatorServer(BaseServer):
                 '✓ {}: {}'.format(k, v) for k, v in all_command_name_by_description.items()
             )
 
-            # TODO: в соответствии с кодом if type(rs) == str: rs = self.generate_response(result=rs)
-            #       попробовать возвращать просто result. Сделать такое же для всех мест с подобным кодом,
-            #       который generate_response возвращает только с result
             rs = self.generate_response(result=result)
             return rs
 
@@ -105,10 +102,7 @@ class CoordinatorServer(BaseServer):
                 result = 'Получена неизвестная команда "{}".\n' \
                          'Чтобы узнать доступные команды введи: Бот, команды'.format(command)
 
-                rs = self.generate_response(result=result)
-                print('  rs:', rs)
-
-                return rs
+                return result
 
         # Обработка собственной команды
         if execute_command == 'команды':

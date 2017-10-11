@@ -32,8 +32,7 @@ class WeatherServer(BaseServer):
         from commands.command__weather_in_city.weather_in_city import get_weather
         result = get_weather(command)
 
-        rs = self.generate_response(result=result)
-        return rs
+        return result
 
 
 if __name__ == '__main__':

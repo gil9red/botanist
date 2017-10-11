@@ -32,8 +32,7 @@ class DamnServer(BaseServer):
         from commands.command__damn.damn import damn
         result = damn(command)
 
-        rs = self.generate_response(result=result)
-        return rs
+        return result
 
 
 if __name__ == '__main__':
