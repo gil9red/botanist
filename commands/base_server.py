@@ -9,6 +9,7 @@ from collections import namedtuple
 Command = namedtuple('Command', ['name', 'uri', 'description', 'priority'])
 Command.__new__.__defaults__ = (None, None, None, 0)
 
+import db
 import common
 common.make_backslashreplace_console()
 
@@ -22,7 +23,6 @@ import cherrypy
 # TODO: нужно завести для каждого сервера в таблице поля: доступность и время последней доступности
 #       мб сделать у координатора поток, который будет пинговать сервера команд и записывать об этом
 #       инфу в базу?
-# TODO: добавить в таблицу поле последнего запроса сервера, т.е. когда сервер получил запрос, он обновляет то поле
 
 # TODO: сделать доработку, чтобы у каждого сервера был путь в корень проекта в sys.path
 #       После убрать из батника set PYTHONPATH=.
@@ -73,6 +73,8 @@ class BaseServer:
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def execute(self, **params):
+        db.update_datetime_last_request(self)
+
         try:
             rq = cherrypy.request.json
         except:
@@ -163,7 +165,6 @@ class BaseServer:
             for command in self.command_list:
                 print('    {}'.format(command))
 
-            import db
             db.fill_server_info(self)
 
         from threading import Thread

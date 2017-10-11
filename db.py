@@ -31,6 +31,7 @@ def init_db():
                 guid TEXT NOT NULL,
                 url TEXT NOT NULL,
                 file_name TEXT NOT NULL,
+                datetime_last_request DATETIME,
 
                 CONSTRAINT name_guid UNIQUE (guid)
             );
@@ -149,6 +150,12 @@ def fill_server_info(server):
                 (command.name, command.uri, command.description, command.priority, server.guid,)
             )
 
+        connect.commit()
+
+
+def update_datetime_last_request(server):
+    with create_connect() as connect:
+        connect.execute('UPDATE Server SET datetime_last_request=CURRENT_TIMESTAMP WHERE guid=?', (server.guid,))
         connect.commit()
 
 
