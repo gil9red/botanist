@@ -56,7 +56,10 @@ class CoordinatorServer(BaseServer):
                 '✓ {}: {}'.format(k, v) for k, v in all_command_name_by_description.items()
             )
 
-            rs = self.generate_response(result)
+            # TODO: в соответствии с кодом if type(rs) == str: rs = self.generate_response(result=rs)
+            #       попробовать возвращать просто result. Сделать такое же для всех мест с подобным кодом,
+            #       который generate_response возвращает только с result
+            rs = self.generate_response(result=result)
             return rs
 
         return all_command_name_by_description
@@ -100,7 +103,7 @@ class CoordinatorServer(BaseServer):
                 result = 'Получена неизвестная команда "{}".\n' \
                          'Чтобы узнать доступные команды введи: Бот, команды'.format(command)
 
-                rs = self.generate_response(result)
+                rs = self.generate_response(result=result)
                 print('  rs:', rs)
 
                 return rs
