@@ -155,7 +155,7 @@ class CoordinatorServer(BaseServer):
                     db.update_availability(guid, availability)
 
                 print('\n')
-                time.sleep(5)
+                time.sleep(25)
 
         from threading import Thread
         thread = Thread(target=_thread_func)
