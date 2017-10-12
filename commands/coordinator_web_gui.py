@@ -183,7 +183,7 @@ class Root:
 
         yield """
         <br>
-        <input type='textbox' id='update_box' value='str2hex Привет Мир!' size='100' />
+        <input type='text' id='update_box' value='str2hex Привет Мир!' onkeydown="if (event.keyCode == 13) { execute(); return false; }" size='100' />
         <input type='submit' value='execute' onClick='execute(); return false' />
         
         <br>
