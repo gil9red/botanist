@@ -28,6 +28,9 @@ import cherrypy
 
 # TODO: сделать доработку, чтобы у каждого сервера был путь в корень проекта в sys.path
 #       После убрать из батника set PYTHONPATH=.
+# import sys
+# sys.path.append('../..')
+
 
 
 class BaseServer:
