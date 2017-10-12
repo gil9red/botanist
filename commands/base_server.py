@@ -28,8 +28,15 @@ import cherrypy
 
 # TODO: сделать доработку, чтобы у каждого сервера был путь в корень проекта в sys.path
 #       После убрать из батника set PYTHONPATH=.
+#
+# import os
+# dir_up_up = os.path.normpath(os.path.realpath('../..'))
+#
 # import sys
-# sys.path.append('../..')
+# if dir_up_up not in sys.path:
+#     sys.path.append(dir_up_up)
+#
+# print('\n'.join(sys.path))
 
 
 
