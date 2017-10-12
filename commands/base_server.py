@@ -39,7 +39,6 @@ import cherrypy
 # print('\n'.join(sys.path))
 
 
-
 class BaseServer:
     expose = cherrypy.expose
     json_in = cherrypy.tools.json_in()
