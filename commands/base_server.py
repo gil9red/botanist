@@ -108,8 +108,8 @@ class BaseServer:
                 rs = self._execute_body(command, command_name, **params)
 
         finally:
-            self.last_elapsed = time.clock() - start_elapsed
-            print('  Elapsed time: {:.7f} secs'.format(self.last_elapsed))
+            self.last_elapsed = '{:.7f}'.format(time.clock() - start_elapsed)
+            print('  Elapsed time: {} secs'.format(self.last_elapsed))
 
         if type(rs) == str:
             rs = self.generate_response(result=rs)
