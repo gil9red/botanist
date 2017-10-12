@@ -6,6 +6,18 @@ __author__ = 'ipetrash'
 
 import os
 import typing
+import sys
+
+
+# Добавление пути к папке с проектом, чтобы заработал импорт пакета commands и таких модулей
+# как db.py и common.py
+import pathlib
+current_dir = pathlib.Path(__file__).parent.resolve()
+dir_up = str(current_dir.parent.resolve())
+
+if dir_up not in sys.path:
+    sys.path.append(dir_up)
+
 
 from commands.base_server import BaseServer, Command
 from commands import generate_request
@@ -155,6 +167,10 @@ class CoordinatorServer(BaseServer):
                     db.update_availability(guid, availability)
 
                 print('\n')
+
+                # Иначе может не вывести сразу в консоль
+                sys.stdout.flush()
+
                 time.sleep(25)
 
         from threading import Thread

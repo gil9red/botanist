@@ -5,6 +5,18 @@
 import os
 import time
 import typing
+import sys
+
+
+# Добавление пути к папке с проектом, чтобы заработал импорт пакета commands и таких модулей
+# как db.py и common.py
+import pathlib
+current_dir = pathlib.Path(__file__).parent.resolve()
+dir_up = str(current_dir.parent.resolve())
+
+if dir_up not in sys.path:
+    sys.path.append(dir_up)
+
 
 from collections import namedtuple
 Command = namedtuple('Command', ['name', 'uri', 'description', 'priority'])
@@ -25,18 +37,6 @@ import cherrypy
 #       а т.к. .json() возвращает простой словарь, то поэтому порядок не сохраняется
 #       Как вариант, можно ответ от requests парсить через стандартный модуль json,
 #       добавляя небольшую доработку: https://stackoverflow.com/questions/6921699
-
-# TODO: сделать доработку, чтобы у каждого сервера был путь в корень проекта в sys.path
-#       После убрать из батника set PYTHONPATH=.
-#
-# import os
-# dir_up_up = os.path.normpath(os.path.realpath('../..'))
-#
-# import sys
-# if dir_up_up not in sys.path:
-#     sys.path.append(dir_up_up)
-#
-# print('\n'.join(sys.path))
 
 
 class BaseServer:
@@ -168,6 +168,9 @@ class BaseServer:
             print('Commands ({}):'.format(len(self.command_list)))
             for command in self.command_list:
                 print('    {}'.format(command))
+
+            # Иначе может не вывести сразу в консоль
+            sys.stdout.flush()
 
             db.fill_server_info(self)
 

@@ -18,6 +18,22 @@ __author__ = 'ipetrash'
 #       круто будет выглядеть когда на странице можно увидеть какие из серверов запущены,
 #       а какие нет.
 
+
+import sys
+
+
+# Добавление пути к папке с проектом, чтобы заработал импорт пакета commands и таких модулей
+# как db.py и common.py
+import pathlib
+current_dir = pathlib.Path(__file__).parent.resolve()
+dir_up = str(current_dir.parent.resolve())
+
+if dir_up not in sys.path:
+    sys.path.append(dir_up)
+
+
+from commands import execute
+
 import cherrypy
 
 
@@ -30,8 +46,6 @@ class Root:
         print(rq)
 
         command = rq['command']
-
-        from commands import execute
 
         try:
             rs = execute(command)

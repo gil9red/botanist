@@ -1,7 +1,5 @@
 @echo off
 REM Указание пути, чтобы модули при импортировании могли найти нужные им модули/пакеты
-REM . -- текущая папка
-set PYTHONPATH=.
 set PYTHON=C:\ProgramData\Anaconda3\python.exe
 
 start %PYTHON% main.py

@@ -16,8 +16,6 @@ file_name_list += glob.glob('commands\command__*\server.py')
 text_run = """
 @echo off
 REM Указание пути, чтобы модули при импортировании могли найти нужные им модули/пакеты
-REM . -- текущая папка
-set PYTHONPATH=.
 set PYTHON={python}
 
 """
