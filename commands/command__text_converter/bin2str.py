@@ -4,7 +4,7 @@
 __author__ = 'ipetrash'
 
 
-def bin2str(bin_str, encoding='cp1251'):
+def bin2str(bin_str: str, encoding='cp1251') -> str:
     bin_str = bin_str.replace(' ', '')
     length = len(bin_str)
 
@@ -23,9 +23,8 @@ def bin2str(bin_str, encoding='cp1251'):
     return bytes(chars).decode(encoding)
 
 
-def str2bin(text, encoding='cp1251'):
-    bin_words = [bin(c).replace('0b', '').rjust(8, '0') for c in text.encode(encoding=encoding)]
-
+def str2bin(text: str, encoding='cp1251') -> str:
+    bin_words = [bin(c)[2:].rjust(8, '0') for c in text.encode(encoding=encoding)]
     return ' '.join(bin_words)
 
 
