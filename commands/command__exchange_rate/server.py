@@ -4,10 +4,12 @@
 __author__ = 'ipetrash'
 
 
+from datetime import datetime, timedelta
 import os
 import typing
 
 from commands.base_server import BaseServer, Command
+from commands.command__exchange_rate import currency
 
 
 class ExchangeRateServer(BaseServer):
@@ -25,13 +27,35 @@ class ExchangeRateServer(BaseServer):
     # Путь к файлу сервера
     file_name = os.path.abspath(__file__)
 
-    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
-        # TODO: кэшировать команду -- пусть данные считаются "протухшими" через 1 час
-        from commands.command__exchange_rate import currency
-        rate_list = currency.exchange_rate(['EUR', 'USD'])
-        result = ', '.join(rate_list)
+    def __init__(self):
+        super().__init__()
 
-        return result
+        # Поле для сохранения результата
+        self.last_result = None
+
+        # Поле для сохранения времени последнего запроса
+        self.last_request_time = None
+
+        # Поле для сохранения времени, когда кэш испортится
+        self.cache_update_time = None
+
+    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
+        delta = timedelta(hours=1)
+
+        if self.last_request_time is None or self.cache_update_time < datetime.now():
+            rate_list = currency.exchange_rate(['EUR', 'USD'])
+            self.last_result = ', '.join(rate_list)
+            self.last_request_time = datetime.now()
+            self.cache_update_time = self.last_request_time + delta
+
+            print('Обновляю кэшированный курс валют: "{}", кэш испортится ''в {}.'
+                  .format(self.last_result, self.cache_update_time))
+
+        else:
+            print('Возвращаю кэш за {}, обновление кэша будет через {} в {}'
+                  .format(self.last_request_time, self.cache_update_time - datetime.now(), self.cache_update_time))
+
+        return self.last_result
 
 
 if __name__ == '__main__':
