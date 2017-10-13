@@ -118,7 +118,7 @@ class Root:
             function fill_raw_result() {
                 var json_data = window.rs_json;
                                 
-                if (!$('#show_attachment_value > input').is(':checked')) {
+                if (!$('#show_attachment_value > input').is(':checked') && window.attachment != null) {
                     var attachment_length = JSON.stringify(window.attachment).length;
                     var attachment_text = '<скрыто ' + attachment_length + ' символов>';
                     
