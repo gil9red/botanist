@@ -16,7 +16,7 @@ def get_random_quotes_list():
     for quote_el in root.xpath('//*[@class="quote"]'):
         try:
             text_el = quote_el.xpath('*[@class="text"]')[0]
-            quote_text = '\n'.join(text.encode('ISO8859-1').decode('cp1251') for text in text_el.itertext())
+            quote_text = '\n'.join(text.encode('ISO8859-1').decode('cp1251') for text in text_el.itertext()).strip()
 
             quotes.append(quote_text)
 
