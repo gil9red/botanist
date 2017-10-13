@@ -222,7 +222,7 @@ class Root:
         
         from db import get_all_command_name_by_description
 
-        table_command = '<table>'
+        table_command = '<table style="width: 50%;">'
         table_command += '<tr><th>Команда</th><th>Описание</th></tr>'
 
         for name, description in get_all_command_name_by_description().items():
@@ -240,13 +240,13 @@ class Root:
         
         <br>
         
-        <div class="result show" style="display: none">
+        <div class="result show" style="display: none; width: 50%;">
             <p>Result:</p>
             <div class="body"></div>
         </div>
         
         <br>
-        <div class="raw_result show" style="display: none">
+        <div class="raw_result show" style="display: none; width: 50%;">
             <p>Raw result:</p>
             <div style="display: none" id="show_attachment_value"><input type="checkbox" onClick='fill_raw_result()'>Show attachment value</div>
             <pre></pre>
