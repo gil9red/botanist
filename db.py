@@ -35,13 +35,13 @@ def init_db():
                 file_name TEXT NOT NULL,
                 
                 -- Дата последнего запроса к серверу
-                datetime_last_request DATETIME,
+                datetime_last_request TEXT,
                 
                 -- Доступность
                 availability BOOLEAN DEFAULT 0,
 
                 -- Время последней доступности
-                datetime_last_availability DATETIME,
+                datetime_last_availability TEXT,
 
                 CONSTRAINT name_guid UNIQUE (guid)
             );
@@ -170,16 +170,28 @@ def fill_server_info(server):
 
 def update_datetime_last_request(server):
     with create_connect() as connect:
-        connect.execute('UPDATE Server SET datetime_last_request=CURRENT_TIMESTAMP WHERE guid=?', (server.guid,))
+        sql = """
+            UPDATE Server 
+            SET 
+                datetime_last_request=strftime('%d/%m/%Y %H:%M:%S', datetime('now', 'localtime')) 
+            WHERE guid=?
+        """
+        connect.execute(sql, (server.guid,))
         connect.commit()
 
 
 def update_availability(server_guid: str, availability: bool):
     with create_connect() as connect:
         if availability:
-            sql = 'UPDATE Server SET availability=1, datetime_last_availability=CURRENT_TIMESTAMP WHERE guid=?'
+            sql = """
+                UPDATE Server 
+                SET 
+                    availability=1, 
+                    datetime_last_availability=strftime('%d/%m/%Y %H:%M:%S', datetime('now', 'localtime'))
+                WHERE guid=?
+            """
         else:
-            sql = 'UPDATE Server SET availability=0 WHERE guid=?'
+            sql = "UPDATE Server SET availability=0 WHERE guid=?"
 
         connect.execute(sql, (server_guid,))
         connect.commit()
