@@ -4,11 +4,6 @@
 __author__ = 'ipetrash'
 
 
-# TODO: добавить кнопку скрытия значения в attachment
-#       * после получения результата нужно помнить его и запомнить значение в attachment
-#       * при изменении checkbox'а в зависимости от флажка показывать или прятать значение в attachment
-#       * если прятать, тогда писать "<значение скрыто>", если значение в нем не null
-
 # TODO: добавить таблицу серверов и показывать из базы информацию о них.
 #       круто будет выглядеть когда на странице можно увидеть какие из серверов запущены,
 #       а какие нет.
@@ -120,9 +115,33 @@ class Root:
                 return '<img src="data:image/' + attachment.extension + ';base64, ' + attachment.content + '">';
             }
             
+            function fill_raw_result() {
+                var json_data = window.rs_json;
+                                
+                if (!$('#show_attachment_value > input').is(':checked')) {
+                    var attachment_length = JSON.stringify(window.attachment).length;
+                    var attachment_text = '<скрыто ' + attachment_length + ' символов>';
+                    
+                    // Clone
+                    json_data = JSON.parse(JSON.stringify(json_data));
+                    json_data.attachment = attachment_text;
+                }
+            
+                var json_str = JSON.stringify(json_data, undefined, 4);
+                console.log(json_str);
+                
+                json_str = syntaxHighlight(json_str);
+                
+                $('.raw_result.show > pre').html(json_str);
+                $('.raw_result.show').show();
+            }
+            
             function execute() {
                 $('.raw_result.show').hide();
                 $('.result.show').hide();
+                
+                window.rs_json = null;
+                window.attachment = null;
             
                 $.ajax({
                     type: 'POST',
@@ -133,13 +152,14 @@ class Root:
                     data: JSON.stringify({'command': $('#update_box').val()}),
                     
                     success: function(data) {
-                        var json_str = JSON.stringify(data, undefined, 4);
-                        console.log(json_str);
-                        
-                        json_str = syntaxHighlight(json_str);
+                        window.rs_json = data;
+                        window.attachment = data.attachment;
                     
-                        $('.raw_result.show > pre').html(json_str);
-                        $('.raw_result.show').show();
+                        if (window.attachment != null) {
+                            $('#show_attachment_value').show();
+                        }    
+                    
+                        fill_raw_result();
                         
                         var result_body = "<div>";
                         result_body += '<pre>' + data.result + '</pre>';
@@ -220,11 +240,13 @@ class Root:
         
         <div class="result show" style="display: none">
             <p>Result:</p>
-            <div class="body"/>
-        </div>        
+            <div class="body"></div>
+        </div>
         
+        <br>
         <div class="raw_result show" style="display: none">
             <p>Raw result:</p>
+            <div style="display: none" id="show_attachment_value"><input type="checkbox" onClick='fill_raw_result()'>Show attachment value</div>
             <pre></pre>
         </div>
                 
