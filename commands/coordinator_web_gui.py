@@ -154,10 +154,12 @@ class Root:
                     success: function(data) {
                         window.rs_json = data;
                         window.attachment = data.attachment;
-                    
+                                            
                         if (window.attachment != null) {
                             $('#show_attachment_value').show();
-                        }    
+                        } else {
+                            $('#show_attachment_value').hide();
+                        }
                     
                         fill_raw_result();
                         
