@@ -4,14 +4,6 @@
 __author__ = 'ipetrash'
 
 
-# TODO: обрабатывать типы данных:
-#   TYPE_TEXT = 'text'
-#   TYPE_IMAGE = 'image'
-#   TYPE_GIF = 'gif'
-#   TYPE_LIST_IMAGE = 'list_image'
-#
-# Проверять TYPE_IMAGE/TYPE_GIF/TYPE_LIST_IMAGE через command__test_get_attachment
-
 # TODO: добавить кнопку скрытия значения в attachment
 #       * после получения результата нужно помнить его и запомнить значение в attachment
 #       * при изменении checkbox'а в зависимости от флажка показывать или прятать значение в attachment
@@ -123,8 +115,15 @@ class Root:
                     return '<span class="' + cls + '">' + match + '</span>';
                 });
             }
-        
+            
+            function create_img_base64(attachment) {
+                return '<img src="data:image/' + attachment.extension + ';base64, ' + attachment.content + '">';
+            }
+            
             function execute() {
+                $('.raw_result.show').hide();
+                $('.result.show').hide();
+            
                 $.ajax({
                     type: 'POST',
                     url: "/execute",
@@ -139,7 +138,35 @@ class Root:
                         
                         json_str = syntaxHighlight(json_str);
                     
-                        $('.result.show > pre').html(json_str);
+                        $('.raw_result.show > pre').html(json_str);
+                        $('.raw_result.show').show();
+                        
+                        var result_body = "<div>";
+                        result_body += '<pre>' + data.result + '</pre>';
+                        
+                        switch (data.type) {
+                            case 'image':
+                            case 'gif':
+                                result_body += '<br>';
+                                result_body += create_img_base64(data.attachment);
+                                
+                                break;
+                            
+                            case 'list_image':
+                                result_body += '<br>';
+                                
+                                data.attachment.forEach(function(item, i, arr) {
+                                    result_body += create_img_base64(item) + "<br><br>";
+                                });
+                        
+                                break;
+                        }
+                        
+                        result_body += '</div>';
+                        
+                        console.log(result_body);
+                        
+                        $('.result.show > .body').html(result_body);
                         $('.result.show').show();
                     },
                     
@@ -163,8 +190,8 @@ class Root:
                         }
                         
                         console.log(msg);
-                        $('.result.show > pre').html(msg);
-                        $('.result.show').show();
+                        $('.raw_result.show > pre').html(msg);
+                        $('.raw_result.show').show();
                     },
                 });
             }
@@ -190,11 +217,17 @@ class Root:
         <input type='submit' value='execute' onClick='execute(); return false' />
         
         <br>
+        
         <div class="result show" style="display: none">
             <p>Result:</p>
+            <div class="body"/>
+        </div>        
+        
+        <div class="raw_result show" style="display: none">
+            <p>Raw result:</p>
             <pre></pre>
         </div>
-        
+                
     </body>
 </html>
 """

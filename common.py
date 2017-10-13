@@ -5,6 +5,9 @@ __author__ = 'ipetrash'
 
 
 import typing
+from collections import namedtuple
+
+FileAttachment = namedtuple('FileAttachment', ['extension', 'content'])
 
 
 def get_logger(name, file='log.txt', encoding='utf-8', log_stdout=True, log_file=True):
@@ -52,19 +55,33 @@ TYPE_GIF = 'gif'
 TYPE_LIST_IMAGE = 'list_image'
 
 
-def create_attachment(attachment: typing.Union[bytes, typing.List[bytes]], data_type: str) -> typing.Union[str, typing.List[str]]:
+def create_attachment(attachment: typing.Union[FileAttachment, typing.List[FileAttachment]], data_type: str) -> typing.Union[typing.Dict[str, str], typing.List[typing.Dict[str, str]]]:
     import base64
 
     if data_type == TYPE_LIST_IMAGE:
-        attachment = [base64.b64encode(x).decode('utf-8') for x in attachment]
+        items = []
+
+        for file_attachment in attachment:
+            content = file_attachment.content
+            content = base64.b64encode(content).decode('utf-8')
+
+            items.append({
+                'extension': file_attachment.extension,
+                'content': content,
+            })
+
+        return items
 
     elif data_type in [TYPE_IMAGE, TYPE_GIF]:
-        attachment = base64.b64encode(attachment).decode('utf-8')
+        content = attachment.content
+        content = base64.b64encode(content).decode('utf-8')
 
-    else:
-        raise Exception('Unknown data_type="{}"'.format(data_type))
+        return {
+            'extension': attachment.extension,
+            'content': content,
+        }
 
-    return attachment
+    raise Exception('Unknown data_type="{}"'.format(data_type))
 
 
 def upload_images(vk, file_names) -> str:
@@ -87,7 +104,7 @@ def upload_doc(vk, file_name) -> str:
     return attachment
 
 
-def get_vk_attachment(vk, attachment: str, data_type: str) -> str:
+def get_vk_attachment(vk, attachment: typing.Union[FileAttachment, typing.List[FileAttachment]], data_type: str) -> str:
     import base64
     import io
 
@@ -96,7 +113,9 @@ def get_vk_attachment(vk, attachment: str, data_type: str) -> str:
         items = []
 
         for item in attachment:
-            img = base64.b64decode(item.encode('utf-8'))
+            content = item.content
+
+            img = base64.b64decode(content.encode('utf-8'))
             img_file = io.BytesIO(img)
             items.append(img_file)
 
@@ -105,7 +124,9 @@ def get_vk_attachment(vk, attachment: str, data_type: str) -> str:
 
     # Картинка или гифка
     elif data_type in [TYPE_IMAGE, TYPE_GIF]:
-        img = base64.b64decode(attachment.encode('utf-8'))
+        content = attachment.content
+
+        img = base64.b64decode(content.encode('utf-8'))
         img_file = io.BytesIO(img)
 
         if data_type == TYPE_IMAGE:
@@ -113,7 +134,7 @@ def get_vk_attachment(vk, attachment: str, data_type: str) -> str:
 
         else:
             # Нужно подсказать методу vk_api о типе документа
-            img_file.name = 'file.gif'
+            img_file.name = 'file.' + attachment.extension
             attachment = upload_doc(vk, img_file)
 
         return attachment

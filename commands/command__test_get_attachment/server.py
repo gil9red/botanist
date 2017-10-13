@@ -62,16 +62,29 @@ class TestAttachmentServer(BaseServer):
 
         if func_name == common.TYPE_IMAGE:
             file = current_dir / 'Jimm Kerry.jpg'
-            result = 'Jimm Kerry.jpg'
-            attachment = file.read_bytes()
+            result = file.name  # 'Jimm Kerry.jpg'
+            extension = file.suffix[1:]
+            content = file.read_bytes()
+
+            attachment = common.FileAttachment(extension=extension, content=content)
 
         elif func_name == common.TYPE_GIF:
             file = current_dir / 'Jimm Kerry.gif'
             result = 'Jimm Kerry.gif'
-            attachment = file.read_bytes()
+            extension = file.suffix[1:]
+            content = file.read_bytes()
+
+            attachment = common.FileAttachment(extension=extension, content=content)
 
         elif func_name == common.TYPE_LIST_IMAGE:
-            attachment = [file.read_bytes() for file in current_dir.glob('images/*.jpg')]
+            attachment = []
+
+            for file in current_dir.glob('images/*.jpg'):
+                extension = file.suffix[1:]
+                content = file.read_bytes()
+
+                file_attachment = common.FileAttachment(extension=extension, content=content)
+                attachment.append(file_attachment)
 
         else:
             message = "Неправильная команда '{}': не найдена функция '{}', доступны следующие функции: {}"
