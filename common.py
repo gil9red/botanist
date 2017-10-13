@@ -104,7 +104,7 @@ def upload_doc(vk, file_name) -> str:
     return attachment
 
 
-def get_vk_attachment(vk, attachment: typing.Union[FileAttachment, typing.List[FileAttachment]], data_type: str) -> str:
+def get_vk_attachment(vk, attachment: typing.Union[typing.Dict[str, str], typing.List[typing.Dict[str, str]]], data_type: str) -> str:
     import base64
     import io
 
@@ -113,7 +113,7 @@ def get_vk_attachment(vk, attachment: typing.Union[FileAttachment, typing.List[F
         items = []
 
         for item in attachment:
-            content = item.content
+            content = item['content']
 
             img = base64.b64decode(content.encode('utf-8'))
             img_file = io.BytesIO(img)
@@ -124,7 +124,7 @@ def get_vk_attachment(vk, attachment: typing.Union[FileAttachment, typing.List[F
 
     # Картинка или гифка
     elif data_type in [TYPE_IMAGE, TYPE_GIF]:
-        content = attachment.content
+        content = attachment['content']
 
         img = base64.b64decode(content.encode('utf-8'))
         img_file = io.BytesIO(img)
@@ -134,7 +134,7 @@ def get_vk_attachment(vk, attachment: typing.Union[FileAttachment, typing.List[F
 
         else:
             # Нужно подсказать методу vk_api о типе документа
-            img_file.name = 'file.' + attachment.extension
+            img_file.name = 'file.' + attachment['extension']
             attachment = upload_doc(vk, img_file)
 
         return attachment
