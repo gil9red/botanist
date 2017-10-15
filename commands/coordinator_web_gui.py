@@ -25,6 +25,7 @@ if dir_up not in sys.path:
 
 
 from commands import execute
+import db
 
 import cherrypy
 
@@ -53,6 +54,11 @@ class Root:
             return result
 
         return rs
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def get_all_server_with_commands(self):
+        return db.get_all_server_with_commands()
 
     @cherrypy.expose
     def index(self):
@@ -116,35 +122,35 @@ class Root:
             function create_img_base64(attachment) {
                 return '<img src="data:image/' + attachment.extension + ';base64, ' + attachment.content + '">';
             }
-            
+
             function fill_raw_result() {
                 var json_data = window.rs_json;
-                                
+
                 if (!$('#show_attachment_value > input').is(':checked') && window.attachment != null) {
                     var attachment_length = JSON.stringify(window.attachment).length;
                     var attachment_text = '<скрыто ' + attachment_length + ' символов>';
-                    
+
                     // Clone
                     json_data = JSON.parse(JSON.stringify(json_data));
                     json_data.attachment = attachment_text;
                 }
-            
+
                 var json_str = JSON.stringify(json_data, undefined, 4);
                 console.log(json_str);
-                
+
                 json_str = syntaxHighlight(json_str);
-                
+
                 $('.raw_result.show > pre').html(json_str);
                 $('.raw_result.show').show();
             }
-            
+
             function execute() {
                 $('.raw_result.show').hide();
                 $('.result.show').hide();
-                
+
                 window.rs_json = null;
                 window.attachment = null;
-            
+
                 $.ajax({
                     type: 'POST',
                     url: "/execute",
@@ -152,49 +158,85 @@ class Root:
                     dataType: "json",  // тип данных загружаемых с сервера
                     processData: false,
                     data: JSON.stringify({'command': $('#update_box').val()}),
-                    
+
                     success: function(data) {
                         window.rs_json = data;
                         window.attachment = data.attachment;
-                                            
+
                         if (window.attachment != null) {
                             $('#show_attachment_value').show();
                         } else {
                             $('#show_attachment_value').hide();
                         }
-                    
+
                         fill_raw_result();
-                        
+
                         var result_body = "<div>";
                         result_body += '<pre>' + data.result + '</pre>';
-                        
+
                         switch (data.type) {
                             case 'image':
                             case 'gif':
                                 result_body += '<br>';
                                 result_body += create_img_base64(data.attachment);
-                                
+
                                 break;
-                            
+
                             case 'list_image':
                                 result_body += '<br>';
-                                
+
                                 data.attachment.forEach(function(item, i, arr) {
                                     result_body += create_img_base64(item) + "<br><br>";
                                 });
-                        
+
                                 break;
                         }
-                        
+
                         result_body += '</div>';
-                        
+
                         console.log(result_body);
-                        
+
                         $('.result.show > .body').html(result_body);
                         $('.result.show').show();
                     },
-                    
+
                     error: function (jqXHR, exception) {
+                        var msg = '';
+
+                        if (jqXHR.status === 0) {
+                            msg = 'Not connect. Verify Network.';
+                        } else if (jqXHR.status == 404) {
+                            msg = 'Requested page not found. [404]';
+                        } else if (jqXHR.status == 500) {
+                            msg = 'Internal Server Error [500].';
+                        } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.';
+                        } else if (exception === 'timeout') {
+                            msg = 'Time out error.';
+                        } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.';
+                        } else {
+                            msg = 'Uncaught Error. ' + jqXHR.responseText;
+                        }
+
+                        console.log(msg);
+                        $('.raw_result.show > pre').html(msg);
+                        $('.raw_result.show').show();
+                    },
+                });
+            }
+            
+            function load_servers_info() {
+                $.ajax({
+                    url: '/get_all_server_with_commands',
+                    dataType: "json",  // тип данных загружаемых с сервера
+                    success: function(data) {
+                        console.log(data);
+                        console.log(JSON.stringify(data));
+        
+                    },
+        
+                    error: function(data) {
                         var msg = '';
                         
                         if (jqXHR.status === 0) {
@@ -214,11 +256,15 @@ class Root:
                         }
                         
                         console.log(msg);
-                        $('.raw_result.show > pre').html(msg);
-                        $('.raw_result.show').show();
-                    },
+                        alert(msg);
+                    }
                 });
             }
+            
+            $(document).ready(function() {
+                load_servers_info();
+            });
+            
         </script>
         """
         
