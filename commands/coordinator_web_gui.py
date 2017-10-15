@@ -7,9 +7,12 @@ __author__ = 'ipetrash'
 # TODO: добавить таблицу серверов и показывать из базы информацию о них.
 #       круто будет выглядеть когда на странице можно увидеть какие из серверов запущены,
 #       а какие нет.
-# TODO: показывать какие команды к каким серверам относятся
-# TODO: сервера и их комманды возвращать ajax'ом и получать через db.get_all_server_with_commands
-
+#       Показывать какие команды к каким серверам относятся
+#
+#       Сделать таблицу серверов и команды можно как тут:
+#           https://raw.githubusercontent.com/gil9red/ordering_lunch_at_Nashe_Vse/master/screenshot_3.png
+#           https://github.com/gil9red/ordering_lunch_at_Nashe_Vse/blob/master/main.py#L267
+#           https://github.com/gil9red/ordering_lunch_at_Nashe_Vse/blob/master/templates/admin.html#L94
 
 import sys
 
