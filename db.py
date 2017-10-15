@@ -131,6 +131,31 @@ def get_all_server() -> typing.List[dict]:
         return [dict(x) for x in connect.execute('SELECT * FROM Server').fetchall()]
 
 
+def get_commands_by_guid(guid: str) -> [(str, str, str)]:
+    with create_connect() as connect:
+        items = connect.execute('''
+            SELECT Command.name, Command.description, Server.url || Command.uri 
+            FROM Command, Server 
+            WHERE Command.server_guid = :guid and Server.guid = :guid
+
+            -- Сортировка по приоритету по убыванию и сортировка по названию по возрастанию
+            ORDER BY Command.priority desc, Command.name asc
+
+        ''', {'guid': guid}).fetchall()
+
+        return items
+
+
+def get_all_server_with_commands() -> typing.List[dict]:
+    server_list = []
+
+    for server in get_all_server():
+        server['command_list'] = get_commands_by_guid(server['guid'])
+        server_list.append(server)
+
+    return server_list
+
+
 def get_url_server(guid: str) -> typing.Union[str, None]:
     with create_connect() as connect:
         url = connect.execute('SELECT Server.url FROM Server WHERE Server.guid = :guid ', {'guid': guid}).fetchone()
@@ -203,3 +228,13 @@ def update_availability(server_guid: str, availability: bool):
 
 # Выполнение
 init_db()
+
+
+if __name__ == '__main__':
+    for server in get_all_server_with_commands():
+        print(server)
+
+        for command in server['command_list']:
+            print(f'    {command}')
+
+        print()
