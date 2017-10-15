@@ -153,7 +153,11 @@ class CoordinatorServer(BaseServer):
             import requests
 
             while True:
-                for name, guid, url, _ in db.get_all_server():
+                for server in db.get_all_server():
+                    name = server['name']
+                    guid = server['guid']
+                    url = server['url']
+
                     try:
                         requests.get(url, timeout=0.1)
                         availability = True

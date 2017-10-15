@@ -16,8 +16,10 @@ file_name = os.path.join(dir, DB_FILE_NAME)
 FULL_DB_FILE_NAME = os.path.abspath(file_name)
 
 
+import sqlite3
+
+
 def create_connect():
-    import sqlite3
     return sqlite3.connect(FULL_DB_FILE_NAME)
 
 
@@ -122,9 +124,11 @@ def get_execute_command_url_server(guid: str) -> typing.Union[str, None]:
     return url_list[0]
 
 
-def get_all_server() -> typing.List[typing.Tuple[str, str, str, str]]:
+def get_all_server() -> typing.List[dict]:
     with create_connect() as connect:
-        return connect.execute('SELECT name, guid, url, file_name FROM Server').fetchall()
+        connect.row_factory = sqlite3.Row
+
+        return [dict(x) for x in connect.execute('SELECT * FROM Server').fetchall()]
 
 
 def get_url_server(guid: str) -> typing.Union[str, None]:
