@@ -132,9 +132,9 @@ class Root:
                         background-color: #dedede;
                     }
                 
-                table tr[availability="0"] td, table tr[availability="0"] th {
+                table tr[availability="1"] td, table tr[availability="1"] th {
                     /* TODO: разобраться почему два раза выделяет td */
-                    /*background-color: rgba(255, 255, 0, 0.25);*/
+                    background-color: rgba(34, 177, 76, 0.35);
                 }
                 
         </style>
@@ -356,17 +356,8 @@ class Root:
             {% endfor %}
         </table>
         
-        <br><br><br>
-        
-        <table style="width: 50%;">
-            <tr><th>Команда</th><th>Описание</th></tr>
-            
-            {% for name, description in table_command %}
-                <tr><td>{{ name }}</td><td>{{ description }}</td></tr>
-            {% endfor %}
-            
-        </table>
-
+        <br>
+        <p>Input command:</>
         <br>
         <input type='text' id='update_box' value='str2hex Привет Мир!' onkeydown="if (event.keyCode == 13) { execute(); return false; }" size='100' />
         <input type='submit' value='execute' onClick='execute(); return false' />
