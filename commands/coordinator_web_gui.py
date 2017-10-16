@@ -142,6 +142,9 @@ class Root:
                     /* TODO: разобраться почему два раза выделяет td */
                     background-color: rgba(34, 177, 76, 0.35);
                 }
+                table tr[availability="0"] td, table tr[availability="0"] th {
+                    background-color: rgba(255, 128, 0, 0.35);
+                }
                 
                 .server_separator {
                     background-color: #909090;
