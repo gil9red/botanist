@@ -31,7 +31,31 @@ from commands import execute
 import db
 
 import cherrypy
+from jinja2 import Template
 
+
+# """
+#     Название
+#     name
+#
+#     GUID
+#     guid
+#
+#     Url
+#     url
+#
+#     Полный путь к файлу сервера
+#     file_name
+#
+#     Дата последнего запроса к серверу
+#     datetime_last_request
+#
+#     Доступность
+#     availability
+#
+#     Время последней доступности
+#     datetime_last_availability
+# """
 
 class Root:
     @cherrypy.expose
@@ -65,8 +89,7 @@ class Root:
 
     @cherrypy.expose
     def index(self):
-        # TODO: добавить модуль генерации по шаблону, например jinja2
-        yield """
+        text = """
 <html>
     <head>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
@@ -269,22 +292,16 @@ class Root:
             });
             
         </script>
-        """
         
-        from db import get_all_command_name_by_description
+        <table style="width: 50%;">
+            <tr><th>Команда</th><th>Описание</th></tr>
+            
+            {% for name, description in table_command %}
+                <tr><td>{{ name }}</td><td>{{ description }}</td></tr>
+            {% endfor %}
+            
+        </table>
 
-        table_command = '<table style="width: 50%;">'
-        table_command += '<tr><th>Команда</th><th>Описание</th></tr>'
-
-        for name, description in get_all_command_name_by_description().items():
-            row = '<tr><td>{}</td><td>{}</td></tr>'.format(name, description)
-            table_command += row
-
-        table_command += '</table>'
-
-        yield table_command
-
-        yield """
         <br>
         <input type='text' id='update_box' value='str2hex Привет Мир!' onkeydown="if (event.keyCode == 13) { execute(); return false; }" size='100' />
         <input type='submit' value='execute' onClick='execute(); return false' />
@@ -306,6 +323,8 @@ class Root:
     </body>
 </html>
 """
+        template = Template(text)
+        return template.render(table_command=db.get_all_command_name_by_description().items())
 
 
 if __name__ == '__main__':
