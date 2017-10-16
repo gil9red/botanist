@@ -11,6 +11,9 @@ __author__ = 'ipetrash'
 import sys
 
 
+# TODO: переместить в папку coordinator_web_gui, перенести html-текст в файл, к dir_up добавить dir_up_up
+
+
 # Добавление пути к папке с проектом, чтобы заработал импорт пакета commands и таких модулей
 # как db.py и common.py
 import pathlib
