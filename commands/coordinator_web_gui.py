@@ -14,7 +14,6 @@ import sys
 # TODO: переместить в папку coordinator_web_gui, перенести html-текст в файл, к dir_up добавить dir_up_up
 # TODO: переместить jquery.js в папку
 
-# TODO: все настройки стиля таблиц сервера и команд перенести в css
 # TODO: возможность "свернуть" список команд, добавить кнопку "сворачивания"/"разворачивания" всех команд
 
 
@@ -146,6 +145,17 @@ class Root:
                 
                 .server_separator {
                     background-color: #909090;
+                }
+                
+                .command > .cell {
+                    padding: 0px;
+                }
+                
+                .command > .cell table tr:first-child th:nth-child(1) {
+                    width: 15%;
+                }
+                .command > .cell table tr:first-child th:nth-child(2) {
+                    width: 35%;
                 }
                 
         </style>
@@ -340,13 +350,13 @@ class Root:
                     <td>{{ server["file_name"] }}</td>
                 </tr>
                 
-                <tr availability="{{ server["availability"] }}">
+                <tr class="command" availability="{{ server["availability"] }}">
                     <td></td>
-                    <td style="padding: 0px" colspan="99">
+                    <td class="cell" colspan="99">
                         <table class="inner">
                             <tr>
-                                <th style="width: 15%;">{{ command_headers[0] }}</th>
-                                <th style="width: 35%;">{{ command_headers[1] }}</th>
+                                <th>{{ command_headers[0] }}</th>
+                                <th>{{ command_headers[1] }}</th>
                                 <th>{{ command_headers[2] }}</th>
                             </tr>
                             
