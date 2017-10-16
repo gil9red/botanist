@@ -142,6 +142,10 @@ class Root:
                     background-color: rgba(34, 177, 76, 0.35);
                 }
                 
+                .server_separator {
+                    background-color: #909090;
+                }
+                
         </style>
     </head>
 
@@ -356,7 +360,7 @@ class Root:
                 </tr>
                 
                 {% if loop.index < all_server_with_commands|length %}
-                <tr><td colspan="99"></td></tr>
+                <tr class="server_separator"><td colspan="99"></td></tr>
                 {% endif %}
             {% endfor %}
         </table>
