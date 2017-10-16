@@ -11,8 +11,7 @@ __author__ = 'ipetrash'
 import sys
 
 
-# TODO: переместить в папку coordinator_web_gui, перенести html-текст в файл, к dir_up добавить dir_up_up
-# TODO: переместить jquery.js в папку
+# TODO: перенести html-текст в файл
 
 # TODO: возможность "свернуть" список команд, добавить кнопку "сворачивания"/"разворачивания" всех команд
 
@@ -22,9 +21,13 @@ import sys
 import pathlib
 current_dir = pathlib.Path(__file__).parent.resolve()
 dir_up = str(current_dir.parent.resolve())
+dir_up_up = str(current_dir.parent.parent.resolve())
 
 if dir_up not in sys.path:
     sys.path.append(dir_up)
+
+if dir_up_up not in sys.path:
+    sys.path.append(dir_up_up)
 
 
 from commands import execute
@@ -69,7 +72,7 @@ class Root:
         text = """
 <html>
     <head>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <script type="text/javascript" src="jquery 1.4.2.min.js"></script>
         <style>
             /* 
                 https://stackoverflow.com/a/7220510/5909792
@@ -420,5 +423,14 @@ if __name__ == '__main__':
 
     # Autoreload off
     cherrypy.config.update({'engine.autoreload.on': False})
+
+    import pathlib
+    static_dir = str((pathlib.Path(__file__).parent / "static").resolve())
+
+    # For include css, js in html
+    cherrypy.config.update({
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': static_dir,
+    })
 
     cherrypy.quickstart(Root())
