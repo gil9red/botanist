@@ -13,6 +13,8 @@ import common
 DEBUG = False
 # DEBUG = True
 
+# TODO: для любой команды добавлять пример ее использования
+
 # TODO: для logging.basicConfig определить filename для сбора всякие логов (проверить
 #       как сработает для уже установленых логов)
 # cherrypy.config.update({
