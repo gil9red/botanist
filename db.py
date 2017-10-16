@@ -235,6 +235,6 @@ if __name__ == '__main__':
         print(server)
 
         for command in server['command_list']:
-            print(f'    {command}')
+            print('    {command}'.format(command=command))
 
         print()
