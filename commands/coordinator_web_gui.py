@@ -4,15 +4,9 @@
 __author__ = 'ipetrash'
 
 
-# TODO: добавить таблицу серверов и показывать из базы информацию о них.
+# TODO: брать таблицу серверов из ajax и показывать из базы информацию о них.
 #       круто будет выглядеть когда на странице можно увидеть какие из серверов запущены,
 #       а какие нет.
-#       Показывать какие команды к каким серверам относятся
-#
-#       Сделать таблицу серверов и команды можно как тут:
-#           https://raw.githubusercontent.com/gil9red/ordering_lunch_at_Nashe_Vse/master/screenshot_3.png
-#           https://github.com/gil9red/ordering_lunch_at_Nashe_Vse/blob/master/main.py#L267
-#           https://github.com/gil9red/ordering_lunch_at_Nashe_Vse/blob/master/templates/admin.html#L94
 
 import sys
 
@@ -33,29 +27,6 @@ import db
 import cherrypy
 from jinja2 import Template
 
-
-# """
-#     Название
-#     name
-#
-#     GUID
-#     guid
-#
-#     Url
-#     url
-#
-#     Полный путь к файлу сервера
-#     file_name
-#
-#     Дата последнего запроса к серверу
-#     datetime_last_request
-#
-#     Доступность
-#     availability
-#
-#     Время последней доступности
-#     datetime_last_availability
-# """
 
 class Root:
     @cherrypy.expose
@@ -120,6 +91,46 @@ class Root:
                     border: 1px double #333; /* Рамка таблицы */
                     padding: 5px;
                 }
+                
+                table th {
+                    border-width: 1px;
+                    padding: 8px;
+                    border-style: solid;
+                    border-color: #666666;
+                    background-color: #c0c0c0;
+                    text-align: left;
+                }
+                
+                table.inner {
+                    font-size: 90%;
+                    width: 100%;
+                    
+                    border-collapse: collapse;
+                }
+                    table.inner td, table.inner th {
+                        border-bottom: 1px double rgba(0, 0, 0, 0);
+                        border-top: 1px double rgba(0, 0, 0, 0);
+                    }
+                    table.inner td:first-child, table.inner th:first-child {
+                        border-left: 1px double rgba(0, 0, 0, 0);
+                    }
+                    table.inner th:last-child, table.inner td:last-child {
+                        border-right: 1px double rgba(0, 0, 0, 0);
+                    }
+                    
+                    table.inner th {
+                        border-bottom: 1px double rgba(0, 0, 0, 1);
+                    }
+                    
+                    table.inner th {
+                        background-color: #dedede;
+                    }
+                
+                table tr[availability="0"] td, table tr[availability="0"] th {
+                    /* TODO: разобраться почему два раза выделяет td */
+                    /*background-color: rgba(255, 255, 0, 0.25);*/
+                }
+                
         </style>
     </head>
 
@@ -293,6 +304,54 @@ class Root:
             
         </script>
         
+        
+        <table>
+            <tr>
+                {% for header in server_headers %}
+                    <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+        
+            {% for server in all_server_with_commands %}
+                <tr availability="{{ server["availability"] }}">
+                    <td>{{ server["name"] }}</td>
+                    <td>{{ server["guid"] }}</td>
+                    <td>{{ server["url"] }}</td>
+                    <td>{{ server["availability"] }}</td>
+                    <td>{{ server["datetime_last_availability"] }}</td>
+                    <td>{{ server["datetime_last_request"] }}</td>
+                    <td>{{ server["file_name"] }}</td>
+                </tr>
+                
+                <tr availability="{{ server["availability"] }}">
+                    <td></td>
+                    <td style="padding: 0px" colspan="99">
+                        <table class="inner">
+                            <tr>
+                                <th style="width: 15%;">{{ command_headers[0] }}</th>
+                                <th style="width: 35%;">{{ command_headers[1] }}</th>
+                                <th>{{ command_headers[2] }}</th>
+                            </tr>
+                            
+                            {% for command in server["command_list"] %}
+                                <tr>
+                                    <td>{{ command[0] }}</td>
+                                    <td>{{ command[1] }}</td>
+                                    <td>{{ command[2] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                </tr>
+                
+                {% if loop.index < all_server_with_commands|length %}
+                <tr><td colspan="99"></td></tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+        
+        <br><br><br>
+        
         <table style="width: 50%;">
             <tr><th>Команда</th><th>Описание</th></tr>
             
@@ -324,7 +383,14 @@ class Root:
 </html>
 """
         template = Template(text)
-        return template.render(table_command=db.get_all_command_name_by_description().items())
+        return template.render(
+            table_command=db.get_all_command_name_by_description().items(),
+
+            server_headers=['Название', 'GUID', 'Url', 'Доступность', 'Время последней доступности',
+                            'Дата последнего запроса к серверу', 'Полный путь к файлу сервера'],
+            command_headers=['Команда', 'Описание', 'Url'],
+            all_server_with_commands=db.get_all_server_with_commands(),
+        )
 
 
 if __name__ == '__main__':
