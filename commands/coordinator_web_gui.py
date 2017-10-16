@@ -117,6 +117,12 @@ class Root:
                     table.inner th:last-child, table.inner td:last-child {
                         border-right: 1px double rgba(0, 0, 0, 0);
                     }
+                    table.inner tr td {
+                        border-bottom: 1px double rgba(0, 0, 0, 1);
+                    }
+                    table.inner tr:last-child td {
+                        border-bottom: 1px double rgba(0, 0, 0, 0);
+                    }
                     
                     table.inner th {
                         border-bottom: 1px double rgba(0, 0, 0, 1);
