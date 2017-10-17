@@ -34,7 +34,6 @@ from commands import execute
 import db
 
 import cherrypy
-from jinja2 import Template
 
 
 class Root:
@@ -65,11 +64,18 @@ class Root:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def get_all_server_with_commands(self):
-        return db.get_all_server_with_commands()
+        return {
+            'server_headers': [
+                'Название', 'GUID', 'Url', 'Доступность', 'Время последней доступности',
+                'Дата последнего запроса к серверу', 'Полный путь к файлу сервера'
+            ],
+            'command_headers': ['Команда', 'Описание', 'Url'],
+            'servers': db.get_all_server_with_commands(),
+        }
 
     @cherrypy.expose
     def index(self):
-        text = """
+        return """
 <html>
     <head>
         <script type="text/javascript" src="jquery 1.4.2.min.js"></script>
@@ -303,7 +309,67 @@ class Root:
                     success: function(data) {
                         console.log(data);
                         console.log(JSON.stringify(data));
-        
+                        
+                        var table_servers = $('#servers');
+                        table_servers.empty();
+                        
+                        var server_headers = $('<tr>');
+                        data.server_headers.forEach(function(item, i, arr) {
+                            server_headers.append('<th>' + item + '</th>');
+                        });
+                        
+                        table_servers.append(server_headers);
+                        
+                        // Будут добавлены для каждой вложенной таблицы команд
+                        var command_headers = $('<tr>');
+                        data.command_headers.forEach(function(item, i, arr) {
+                            command_headers.append('<th>' + item + '</th>');
+                        });
+                        
+                        data.servers.forEach(function(server, i, arr) {
+                            var server_tr = $('<tr>');
+                            table_servers.append(server_tr);
+                            server_tr.attr('availability', server.availability);
+                            
+                            server_tr.append('<td>' + server.name + '</td>');
+                            server_tr.append('<td>' + server.guid + '</td>');
+                            server_tr.append('<td>' + server.url + '</td>');
+                            server_tr.append('<td>' + server.availability + '</td>');
+                            server_tr.append('<td>' + server.datetime_last_availability + '</td>');
+                            server_tr.append('<td>' + server.datetime_last_request + '</td>');
+                            server_tr.append('<td>' + server.file_name + '</td>');
+                            
+                            var server_command_tr = $('<tr>');
+                            table_servers.append(server_command_tr);
+                            server_command_tr.attr('availability', server.availability);
+                            server_command_tr.attr('class', 'command');
+                            server_command_tr.append('<td></td>');
+                            
+                            var server_command_td = $('<td>');
+                            server_command_tr.append(server_command_td);
+                            server_command_td.attr('colspan', '99');
+                            server_command_td.attr('class', 'cell');
+                            
+                            var command_table = $('<table>');
+                            server_command_td.append(command_table);
+                            command_table.attr('class', 'inner');
+                            command_table.append($('<tr>')).append(command_headers.clone());
+                            
+                            // Добавление команд
+                            server.command_list.forEach(function(command, i, arr) {
+                                var command_tr = $('<tr>');
+                                command_table.append(command_tr);
+                                
+                                command_tr.append('<td>' + command[0] + '</td>');
+                                command_tr.append('<td>' + command[1] + '</td>');
+                                command_tr.append('<td>' + command[2] + '</td>');
+                            });
+                            
+                            // Пустая строка между серверами
+                            if (i + 1 < arr.length) {
+                                table_servers.append('<tr><td class="server_separator" colspan="99"></td></tr>');
+                            }
+                        });
                     },
         
                     error: function(data) {
@@ -333,55 +399,16 @@ class Root:
             
             $(document).ready(function() {
                 load_servers_info();
+                
+                // Повторяем каждые 10 секунд
+                setInterval(load_servers_info, 10000);
+                
             });
             
         </script>
         
         
-        <table>
-            <tr>
-                {% for header in server_headers %}
-                    <th>{{ header }}</th>
-                {% endfor %}
-            </tr>
-        
-            {% for server in all_server_with_commands %}
-                <tr availability="{{ server["availability"] }}">
-                    <td>{{ server["name"] }}</td>
-                    <td>{{ server["guid"] }}</td>
-                    <td>{{ server["url"] }}</td>
-                    <td>{{ server["availability"] }}</td>
-                    <td>{{ server["datetime_last_availability"] }}</td>
-                    <td>{{ server["datetime_last_request"] }}</td>
-                    <td>{{ server["file_name"] }}</td>
-                </tr>
-                
-                <tr class="command" availability="{{ server["availability"] }}">
-                    <td></td>
-                    <td class="cell" colspan="99">
-                        <table class="inner">
-                            <tr>
-                                <th>{{ command_headers[0] }}</th>
-                                <th>{{ command_headers[1] }}</th>
-                                <th>{{ command_headers[2] }}</th>
-                            </tr>
-                            
-                            {% for command in server["command_list"] %}
-                                <tr>
-                                    <td>{{ command[0] }}</td>
-                                    <td>{{ command[1] }}</td>
-                                    <td>{{ command[2] }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    </td>
-                </tr>
-                
-                {% if loop.index < all_server_with_commands|length %}
-                <tr class="server_separator"><td colspan="99"></td></tr>
-                {% endif %}
-            {% endfor %}
-        </table>
+        <table id="servers"></table>
         
         <br>
         <p>Input command:</>
@@ -406,15 +433,6 @@ class Root:
     </body>
 </html>
 """
-        template = Template(text)
-        return template.render(
-            table_command=db.get_all_command_name_by_description().items(),
-
-            server_headers=['Название', 'GUID', 'Url', 'Доступность', 'Время последней доступности',
-                            'Дата последнего запроса к серверу', 'Полный путь к файлу сервера'],
-            command_headers=['Команда', 'Описание', 'Url'],
-            all_server_with_commands=db.get_all_server_with_commands(),
-        )
 
 
 if __name__ == '__main__':
