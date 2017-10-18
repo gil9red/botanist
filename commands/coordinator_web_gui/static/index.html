@@ -251,6 +251,7 @@
                         data.servers.forEach(function(server, i, arr) {
                             var server_tr = $('<tr>');
                             table_servers.append(server_tr);
+                            server_tr.attr('class', 'server');
                             server_tr.attr('availability', server.availability);
 
                             server_tr.append('<td>' + server.name + '</td>');
@@ -289,9 +290,13 @@
 
                             // Пустая строка между серверами
                             if (i + 1 < arr.length) {
-                                table_servers.append('<tr><td class="server_separator" colspan="99"></td></tr>');
+                                table_servers.append('<tr class="server_separator"><td colspan="99"></td></tr>');
                             }
                         });
+
+                        //change_visible_servers();
+                        //change_visible_commands();
+                        change_visible_servers_and_commands();
                     },
 
                     error: function(data) {
@@ -319,24 +324,62 @@
                 });
             }
 
+            function change_visible_servers_and_commands() {
+                // Сначала сделаем таблицу и все в ней видимыми
+                $('#servers').show();
+                $('#servers tr').show();
+
+                // Видимость таблицы серверов
+                if (!$('#visible_servers').is(':checked')) {
+                    $('#servers').hide();
+
+                // Если таблицу серверов нужно показать
+                } else {
+                    var is_visible_commands = $('#visible_commands').is(':checked');
+
+                    // Прячем команды
+                    if (!is_visible_commands) {
+                        $('.command').hide();
+                    }
+
+                    // В зависимости от доступности сервера прячем его
+                    if ($('#show_only_availability').is(':checked')) {
+                        var not_availability_servers = $('.server[availability="0"]');
+                        not_availability_servers.each(function(i) {
+                            var server = $(this);
+                            console.log('server=' + server);
+
+                            var command = server.next('.command');
+                            var separator = command.next('.server_separator');
+
+                            server.hide();
+                            command.hide();
+                            separator.hide();
+                        });
+                    }
+                }
+            }
+
             $(document).ready(function() {
                 load_servers_info();
 
                 // Повторяем каждые 10 секунд
                 setInterval(load_servers_info, 10000);
-
             });
 
         </script>
 
+        <input type="checkbox" id="visible_servers" onclick="change_visible_servers_and_commands();" checked>Show servers
+        <input type="checkbox" id="visible_commands" onclick="change_visible_servers_and_commands();" checked>Show commands
+        <input type="checkbox" id="show_only_availability" onclick="change_visible_servers_and_commands();">Only availability
+        <br><br>
 
         <table id="servers"></table>
 
         <br>
         <p>Input command:</p>
-        <br>
         <input type='text' id='update_box' value='str2hex Привет Мир!' onkeydown="if (event.keyCode == 13) { execute(); return false; }" size='100' />
-        <input type='submit' value='execute' onClick='execute(); return false' />
+        <input type='submit' value='execute' onclick='execute(); return false' />
 
         <br>
 
@@ -348,7 +391,7 @@
         <br>
         <div class="raw_result show" style="display: none; width: 50%;">
             <p>Raw result:</p>
-            <div style="display: none" id="show_attachment_value"><input type="checkbox" onClick='fill_raw_result()'>Show attachment value</div>
+            <div style="display: none" id="show_attachment_value"><input type="checkbox" onclick='fill_raw_result()'>Show attachment value</div>
             <pre></pre>
         </div>
 
