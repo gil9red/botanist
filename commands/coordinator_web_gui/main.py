@@ -4,6 +4,9 @@
 __author__ = 'ipetrash'
 
 
+# TODO: вынести в корень проекта
+# TODO: добавить README вместе с скриншотами
+
 import sys
 
 
