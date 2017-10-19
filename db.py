@@ -166,6 +166,10 @@ def get_url_server(guid: str) -> typing.Union[str, None]:
 
 
 def get_url_coordinator() -> typing.Union[str, None]:
+    return get_url_server('B57B73C8F8D442C48EDAFC951963D7A5')
+
+
+def get_url_command_coordinator() -> typing.Union[str, None]:
     return get_execute_command_url_server('B57B73C8F8D442C48EDAFC951963D7A5')
 
 

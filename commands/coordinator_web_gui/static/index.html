@@ -92,6 +92,12 @@
                     width: 35%;
                 }
 
+                #info {
+                    color: red;
+                    font-size: 200%;
+                    padding: 15px;
+                }
+
         </style>
     </head>
 
@@ -224,7 +230,58 @@
                 });
             }
 
+            function check_availability_coordinator() {
+                var info = $('#info');
+                info.html('');
+                info.hide();
+
+                $.ajax({
+                    url: '/get_availability_coordinator',
+                    dataType: "json",  // тип данных загружаемых с сервера
+                    success: function(data) {
+                        console.log(data);
+                        console.log(JSON.stringify(data));
+
+                        if (data.ok == false) {
+                            if (data.url == null) {
+                                info.html('Сервер Координатора недоступен');
+
+                            } else {
+                                info.html('Сервер Координатора <a href="' + data.url + '">' + data.url + '</a> недоступен');
+                            }
+
+                            info.show();
+                        }
+                    },
+
+                    error: function(data) {
+                        var msg = '';
+
+                        if (jqXHR.status === 0) {
+                            msg = 'Not connect. Verify Network.';
+                        } else if (jqXHR.status == 404) {
+                            msg = 'Requested page not found. [404]';
+                        } else if (jqXHR.status == 500) {
+                            msg = 'Internal Server Error [500].';
+                        } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.';
+                        } else if (exception === 'timeout') {
+                            msg = 'Time out error.';
+                        } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.';
+                        } else {
+                            msg = 'Uncaught Error. ' + jqXHR.responseText;
+                        }
+
+                        console.log(msg);
+                        alert(msg);
+                    }
+                });
+            }
+
             function load_servers_info() {
+                check_availability_coordinator();
+
                 $.ajax({
                     url: '/get_all_server_with_commands',
                     dataType: "json",  // тип данных загружаемых с сервера
@@ -371,6 +428,8 @@
         <input type="checkbox" id="visible_commands" onclick="change_visible_servers_and_commands();" checked>Show commands
         <input type="checkbox" id="show_only_availability" onclick="change_visible_servers_and_commands();">Only availability
         <br><br>
+
+        <div id="info"></div>
 
         <table id="servers"></table>
 

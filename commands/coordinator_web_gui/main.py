@@ -4,9 +4,6 @@
 __author__ = 'ipetrash'
 
 
-# TODO: добавить команду проверки доступности координатора и делать по нем ajax запрос, и
-#       если координаор недоступен, не показывать таблицу серверов из базы и писать сообщение про координатора
-
 import sys
 
 
@@ -58,6 +55,22 @@ class Root:
             return result
 
         return rs
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def get_availability_coordinator(self):
+        url = db.get_url_coordinator()
+        if url:
+            import requests
+
+            try:
+                requests.get(url, timeout=0.1)
+                return {'ok': True, 'url': url}
+
+            except requests.exceptions.ConnectionError:
+                pass
+
+        return {'ok': False, 'url': url}
 
     @cherrypy.expose
     @cherrypy.tools.json_out()

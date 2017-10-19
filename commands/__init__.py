@@ -28,7 +28,7 @@ DEBUG = False
 
 def execute(command: str) -> dict:
     import db
-    url = db.get_url_coordinator()
+    url = db.get_url_command_coordinator()
     if not url:
         raise Exception('Не удалось получить адрес Координатора')
 
