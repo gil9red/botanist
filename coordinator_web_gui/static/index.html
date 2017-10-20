@@ -279,9 +279,9 @@
                 });
             }
 
-            function load_servers_info() {
+            function load_servers_info(ignore_autoupdate_flag = false) {
                 // Если не стоит флаг на автообновлении
-                if (!$('#autoupdate_servers').is(':checked')) {
+                if (!ignore_autoupdate_flag && !$('#autoupdate_servers').is(':checked')) {
                     return;
                 }
 
@@ -421,7 +421,8 @@
             }
 
             $(document).ready(function() {
-                load_servers_info();
+                // На первый раз вызов игнорируем флаг автообновления
+                load_servers_info(true);
 
                 // Повторяем каждые 10 секунд
                 setInterval(load_servers_info, 10000);
@@ -432,7 +433,7 @@
         <input type="checkbox" id="visible_servers" onclick="change_visible_servers_and_commands();" checked>Show servers
         <input type="checkbox" id="visible_commands" onclick="change_visible_servers_and_commands();" checked>Show commands
         <input type="checkbox" id="show_only_availability" onclick="change_visible_servers_and_commands();">Only availability
-        <input type="checkbox" id="autoupdate_servers" checked>Autoupdate servers
+        <input type="checkbox" id="autoupdate_servers">Autoupdate servers
         <br><br>
 
         <div id="info"></div>
