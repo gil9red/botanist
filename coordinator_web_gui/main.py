@@ -5,7 +5,6 @@ __author__ = 'ipetrash'
 
 
 # TODO: добавить в README.md скриншоты
-# TODO: завести чекбокс для включения таймера
 
 import pathlib
 STATIC_DIR = str((pathlib.Path(__file__).parent / "static").resolve())
