@@ -4,27 +4,10 @@
 __author__ = 'ipetrash'
 
 
-# TODO: вынести в корень проекта
-# TODO: добавить README.md вместе с скриншотами
+# TODO: добавить в README.md скриншоты
 # TODO: завести чекбокс для включения таймера
 
-import sys
-
-
-# Добавление пути к папке с проектом, чтобы заработал импорт пакета commands и таких модулей
-# как db.py и common.py
 import pathlib
-current_dir = pathlib.Path(__file__).parent.resolve()
-dir_up = str(current_dir.parent.resolve())
-dir_up_up = str(current_dir.parent.parent.resolve())
-
-if dir_up not in sys.path:
-    sys.path.append(dir_up)
-
-if dir_up_up not in sys.path:
-    sys.path.append(dir_up_up)
-
-
 STATIC_DIR = str((pathlib.Path(__file__).parent / "static").resolve())
 INDEX_FILE_NAME = str((pathlib.Path(__file__).parent / "static" / 'index.html').resolve())
 
