@@ -279,9 +279,9 @@
                 });
             }
 
-            function load_servers_info(ignore_autoupdate_flag = false) {
+            function load_servers_info() {
                 // Если не стоит флаг на автообновлении
-                if (!ignore_autoupdate_flag && !$('#autoupdate_servers').is(':checked')) {
+                if (!$('#autoupdate_servers').is(':checked')) {
                     return;
                 }
 
@@ -293,6 +293,15 @@
                     success: function(data) {
                         console.log(data);
                         console.log(JSON.stringify(data));
+
+                        // Если в кеше значение есть
+                        if (window.last_server_info != null && JSON.stringify(window.last_server_info) == JSON.stringify(data)) {
+                            console.log('Значение данных и кеша совпадают');
+                            return;
+                        }
+
+                        console.log('Обновление кеша');
+                        window.last_server_info = data;
 
                         var table_servers = $('#servers');
                         table_servers.empty();
@@ -314,15 +323,16 @@
                             var server_tr = $('<tr>');
                             table_servers.append(server_tr);
                             server_tr.attr('class', 'server');
+                            server_tr.attr('guid', server.guid);
                             server_tr.attr('availability', server.availability);
 
-                            server_tr.append('<td>' + server.name + '</td>');
-                            server_tr.append('<td>' + server.guid + '</td>');
-                            server_tr.append('<td>' + server.url + '</td>');
-                            server_tr.append('<td>' + server.availability + '</td>');
-                            server_tr.append('<td>' + server.datetime_last_availability + '</td>');
-                            server_tr.append('<td>' + server.datetime_last_request + '</td>');
-                            server_tr.append('<td>' + server.file_name + '</td>');
+                            server_tr.append(`<td column="name">${server.name}</td>`);
+                            server_tr.append(`<td column="guid">${server.guid}</td>`);
+                            server_tr.append(`<td column="url">${server.url}</td>`);
+                            server_tr.append(`<td column="availability">${server.availability}</td>`);
+                            server_tr.append(`<td column="datetime_last_availability">${server.datetime_last_availability}</td>`);
+                            server_tr.append(`<td column="datetime_last_request">${server.datetime_last_request}</td>`);
+                            server_tr.append(`<td column="file_name">${server.file_name}</td>`);
 
                             var server_command_tr = $('<tr>');
                             table_servers.append(server_command_tr);
@@ -421,8 +431,10 @@
             }
 
             $(document).ready(function() {
-                // На первый раз вызов игнорируем флаг автообновления
-                load_servers_info(true);
+                // Для кеширования данных
+                window.last_server_info = null;
+
+                load_servers_info();
 
                 // Повторяем каждые 10 секунд
                 setInterval(load_servers_info, 10000);

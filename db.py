@@ -131,6 +131,10 @@ def get_all_server() -> typing.List[dict]:
         return [dict(x) for x in connect.execute('SELECT * FROM Server').fetchall()]
 
 
+def get_guid_servers_by_availability() -> typing.Dict[str, int]:
+    return {server['guid']: server['availability'] for server in get_all_server()}
+
+
 def get_commands_by_guid(guid: str) -> [(str, str, str)]:
     with create_connect() as connect:
         items = connect.execute('''
