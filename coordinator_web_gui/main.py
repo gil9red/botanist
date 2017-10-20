@@ -5,6 +5,10 @@ __author__ = 'ipetrash'
 
 
 # TODO: добавить в README.md скриншоты
+# TODO: checkbox обновления серверов изменить на обновление доступности серверов
+# TODO: добавить запрос с сервера словаря guid=availability и по нему обновлять таблицу
+# TODO: на первый запрос выгрузить все сервера и команды, на последующие только их доступность
+
 
 import pathlib
 STATIC_DIR = str((pathlib.Path(__file__).parent / "static").resolve())
