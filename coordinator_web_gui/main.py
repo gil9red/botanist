@@ -4,9 +4,6 @@
 __author__ = 'ipetrash'
 
 
-# TODO: добавить в README.md скриншоты
-
-
 import pathlib
 STATIC_DIR = str((pathlib.Path(__file__).parent / "static").resolve())
 INDEX_FILE_NAME = str((pathlib.Path(__file__).parent / "static" / 'index.html').resolve())
