@@ -164,6 +164,9 @@
                     data: JSON.stringify({'command': $('#update_box').val()}),
 
                     success: function(data) {
+                        console.log(data);
+                        console.log(JSON.stringify(data));
+
                         window.rs_json = data;
                         window.attachment = data.attachment;
 
