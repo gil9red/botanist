@@ -176,8 +176,6 @@
                             $('#show_attachment_value').hide();
                         }
 
-                        fill_raw_result();
-
                         var result_body = "<div>";
                         result_body += '<pre>' + data.result + '</pre>';
 
@@ -205,6 +203,8 @@
 
                         $('.result.show > .body').html(result_body);
                         $('.result.show').show();
+
+                        fill_raw_result();
                     },
 
                     error: function (jqXHR, exception) {
