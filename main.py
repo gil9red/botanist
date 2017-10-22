@@ -118,8 +118,6 @@ def messages_get(vk):
 
 
 if __name__ == '__main__':
-    # TODO: переписать работу бота на longpoll: https://github.com/python273/vk_api/tree/master/examples/messages_bot
-
     # Просмотр статистики приложения: https://vk.com/stats?act=api&aid=5356487
     # Специально использую свое приложение (app_id=5356487) для работы с API, т.к. был случай блокировки
     # аккаунта из-за сбоя спам-системы, хотя за ограничения запросов в секунду не выходил:
@@ -154,3 +152,25 @@ if __name__ == '__main__':
 
         finally:
             time.sleep(1)
+
+    # TODO: переписать работу бота на longpoll: https://github.com/python273/vk_api/tree/master/examples/messages_bot
+    # Мини-пример:
+    #
+    # import vk_api
+    # from vk_api.longpoll import VkLongPoll, VkEventType
+    #
+    # vk_session = vk_api.VkApi(LOGIN, PASSWORD)
+    # vk_session.auth()
+    #
+    # vk = vk_session.get_api()
+    # longpoll = VkLongPoll(vk_session)
+    #
+    # for event in longpoll.listen():
+    #     if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+    #         print('id{}: "{}"'.format(event.user_id, event.text), end=' ')
+    #
+    #         vk.messages.send(
+    #             user_id=event.user_id,
+    #             message=event.text.upper()
+    #         )
+    #         print('ok')
