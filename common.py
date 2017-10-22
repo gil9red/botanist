@@ -49,6 +49,7 @@ def make_backslashreplace_console():
             pass
 
 
+# TODO: реализовать как Enum
 TYPE_TEXT = 'text'
 TYPE_IMAGE = 'image'
 TYPE_GIF = 'gif'
