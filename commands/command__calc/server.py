@@ -48,7 +48,7 @@ class CalcServer(BaseServer):
 
         # Калькулятор из: https://github.com/gil9red/SimplePyScripts/blob/master/calculator/use_numexpr_module/main.py
         import numexpr
-        result = str(numexpr.evaluate(command))
+        result = numexpr.evaluate(command)
 
         return result
 

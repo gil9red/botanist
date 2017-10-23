@@ -120,8 +120,9 @@ class BaseServer:
             self.last_elapsed = '{:.7f}'.format(time.clock() - start_elapsed)
             print('  Elapsed time: {} secs'.format(self.last_elapsed))
 
-        if type(rs) == str:
-            rs = self.generate_response(result=rs)
+        # Если в ответе пришел не словарь
+        if not isinstance(rs, dict):
+            rs = self.generate_response(result=str(rs))
 
         rs['elapsed'] = self.last_elapsed
 
