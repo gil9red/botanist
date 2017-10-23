@@ -75,7 +75,6 @@ class TextConverter(BaseServer):
             priority=4,
         ),
 
-        # TODO: возникли проблемы с этим кодированием: https://ru.stackoverflow.com/questions/734614/
         Command(
             name='str_2_base85',
             uri='/execute?str_2_base85',
@@ -88,6 +87,22 @@ class TextConverter(BaseServer):
             description='Конвертация из строки в base85 в текстовую. '
                         'Например: Бот, base85_2_str (4WzO(74dD(6!NmAs|R)Y;12K',
             priority=3
+            ,
+        ),
+
+        Command(
+            name='str_2_ascii85',
+            uri='/execute?str_2_ascii85',
+            description='Конвертация из текстовой строки в ascii85. Например: '
+                        'Бот, str_2_ascii85 https://en.wikipedia.org/wiki/Ascii85',
+            priority=2,
+        ),
+        Command(
+            name='ascii85_2_str',
+            uri='/execute?ascii85_2_str',
+            description="Конвертация из строки в ascii85 в текстовую. "
+                        "Например: Бот, ascii85_2_str BQS?8F#ks-ASs,EBkqF%ARoL`/oPcC06_,GBeMbn@qfX:2#",
+            priority=2
             ,
         ),
     ]
@@ -107,6 +122,9 @@ class TextConverter(BaseServer):
 
         'str_2_base85': lambda text: base64.b85encode(text.encode()).decode(),
         'base85_2_str': lambda text: base64.b85decode(text.encode()).decode(),
+
+        'str_2_ascii85': lambda text: base64.a85encode(text.encode()).decode(),
+        'ascii85_2_str': lambda text: base64.a85decode(text.encode()).decode(),
     }
 
     def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
