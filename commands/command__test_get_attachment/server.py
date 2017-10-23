@@ -32,19 +32,19 @@ class TestAttachmentServer(BaseServer):
     guid = 'D2EA28FA35D244E5A36EECC5FA3EA759'
     command_list = [
         Command(
-            name='тест дай картинку',
+            name='тест картинку',
             uri='/execute?' + common.TYPE_IMAGE,
-            description='Возвращает тестовую картинку',
+            description='Возвращает тестовую картинку. Например: Бот, тест картинку',
         ),
         Command(
-            name='тест несколько картинок',
+            name='тест много картинок',
             uri='/execute?' + common.TYPE_LIST_IMAGE,
-            description='Возвращает несколько тестовых картинок',
+            description='Возвращает несколько тестовых картинок. Например: Бот, тест много картинок',
         ),
         Command(
-            name='тест дай гифку',
+            name='тест гифку',
             uri='/execute?' + common.TYPE_GIF,
-            description='Возвращает тестовую гифку',
+            description='Возвращает тестовую гифку. Например: Бот, тест гифку',
         ),
     ]
 

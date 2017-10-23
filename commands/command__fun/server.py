@@ -33,7 +33,7 @@ class FunServer(BaseServer):
         Command(
             name='насмеши',
             uri='/execute',
-            description='Случайная цитата башорга',
+            description='Случайная цитата башорга. Например: Бот, насмеши',
             priority=10,
         ),
     ]
