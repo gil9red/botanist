@@ -13,6 +13,9 @@ __author__ = 'ipetrash'
 # TODO: добавить воспроизведение речи: https://tech.yandex.ru/speechkit/cloud/
 #       Этот бот-пример https://github.com/VKCOM/bot-example-php такое умеет
 
+# TODO: добавить боту команду поиска, которая возвращает инфу из api duckduckgo
+#       Хороший пример: https://github.com/python273/vk_api/blob/master/examples/messages_bot/messages_bot.py#L40
+
 # TODO: добавить команду получения случайного комикса cynicmansion.ru
 #       для получения комикса: https://github.com/gil9red/SimplePyScripts/blob/a317f43661786203047264f37b19ef45ead29f3d/get_random_comics__cynicmansion.ru/main.py
 #       для постинга в сообщении картинок: https://github.com/gil9red/SimplePyScripts/blob/bf1350489cbcbfc1315a4b3e9d2d48fd15d5e6df/vk_api__examples/send_images/main.py
