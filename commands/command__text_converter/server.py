@@ -23,6 +23,8 @@ if dir_up_up not in sys.path:
     sys.path.append(dir_up_up)
 
 
+import base64
+
 from commands.base_server import BaseServer, Command
 from commands.command__text_converter.hex2str import hex2str, str2hex
 from commands.command__text_converter.bin2str import bin2str, str2bin
@@ -58,6 +60,20 @@ class TextConverter(BaseServer):
                         '11101000 11100010 11100101 11110010 00100001',
             priority=5,
         ),
+
+        Command(
+            name='str_2_base64',
+            uri='/execute?str_2_base64',
+            description='Конвертация из текстовой строки в base64. Например: Бот, str_2_base64 Привет! Hello!',
+            priority=4,
+        ),
+        Command(
+            name='base64_2_str',
+            uri='/execute?base64_2_str',
+            description='Конвертация из строки в base64 в текстовую. '
+                        'Например: Бот, base64_2_str 0J/RgNC40LLQtdGCISBIZWxsbyE=',
+            priority=4,
+        ),
     ]
 
     # Путь к файлу сервера
@@ -68,6 +84,8 @@ class TextConverter(BaseServer):
         'str2hex': str2hex,
         'bin2str': bin2str,
         'str2bin': str2bin,
+        'str_2_base64': lambda text: base64.b64encode(text.encode()).decode(),
+        'base64_2_str': lambda text: base64.b64decode(text.encode()).decode(),
     }
 
     def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
