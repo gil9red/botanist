@@ -5,3 +5,4 @@ requests==2.10.0
 CherryPy==11.0.0
 lxml==3.6.0
 beautifulsoup4==4.6.0
+numexpr==2.6.4
