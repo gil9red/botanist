@@ -133,6 +133,7 @@ if __name__ == '__main__':
     #    Команда Поддержки ВК
     #
     #    16 окт 2017 в 14:54
+    # TODO: vk -> vk_session, vk = vk_session.get_api()
     import vk_api
     vk = vk_api.VkApi(login=LOGIN, password=PASSWORD, app_id=5356487)
     vk.auth()
