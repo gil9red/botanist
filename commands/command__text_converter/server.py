@@ -74,6 +74,22 @@ class TextConverter(BaseServer):
                         'Например: Бот, base64_2_str 0J/RgNC40LLQtdGCISBIZWxsbyE=',
             priority=4,
         ),
+
+        # TODO: возникли проблемы с этим кодированием: https://ru.stackoverflow.com/questions/734614/
+        Command(
+            name='str_2_base85',
+            uri='/execute?str_2_base85',
+            description='Конвертация из текстовой строки в base85. Например: Бот, str_2_base85 Привет! Hello!',
+            priority=3,
+        ),
+        Command(
+            name='base85_2_str',
+            uri='/execute?base85_2_str',
+            description='Конвертация из строки в base85 в текстовую. '
+                        'Например: Бот, base85_2_str (4WzO(74dD(6!NmAs|R)Y;12K',
+            priority=3
+            ,
+        ),
     ]
 
     # Путь к файлу сервера
@@ -82,10 +98,15 @@ class TextConverter(BaseServer):
     name_by_func = {
         'hex2str': hex2str,
         'str2hex': str2hex,
+
         'bin2str': bin2str,
         'str2bin': str2bin,
+
         'str_2_base64': lambda text: base64.b64encode(text.encode()).decode(),
         'base64_2_str': lambda text: base64.b64decode(text.encode()).decode(),
+
+        'str_2_base85': lambda text: base64.b85encode(text.encode()).decode(),
+        'base85_2_str': lambda text: base64.b85decode(text.encode()).decode(),
     }
 
     def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
