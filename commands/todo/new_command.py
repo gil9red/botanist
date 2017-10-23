@@ -5,7 +5,6 @@ __author__ = 'ipetrash'
 
 
 # TODO: добавить в бота команду конвертации ghbdtn в привет
-# TODO: Бот, калькулятор 2 + 2 * 2
 
 # TODO: добавить команду Шифр Цезаря
 #       https://github.com/gil9red/SimplePyScripts/blob/8c6e56d3fb2503f491b65195fd92c5b97bea7d77/caesar_code/caesar_code.py
