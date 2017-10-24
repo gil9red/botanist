@@ -47,6 +47,8 @@ class CoordinatorServer(BaseServer):
     name = 'CoordinatorServer'
     guid = 'B57B73C8F8D442C48EDAFC951963D7A5'
     command_list = [
+        # TODO: по умолчанию возвращать топ-10 команд по приоритету
+        # TODO: добавить команду: "все команды", которая возвращает все команды
         Command(
             name='команды',
             uri='/execute',
