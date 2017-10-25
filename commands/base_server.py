@@ -137,7 +137,7 @@ class BaseServer:
         raise Exception('_execute_body is not implemented!')
 
     def generate_response(self, result=None, attachment=None, error=None, traceback=None,
-                          elapsed=None, data_type=common.TYPE_TEXT) -> dict:
+                          elapsed=None, data_type=common.DataType.TEXT) -> dict:
         if attachment:
             attachment = common.create_attachment(attachment, data_type)
 

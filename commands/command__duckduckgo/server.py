@@ -54,7 +54,7 @@ class DuckDuckGoServer(BaseServer):
             return duckduckgo.get_zci(command, on_no_results='<Нет результатов>', kad='ru_RU')
 
         attachment = None
-        data_type = None
+        data_type = common.DataType.TEXT
 
         img_url = query_result.image.url
         if img_url:
@@ -66,7 +66,7 @@ class DuckDuckGoServer(BaseServer):
                 extension = pathlib.Path(img_url).suffix[1:]
 
                 attachment = common.FileAttachment(extension=extension, content=content)
-                data_type = common.TYPE_IMAGE
+                data_type = common.DataType.IMAGE
 
             except:
                 pass

@@ -82,7 +82,7 @@ def messages_get(vk):
         import traceback
         message = 'При выполнении команды "{}" произошла ошибка: ' \
                   '"{}":\n\n{}'.format(command, e, traceback.format_exc())
-        data_type = common.TYPE_TEXT
+        data_type = common.DataType.TEXT
         attachment = None
 
     # Если ответа от бота нет

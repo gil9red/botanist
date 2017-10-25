@@ -33,17 +33,17 @@ class TestAttachmentServer(BaseServer):
     command_list = [
         Command(
             name='тест картинку',
-            uri='/execute?' + common.TYPE_IMAGE,
+            uri='/execute?' + common.DataType.IMAGE,
             description='Возвращает тестовую картинку. Например: Бот, тест картинку',
         ),
         Command(
             name='тест много картинок',
-            uri='/execute?' + common.TYPE_LIST_IMAGE,
+            uri='/execute?' + common.DataType.LIST_IMAGE,
             description='Возвращает несколько тестовых картинок. Например: Бот, тест много картинок',
         ),
         Command(
             name='тест гифку',
-            uri='/execute?' + common.TYPE_GIF,
+            uri='/execute?' + common.DataType.GIF,
             description='Возвращает тестовую гифку. Например: Бот, тест гифку',
         ),
     ]
@@ -60,7 +60,10 @@ class TestAttachmentServer(BaseServer):
 
         result = None
 
-        if func_name == common.TYPE_IMAGE:
+        if isinstance(func_name, str):
+            data_type = common.DataType(func_name)
+
+        if data_type == common.DataType.IMAGE:
             file = current_dir / 'Jimm Kerry.jpg'
             result = file.name  # 'Jimm Kerry.jpg'
             extension = file.suffix[1:]
@@ -68,7 +71,7 @@ class TestAttachmentServer(BaseServer):
 
             attachment = common.FileAttachment(extension=extension, content=content)
 
-        elif func_name == common.TYPE_GIF:
+        elif data_type == common.DataType.GIF:
             file = current_dir / 'Jimm Kerry.gif'
             result = 'Jimm Kerry.gif'
             extension = file.suffix[1:]
@@ -76,7 +79,7 @@ class TestAttachmentServer(BaseServer):
 
             attachment = common.FileAttachment(extension=extension, content=content)
 
-        elif func_name == common.TYPE_LIST_IMAGE:
+        elif data_type == common.DataType.LIST_IMAGE:
             attachment = []
 
             for file in current_dir.glob('images/*.jpg'):
@@ -90,12 +93,12 @@ class TestAttachmentServer(BaseServer):
             message = "Неправильная команда '{}': не найдена функция '{}', доступны следующие функции: {}"
             message = message.format(
                 command_name,
-                func_name,
-                ', '.join([common.TYPE_IMAGE, common.TYPE_GIF, common.TYPE_LIST_IMAGE])
+                data_type.value,
+                ', '.join([common.DataType.IMAGE.value, common.DataType.GIF.value, common.DataType.LIST_IMAGE.value]),
             )
             raise Exception(message)
 
-        rs = self.generate_response(result=result, attachment=attachment, data_type=func_name)
+        rs = self.generate_response(result=result, attachment=attachment, data_type=data_type)
         return rs
 
 
