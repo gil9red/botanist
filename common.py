@@ -50,6 +50,19 @@ def make_backslashreplace_console():
 
 
 # TODO: реализовать как Enum
+# import enum
+#
+# class StrEnum(str, enum.Enum):
+#     pass
+#
+#
+# @enum.unique
+# class Color(StrEnum):
+#     red = 'red'
+#     green = 'green'
+#     blue = 'blue'
+#
+#
 TYPE_TEXT = 'text'
 TYPE_IMAGE = 'image'
 TYPE_GIF = 'gif'
