@@ -160,8 +160,6 @@ def get_zci(q, web_fallback=True, priority=('answer', 'abstract', 'related.0', '
     ddg = query('\\' + q, **kwargs)
     response = ''
 
-    print(ddg.json)
-
     for p in priority:
         ps = p.split('.')
         type = ps[0]
@@ -206,6 +204,9 @@ def get_zci(q, web_fallback=True, priority=('answer', 'abstract', 'related.0', '
 
     return response
 
+
+# TODO: на основе get_zci и query_result сделать функцию, возвращающую один результат
+#       в виде словаря с полями: text, url и img_url
 
 def main():
     if len(sys.argv) > 1:
