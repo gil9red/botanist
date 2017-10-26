@@ -4,6 +4,12 @@
 __author__ = 'ipetrash'
 
 
+# TODO: сделать кликабельный текст в описании команд и искать по шаблону регулярки текст вида:
+#       Бот, калькулятор 2 + 2 * 2
+#       Нужно чтобы команды и их текст стали кликабельными и при клике на них заполнялся и скроллился "Input command:"
+#       "Бот, калькулятор 2 + 2 * 2" -> "калькулятор 2 + 2 * 2"
+
+
 import pathlib
 STATIC_DIR = str((pathlib.Path(__file__).parent / "static").resolve())
 INDEX_FILE_NAME = str((pathlib.Path(__file__).parent / "static" / 'index.html').resolve())
