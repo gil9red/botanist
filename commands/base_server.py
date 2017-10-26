@@ -37,6 +37,8 @@ import cherrypy
 #       а т.к. .json() возвращает простой словарь, то поэтому порядок не сохраняется
 #       Как вариант, можно ответ от requests парсить через стандартный модуль json,
 #       добавляя небольшую доработку: https://stackoverflow.com/questions/6921699
+#
+#       https://github.com/gil9red/SimplePyScripts/blob/7b904be26f16da7676a0ecc6b31076792d6068ef/ordered_json.py
 
 
 class BaseServer:
