@@ -154,12 +154,12 @@ def get_vk_attachment(vk, attachment: AttachmentRs, attachment_type: AnyAttachme
         img = base64.b64decode(content.encode('utf-8'))
         img_file = io.BytesIO(img)
 
+        # Нужно подсказать методу vk_api о типе документа
+        img_file.name = 'file.' + attachment['extension']
+
         if attachment_type == AttachmentType.IMAGE:
             attachment = upload_images(vk, img_file)
-
         else:
-            # Нужно подсказать методу vk_api о типе документа
-            img_file.name = 'file.' + attachment['extension']
             attachment = upload_doc(vk, img_file)
 
         return attachment
