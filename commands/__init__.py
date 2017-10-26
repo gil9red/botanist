@@ -6,7 +6,6 @@ __author__ = 'ipetrash'
 
 # TODO: использовать jsonschema для проверки запросов API
 import typing
-import common
 
 
 # Если True, тогда модули-команды вместо выполнения своей команды вернут эхо в верхнем регистре

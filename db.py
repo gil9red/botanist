@@ -4,7 +4,7 @@
 __author__ = 'ipetrash'
 
 
-import typing
+from typing import Union, List, Dict
 
 DB_FILE_NAME = 'database.sqlite'
 
@@ -83,7 +83,7 @@ def get_commands() -> [(str, str, str)]:
         return items
 
 
-def get_all_command_name_by_description() -> typing.Dict[str, str]:
+def get_all_command_name_by_description() -> Dict[str, str]:
     from collections import OrderedDict
     items = OrderedDict()
 
@@ -93,7 +93,7 @@ def get_all_command_name_by_description() -> typing.Dict[str, str]:
     return items
 
 
-def get_all_command_name_by_url() -> typing.Dict[str, str]:
+def get_all_command_name_by_url() -> Dict[str, str]:
     from collections import OrderedDict
     items = OrderedDict()
 
@@ -103,7 +103,7 @@ def get_all_command_name_by_url() -> typing.Dict[str, str]:
     return items
 
 
-def get_execute_command_list_url_server(guid: str) -> [typing.Union[str, None]]:
+def get_execute_command_list_url_server(guid: str) -> [Union[str, None]]:
     with create_connect() as connect:
         url_list = connect.execute('''
             SELECT Server.url || Command.uri 
@@ -116,7 +116,7 @@ def get_execute_command_list_url_server(guid: str) -> [typing.Union[str, None]]:
         return [x for x, in url_list]
 
 
-def get_execute_command_url_server(guid: str) -> typing.Union[str, None]:
+def get_execute_command_url_server(guid: str) -> Union[str, None]:
     url_list = get_execute_command_list_url_server(guid)
     if not url_list:
         return
@@ -124,14 +124,14 @@ def get_execute_command_url_server(guid: str) -> typing.Union[str, None]:
     return url_list[0]
 
 
-def get_all_server() -> typing.List[dict]:
+def get_all_server() -> List[dict]:
     with create_connect() as connect:
         connect.row_factory = sqlite3.Row
 
         return [dict(x) for x in connect.execute('SELECT * FROM Server').fetchall()]
 
 
-def get_guid_servers_by_availability() -> typing.Dict[str, int]:
+def get_guid_servers_by_availability() -> Dict[str, int]:
     return {server['guid']: server['availability'] for server in get_all_server()}
 
 
@@ -150,7 +150,7 @@ def get_commands_by_guid(guid: str) -> [(str, str, str)]:
         return items
 
 
-def get_all_server_with_commands() -> typing.List[dict]:
+def get_all_server_with_commands() -> List[dict]:
     server_list = []
 
     for server in get_all_server():
@@ -160,7 +160,7 @@ def get_all_server_with_commands() -> typing.List[dict]:
     return server_list
 
 
-def get_url_server(guid: str) -> typing.Union[str, None]:
+def get_url_server(guid: str) -> Union[str, None]:
     with create_connect() as connect:
         url = connect.execute('SELECT Server.url FROM Server WHERE Server.guid = :guid ', {'guid': guid}).fetchone()
         if url is None:
@@ -169,11 +169,11 @@ def get_url_server(guid: str) -> typing.Union[str, None]:
         return url[0]
 
 
-def get_url_coordinator() -> typing.Union[str, None]:
+def get_url_coordinator() -> Union[str, None]:
     return get_url_server('B57B73C8F8D442C48EDAFC951963D7A5')
 
 
-def get_url_command_coordinator() -> typing.Union[str, None]:
+def get_url_command_coordinator() -> Union[str, None]:
     return get_execute_command_url_server('B57B73C8F8D442C48EDAFC951963D7A5')
 
 
