@@ -123,39 +123,36 @@ def upload_doc(vk, file_name) -> str:
     return attachment
 
 
+def create_io(attachment):
+    import base64
+    import io
+
+    content = attachment['content']
+
+    img = base64.b64decode(content.encode('utf-8'))
+    img_file = io.BytesIO(img)
+    img_file.name = 'file.' + attachment['extension']
+
+    return img_file
+
+
 def get_vk_attachment(vk, attachment: AttachmentRs, attachment_type: AnyAttachmentType) -> Union[str, None]:
     if attachment is None or attachment_type is None:
         return
-
-    import base64
-    import io
 
     if isinstance(attachment_type, str):
         attachment_type = AttachmentType(attachment_type)
 
     # Список картинок
     if attachment_type == AttachmentType.LIST_IMAGE:
-        items = []
-
-        for item in attachment:
-            content = item['content']
-
-            img = base64.b64decode(content.encode('utf-8'))
-            img_file = io.BytesIO(img)
-            items.append(img_file)
+        items = [create_io(item) for item in attachment]
 
         attachment = upload_images(vk, items)
         return attachment
 
     # Картинка или гифка
     elif attachment_type in [AttachmentType.IMAGE, AttachmentType.GIF]:
-        content = attachment['content']
-
-        img = base64.b64decode(content.encode('utf-8'))
-        img_file = io.BytesIO(img)
-
-        # Нужно подсказать методу vk_api о типе документа
-        img_file.name = 'file.' + attachment['extension']
+        img_file = create_io(attachment)
 
         if attachment_type == AttachmentType.IMAGE:
             attachment = upload_images(vk, img_file)
