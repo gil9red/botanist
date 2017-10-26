@@ -152,12 +152,12 @@ def get_vk_attachment(vk, attachment: AttachmentRs, attachment_type: AnyAttachme
 
     # Картинка или гифка
     elif attachment_type in [AttachmentType.IMAGE, AttachmentType.GIF]:
-        img_file = create_io(attachment)
+        file_io = create_io(attachment)
 
         if attachment_type == AttachmentType.IMAGE:
-            attachment = upload_images(vk, img_file)
+            attachment = upload_images(vk, file_io)
         else:
-            attachment = upload_doc(vk, img_file)
+            attachment = upload_doc(vk, file_io)
 
         return attachment
 
