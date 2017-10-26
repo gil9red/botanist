@@ -4,11 +4,6 @@
 __author__ = 'ipetrash'
 
 
-# TODO: упростить код, использующий typing
-#       https://docs.python.org/3/library/typing.html
-#       https://www.python.org/dev/peps/pep-0484/
-#       https://www.python.org/dev/peps/pep-0526/
-
 from typing import Union, List, Dict
 from collections import namedtuple
 
@@ -68,7 +63,12 @@ class AttachmentType(StrEnum):
     LIST_IMAGE = 'list_image'
 
 
-def create_attachment(attachment: Union[FileAttachment, List[FileAttachment]], attachment_type: Union[AttachmentType, str, None]) -> Union[Dict[str, str], List[Dict[str, str]], None]:
+AnyAttachmentType = Union[AttachmentType, str, None]
+AnyAttachment = Union[FileAttachment, List[FileAttachment]]
+AttachmentRs = Union[Dict[str, str], List[Dict[str, str]], None]
+
+
+def create_attachment(attachment: AnyAttachment, attachment_type: AnyAttachmentType) -> AttachmentRs:
     if attachment is None or attachment_type is None:
         return
 
@@ -123,7 +123,7 @@ def upload_doc(vk, file_name) -> str:
     return attachment
 
 
-def get_vk_attachment(vk, attachment: Union[Dict[str, str], List[Dict[str, str]]], attachment_type: Union[AttachmentType, str, None]) -> Union[str, None]:
+def get_vk_attachment(vk, attachment: AttachmentRs, attachment_type: AnyAttachmentType) -> Union[str, None]:
     if attachment is None or attachment_type is None:
         return
 
