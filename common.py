@@ -5,6 +5,10 @@ __author__ = 'ipetrash'
 
 
 # TODO: упростить код, использующий typing
+#       https://docs.python.org/3/library/typing.html
+#       https://www.python.org/dev/peps/pep-0484/
+#       https://www.python.org/dev/peps/pep-0526/
+
 import typing
 from collections import namedtuple
 
