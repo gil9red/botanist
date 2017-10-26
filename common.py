@@ -4,6 +4,7 @@
 __author__ = 'ipetrash'
 
 
+# TODO: упростить код, использующий typing
 import typing
 from collections import namedtuple
 
@@ -56,24 +57,23 @@ class StrEnum(str, enum.Enum):
     pass
 
 
-# TODO: поменять DataType -> AttachmentType
-# TODO: поменять data_type -> attachment_type
-# TODO: удалить "TEXT = 'text'"
 @enum.unique
-class DataType(StrEnum):
-    TEXT = 'text'
+class AttachmentType(StrEnum):
     IMAGE = 'image'
     GIF = 'gif'
     LIST_IMAGE = 'list_image'
 
 
-def create_attachment(attachment: typing.Union[FileAttachment, typing.List[FileAttachment]], data_type: typing.Union[DataType, str]) -> typing.Union[typing.Dict[str, str], typing.List[typing.Dict[str, str]]]:
+def create_attachment(attachment: typing.Union[FileAttachment, typing.List[FileAttachment]], attachment_type: typing.Union[AttachmentType, str, None]) -> typing.Union[typing.Dict[str, str], typing.List[typing.Dict[str, str]], None]:
+    if attachment is None or attachment_type is None:
+        return
+
     import base64
 
-    if isinstance(data_type, str):
-        data_type = DataType(data_type)
+    if isinstance(attachment_type, str):
+        attachment_type = AttachmentType(attachment_type)
 
-    if data_type == DataType.LIST_IMAGE:
+    if attachment_type == AttachmentType.LIST_IMAGE:
         items = []
 
         for file_attachment in attachment:
@@ -87,7 +87,7 @@ def create_attachment(attachment: typing.Union[FileAttachment, typing.List[FileA
 
         return items
 
-    elif data_type in [DataType.IMAGE, DataType.GIF]:
+    elif attachment_type in [AttachmentType.IMAGE, AttachmentType.GIF]:
         content = attachment.content
         content = base64.b64encode(content).decode('utf-8')
 
@@ -96,7 +96,7 @@ def create_attachment(attachment: typing.Union[FileAttachment, typing.List[FileA
             'content': content,
         }
 
-    raise Exception('Unknown data_type="{}"'.format(data_type))
+    raise Exception('Unknown attachment_type="{}"'.format(attachment_type))
 
 
 def upload_images(vk, file_names) -> str:
@@ -119,15 +119,18 @@ def upload_doc(vk, file_name) -> str:
     return attachment
 
 
-def get_vk_attachment(vk, attachment: typing.Union[typing.Dict[str, str], typing.List[typing.Dict[str, str]]], data_type: typing.Union[DataType, str]) -> str:
+def get_vk_attachment(vk, attachment: typing.Union[typing.Dict[str, str], typing.List[typing.Dict[str, str]]], attachment_type: typing.Union[AttachmentType, str, None]) -> typing.Union[str, None]:
+    if attachment is None or attachment_type is None:
+        return
+
     import base64
     import io
 
-    if isinstance(data_type, str):
-        data_type = DataType(data_type)
+    if isinstance(attachment_type, str):
+        attachment_type = AttachmentType(attachment_type)
 
     # Список картинок
-    if data_type == DataType.LIST_IMAGE:
+    if attachment_type == AttachmentType.LIST_IMAGE:
         items = []
 
         for item in attachment:
@@ -141,13 +144,13 @@ def get_vk_attachment(vk, attachment: typing.Union[typing.Dict[str, str], typing
         return attachment
 
     # Картинка или гифка
-    elif data_type in [DataType.IMAGE, DataType.GIF]:
+    elif attachment_type in [AttachmentType.IMAGE, AttachmentType.GIF]:
         content = attachment['content']
 
         img = base64.b64decode(content.encode('utf-8'))
         img_file = io.BytesIO(img)
 
-        if data_type == DataType.IMAGE:
+        if attachment_type == AttachmentType.IMAGE:
             attachment = upload_images(vk, img_file)
 
         else:
@@ -158,4 +161,4 @@ def get_vk_attachment(vk, attachment: typing.Union[typing.Dict[str, str], typing
         return attachment
 
     else:
-        raise Exception('Unknown data_type="{}"'.format(data_type))
+        raise Exception('Unknown attachment_type="{}"'.format(attachment_type))

@@ -63,6 +63,9 @@ def messages_get(vk):
 
     command = message[len(command_prefix):].strip()
 
+    attachment = None
+    attachment_type = None
+
     # Выполнение команды
     try:
         rs = commands.execute(command)
@@ -74,7 +77,7 @@ def messages_get(vk):
             message = rs['result']
 
         attachment = rs['attachment']
-        data_type = rs['type']
+        attachment_type = rs['attachment_type']
 
     except Exception as e:
         log.exception("Error:")
@@ -82,8 +85,6 @@ def messages_get(vk):
         import traceback
         message = 'При выполнении команды "{}" произошла ошибка: ' \
                   '"{}":\n\n{}'.format(command, e, traceback.format_exc())
-        data_type = common.DataType.TEXT
-        attachment = None
 
     # Если ответа от бота нет
     if not message and not attachment:
@@ -104,7 +105,7 @@ def messages_get(vk):
 
     # Если пришел прикрепленный файл/файлы
     if attachment:
-        attachment = common.get_vk_attachment(vk, attachment, data_type)
+        attachment = common.get_vk_attachment(vk, attachment, attachment_type)
         messages_send_values['attachment'] = attachment
 
     # Сообщение может быть само по себе или вместе с attachment

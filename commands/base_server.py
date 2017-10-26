@@ -136,17 +136,16 @@ class BaseServer:
     def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         raise Exception('_execute_body is not implemented!')
 
-    def generate_response(self, result=None, attachment=None, error=None, traceback=None,
-                          elapsed=None, data_type=common.DataType.TEXT) -> dict:
-        if attachment:
-            attachment = common.create_attachment(attachment, data_type)
+    def generate_response(self, result=None, attachment=None, error=None, traceback=None, elapsed=None, attachment_type=None) -> dict:
+        if attachment and attachment_type:
+            attachment = common.create_attachment(attachment, attachment_type)
 
         from collections import OrderedDict
         rs = OrderedDict()
         rs['result'] = result
         rs['attachment'] = attachment
         rs['error'] = error
-        rs['type'] = data_type
+        rs['attachment_type'] = attachment_type
         rs['traceback'] = traceback
         rs['server_name'] = self.name
         rs['server_guid'] = self.guid
