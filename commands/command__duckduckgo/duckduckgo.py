@@ -117,6 +117,7 @@ class Result(object):
         if self.topics:
             self.topics = [Result(t) for t in self.topics]
             return
+
         self.html = json.get('Result')
         self.text = json.get('Text')
         self.url = json.get('FirstURL')
@@ -148,7 +149,7 @@ class Definition(object):
         self.source = json.get('DefinitionSource')
 
 
-def get_zci(q, web_fallback=True, priority=['answer', 'abstract', 'related.0', 'definition'], urls=True,
+def get_zci(q, web_fallback=True, priority=('answer', 'abstract', 'related.0', 'definition'), urls=True,
             on_no_results='Sorry, no results.', **kwargs):
     '''A helper method to get a single (and hopefully the best) ZCI result.
     priority=list can be used to set the order in which fields will be checked for answers.
@@ -159,24 +160,37 @@ def get_zci(q, web_fallback=True, priority=['answer', 'abstract', 'related.0', '
     ddg = query('\\' + q, **kwargs)
     response = ''
 
+    print(ddg.json)
+
     for p in priority:
         ps = p.split('.')
         type = ps[0]
-        index = int(ps[1]) if len(ps) > 1 else None
-
         result = getattr(ddg, type)
+
+        index = int(ps[1]) if len(ps) > 1 else None
         if index is not None:
-            if not hasattr(result, '__getitem__'): raise TypeError('%s field is not indexable' % type)
+            if not hasattr(result, '__getitem__'):
+                raise TypeError('%s field is not indexable' % type)
+
             result = result[index] if len(result) > index else None
+
         if not result:
             continue
 
-        if result.text:
-            response = result.text
+        if hasattr(result, 'text'):
+            if result.text:
+                response = result.text
 
-        if result.text and hasattr(result, 'url') and urls:
-            if result.url:
-                response += ' (%s)' % result.url
+                if urls and hasattr(result, 'url') and result.url:
+                    response += ' (%s)' % result.url
+
+        elif result.topics:
+            result = result.topics[0]
+            if result.text:
+                response = result.text
+
+                if urls and hasattr(result, 'url') and result.url:
+                    response += ' (%s)' % result.url
 
         if response:
             break

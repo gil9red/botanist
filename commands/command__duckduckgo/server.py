@@ -60,7 +60,7 @@ class DuckDuckGoServer(BaseServer):
         if img_url:
             try:
                 import requests
-                rs = requests.get(query_result.image.url)
+                rs = requests.get(img_url)
 
                 content = rs.content
                 extension = pathlib.Path(img_url).suffix[1:]
