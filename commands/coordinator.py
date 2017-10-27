@@ -5,13 +5,12 @@ __author__ = 'ipetrash'
 
 
 import os
-import typing
-import sys
-
-
 # Добавление пути к папке с проектом, чтобы заработал импорт пакета commands и таких модулей
 # как db.py и common.py
 import pathlib
+import sys
+import typing
+
 current_dir = pathlib.Path(__file__).parent.resolve()
 dir_up = str(current_dir.parent.resolve())
 
@@ -162,6 +161,9 @@ class CoordinatorServer(BaseServer):
             import time
             import db
             import requests
+
+            # Немного дадим времени серверам перед проверкой (особенно http-серверу самого координатора)
+            time.sleep(2)
 
             while True:
                 for server in db.get_all_server():
