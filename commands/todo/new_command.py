@@ -28,6 +28,8 @@ __author__ = 'ipetrash'
 # TODO: команду парсинга и отображения информации из торрент-файла, который присылаешь боту. См bencode
 #       Примеры: https://github.com/gil9red/SimplePyScripts/tree/8f214891b74612f013952054e997e2eec4e3b575/torrent_file
 
+# TODO: добавить команду анекдот
+
 # TODO: добавить команду курс криптовалют
 # TODO: добавить команду Язык Йода: http://vexer.ru/jokez/joda.php
 # TODO: добавить команду для генерации в язык падонков
