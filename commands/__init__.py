@@ -32,7 +32,7 @@ def execute(command: str) -> dict:
     import requests
 
     try:
-        rs = requests.post(url, json=generate_request(command_name=None, command=command))
+        rs = requests.post(url, json=generate_request(command=command))
         print(rs.text)
 
     except requests.exceptions.ConnectionError:
@@ -55,7 +55,7 @@ def execute(command: str) -> dict:
         raise Exception(message)
 
 
-def generate_request(command_name: typing.Union[str, None], command: str=None) -> dict:
+def generate_request(command_name: str = '', command: str = '') -> dict:
     return {
         'command_name': command_name,
         'command': command,

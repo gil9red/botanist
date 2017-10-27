@@ -86,8 +86,6 @@ class CoordinatorServer(BaseServer):
         return self.get_commands(as_result, max_number=10)
 
     def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
-        print('Execute command: "{}"'.format(command))
-
         # Если команды нет, показываем список команд
         if not command.strip():
             return self.get_top10_commands(as_result=True)
