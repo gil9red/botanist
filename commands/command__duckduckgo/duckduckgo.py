@@ -8,6 +8,7 @@
 
 # SOURCE: https://github.com/crazedpsyc/python-duckduckgo/blob/master/duckduckgo.py
 
+# TODO: использовать requests
 try:
     # For Python 3.0 and later
     from urllib.request import urlopen, Request
@@ -25,6 +26,7 @@ import sys
 __version__ = 0.243
 
 
+# TODO: __doc__ не работает из-за % __version__
 def query(query, useragent='python-duckduckgo ' + str(__version__), safesearch=True, html=False, meanings=True,
           **kwargs):
     """
@@ -65,7 +67,12 @@ def query(query, useragent='python-duckduckgo ' + str(__version__), safesearch=T
 
     request = Request(url, headers={'User-Agent': useragent})
     response = urlopen(request)
-    json = j.loads(response.read())
+
+    json_data = response.read()
+    if type(json_data) == bytes:
+        json_data = json_data.decode('utf-8')
+
+    json = j.loads(json_data)
     response.close()
 
     return Results(json)
