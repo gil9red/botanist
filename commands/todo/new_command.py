@@ -16,6 +16,8 @@ __author__ = 'ipetrash'
 #       https://github.com/gil9red/SimplePyScripts/blob/18c27c4feb4734185de0a84754ad28a2517dfb7c/speak/main.py
 
 # TODO: команда для возврата рандомного бушизма: https://ru.wikipedia.org/wiki/%D0%91%D1%83%D1%88%D0%B8%D0%B7%D0%BC
+#       http://mistakes.ru/humor/bushism
+#       https://ru.wikipedia.org/wiki/%D0%A7%D0%B5%D1%80%D0%BD%D0%BE%D0%BC%D1%8B%D1%80%D0%B4%D0%B8%D0%BD%D0%BA%D0%B8
 
 # TODO: сделать команду поиска на википедии на подобии команды поиска через api duckduckgo
 
