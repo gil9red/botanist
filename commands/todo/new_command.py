@@ -12,6 +12,9 @@ __author__ = 'ipetrash'
 # TODO: добавить воспроизведение речи: https://tech.yandex.ru/speechkit/cloud/
 #       Этот бот-пример https://github.com/VKCOM/bot-example-php такое умеет
 
+# TODO: добавить воспроизведение речи от переводчика bing:
+#       https://github.com/gil9red/SimplePyScripts/blob/18c27c4feb4734185de0a84754ad28a2517dfb7c/speak/main.py
+
 # TODO: сделать команду поиска на википедии на подобии команды поиска через api duckduckgo
 
 # TODO: добавить команду получения случайного комикса cynicmansion.ru
