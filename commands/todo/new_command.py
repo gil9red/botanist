@@ -15,6 +15,8 @@ __author__ = 'ipetrash'
 # TODO: добавить воспроизведение речи от переводчика bing:
 #       https://github.com/gil9red/SimplePyScripts/blob/18c27c4feb4734185de0a84754ad28a2517dfb7c/speak/main.py
 
+# TODO: команда для возврата рандомного бушизма: https://ru.wikipedia.org/wiki/%D0%91%D1%83%D1%88%D0%B8%D0%B7%D0%BC
+
 # TODO: сделать команду поиска на википедии на подобии команды поиска через api duckduckgo
 
 # TODO: добавить команду получения случайного комикса cynicmansion.ru
