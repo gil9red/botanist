@@ -47,13 +47,17 @@ class CoordinatorServer(BaseServer):
     name = 'CoordinatorServer'
     guid = 'B57B73C8F8D442C48EDAFC951963D7A5'
     command_list = [
-        # TODO: по умолчанию возвращать топ-10 команд по приоритету
-        # TODO: добавить команду: "все команды", которая возвращает все команды
         Command(
             name='команды',
             uri='/execute',
-            description='Показать список команд',
+            description='Возвращает топ10 команд',
             priority=999
+        ),
+        Command(
+            name='все команды',
+            uri='/execute',
+            description='Возвращает все команды',
+            priority=998
         ),
     ]
 
@@ -62,27 +66,31 @@ class CoordinatorServer(BaseServer):
 
     @BaseServer.expose
     @BaseServer.json_out
-    def get_commands(self, as_result=None) -> dict:
+    def get_commands(self, as_result=None, max_number=None) -> dict:
         print(self.request.params)
 
         all_command_name_by_description = db.get_all_command_name_by_description()
 
         if as_result is not None:
-            result = '\n'.join(
-                '✓ {}: {}'.format(k, v) for k, v in all_command_name_by_description.items()
-            )
+            items = list(all_command_name_by_description.items())[:max_number]
+            result = '\n'.join('✓ {}: {}'.format(k, v) for k, v in items)
 
             rs = self.generate_response(result=result)
             return rs
 
         return all_command_name_by_description
 
+    @BaseServer.expose
+    @BaseServer.json_out
+    def get_top10_commands(self, as_result=None) -> dict:
+        return self.get_commands(as_result, max_number=10)
+
     def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         print('Execute command: "{}"'.format(command))
 
         # Если команды нет, показываем список команд
         if not command.strip():
-            return self.get_commands(as_result=True)
+            return self.get_top10_commands(as_result=True)
 
         # Приведение в нижний регистр чтобы проверка команды была регистронезависимой
         execute_command = command.lower()
@@ -118,8 +126,11 @@ class CoordinatorServer(BaseServer):
 
                 return result
 
-        # Обработка собственной команды
+        # Обработка собственных команд
         if execute_command == 'команды':
+            return self.get_top10_commands(as_result=True)
+
+        elif execute_command == 'все команды':
             return self.get_commands(as_result=True)
 
         for command_name, url in all_command_by_url.items():
