@@ -23,7 +23,9 @@ __author__ = 'ipetrash'
 
 # TODO: добавить команду получения случайного комикса cynicmansion.ru
 #       для получения комикса: https://github.com/gil9red/SimplePyScripts/blob/a317f43661786203047264f37b19ef45ead29f3d/get_random_comics__cynicmansion.ru/main.py
-#       для постинга в сообщении картинок: https://github.com/gil9red/SimplePyScripts/blob/bf1350489cbcbfc1315a4b3e9d2d48fd15d5e6df/vk_api__examples/send_images/main.py
+
+# TODO: добавить команду получения случайного комикса http://comicsia.ru
+#       https://gist.github.com/gil9red/5aa22cf4c880ce897eae5d60078b2008
 
 # TODO: команду парсинга и отображения информации из торрент-файла, который присылаешь боту. См bencode
 #       Примеры: https://github.com/gil9red/SimplePyScripts/tree/8f214891b74612f013952054e997e2eec4e3b575/torrent_file
