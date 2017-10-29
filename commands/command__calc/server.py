@@ -48,6 +48,7 @@ class CalcServer(BaseServer):
             raise Exception("Неправильная команда 'калькулятор': нужно указать выражение, например: 2 + 2 * 2")
 
         # Калькулятор из: https://github.com/gil9red/SimplePyScripts/blob/master/calculator/use_numexpr_module/main.py
+        # TODO: не модет подсчитать 10**123
         import numexpr
         result = numexpr.evaluate(command)
 
