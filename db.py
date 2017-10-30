@@ -210,7 +210,7 @@ def update_datetime_last_request(server):
         sql = """
             UPDATE Server 
             SET 
-                datetime_last_request=strftime('%d/%m/%Y %H:%M:%S', datetime('now', 'localtime')) 
+                datetime_last_request=datetime('now', 'localtime') 
             WHERE guid=?
         """
         connect.execute(sql, (server.guid,))
@@ -224,7 +224,7 @@ def update_availability(server_guid: str, availability: bool):
                 UPDATE Server 
                 SET 
                     availability=1, 
-                    datetime_last_availability=strftime('%d/%m/%Y %H:%M:%S', datetime('now', 'localtime'))
+                    datetime_last_availability=datetime('now', 'localtime')
                 WHERE guid=?
             """
         else:
