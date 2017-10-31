@@ -96,8 +96,7 @@ class TestAttachmentServer(BaseServer):
             )
             raise Exception(message)
 
-        rs = self.generate_response(result=result, attachment=attachment, attachment_type=attachment_type)
-        return rs
+        return self.generate_response(result=result, attachment=attachment, attachment_type=attachment_type)
 
 
 if __name__ == '__main__':

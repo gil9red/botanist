@@ -74,8 +74,7 @@ class CoordinatorServer(BaseServer):
             items = list(all_command_name_by_description.items())[:max_number]
             result = '\n'.join('✓ {}: {}'.format(k, v) for k, v in items)
 
-            rs = self.generate_response(result=result)
-            return rs
+            return self.generate_response(result=result)
 
         return all_command_name_by_description
 
@@ -148,13 +147,10 @@ class CoordinatorServer(BaseServer):
 
                 except requests.exceptions.ConnectionError:
                     error = 'Сервер команды "{}" ({}) недоступен'.format(command_name, url)
-
-                    rs = self.generate_response(error=error)
-                    return rs
+                    return self.generate_response(error=error)
 
         error = 'Что-то пошло не так: команда "{}" не была распознана'.format(command)
-        rs = self.generate_response(error=error)
-        return rs
+        return self.generate_response(error=error)
 
     def _before_run(self):
         def _thread_func():
