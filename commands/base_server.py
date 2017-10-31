@@ -138,6 +138,7 @@ class BaseServer:
     def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         raise Exception('_execute_body is not implemented!')
 
+    # TODO: traceback -> stack_trace
     def generate_response(self, result=None, attachment=None, error=None, traceback=None, elapsed=None, attachment_type=None) -> dict:
         if attachment and attachment_type:
             attachment = common.create_attachment(attachment, attachment_type)
