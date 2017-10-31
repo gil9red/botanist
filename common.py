@@ -7,7 +7,7 @@ __author__ = 'ipetrash'
 from typing import Union, List, Dict
 from collections import namedtuple
 
-FileAttachment = namedtuple('FileAttachment', ['extension', 'content'])
+FileAttachment = namedtuple('FileAttachment', ['content', 'extension'])
 
 
 def get_logger(name, file='log.txt', encoding='utf-8', log_stdout=True, log_file=True):

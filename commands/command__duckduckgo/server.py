@@ -65,7 +65,7 @@ class DuckDuckGoServer(BaseServer):
                 content = rs.content
                 extension = pathlib.Path(img_url).suffix[1:]
 
-                attachment = common.FileAttachment(extension=extension, content=content)
+                attachment = common.FileAttachment(content=content, extension=extension)
                 attachment_type = common.AttachmentType.IMAGE
 
             except:

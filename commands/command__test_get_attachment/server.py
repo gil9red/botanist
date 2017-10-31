@@ -59,9 +59,7 @@ class TestAttachmentServer(BaseServer):
         current_dir = pathlib.Path(__file__).parent
 
         result = None
-
-        if isinstance(func_name, str):
-            attachment_type = common.AttachmentType(func_name)
+        attachment_type = common.AttachmentType(func_name)
 
         if attachment_type == common.AttachmentType.IMAGE:
             file = current_dir / 'Jimm Kerry.jpg'
@@ -69,7 +67,7 @@ class TestAttachmentServer(BaseServer):
             extension = file.suffix[1:]
             content = file.read_bytes()
 
-            attachment = common.FileAttachment(extension=extension, content=content)
+            attachment = common.FileAttachment(content=content, extension=extension)
 
         elif attachment_type == common.AttachmentType.GIF:
             file = current_dir / 'Jimm Kerry.gif'
@@ -77,7 +75,7 @@ class TestAttachmentServer(BaseServer):
             extension = file.suffix[1:]
             content = file.read_bytes()
 
-            attachment = common.FileAttachment(extension=extension, content=content)
+            attachment = common.FileAttachment(content=content, extension=extension)
 
         elif attachment_type == common.AttachmentType.LIST_IMAGE:
             attachment = []
@@ -86,7 +84,7 @@ class TestAttachmentServer(BaseServer):
                 extension = file.suffix[1:]
                 content = file.read_bytes()
 
-                file_attachment = common.FileAttachment(extension=extension, content=content)
+                file_attachment = common.FileAttachment(content=content, extension=extension)
                 attachment.append(file_attachment)
 
         else:
