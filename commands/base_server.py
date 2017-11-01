@@ -138,8 +138,7 @@ class BaseServer:
     def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         raise Exception('_execute_body is not implemented!')
 
-    # TODO: traceback -> stack_trace
-    def generate_response(self, result=None, attachment=None, error=None, traceback=None, elapsed=None, attachment_type=None) -> dict:
+    def generate_response(self, result=None, attachment=None, error=None, stack_trace=None, elapsed=None, attachment_type=None) -> dict:
         if attachment and attachment_type:
             attachment = common.create_attachment(attachment, attachment_type)
 
@@ -149,7 +148,7 @@ class BaseServer:
         rs['attachment'] = attachment
         rs['error'] = error
         rs['attachment_type'] = attachment_type
-        rs['traceback'] = traceback
+        rs['stack_trace'] = stack_trace
         rs['server_name'] = self.name
         rs['server_guid'] = self.guid
         rs['elapsed'] = elapsed
@@ -191,7 +190,7 @@ class BaseServer:
 
         rs = self.generate_response(
             error=error_text,
-            traceback=traceback,
+            stack_trace=traceback,
             elapsed=self.last_elapsed,
         )
 

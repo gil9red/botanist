@@ -42,7 +42,7 @@ class Root:
             from collections import OrderedDict
             result = OrderedDict()
             result['error'] = str(e)
-            result['traceback'] = traceback.format_exc()
+            result['stack_trace'] = traceback.format_exc()
 
             return result
 
