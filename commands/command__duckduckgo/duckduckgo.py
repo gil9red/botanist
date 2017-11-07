@@ -15,7 +15,7 @@ import requests
 __version__ = 0.243
 
 
-def query(query, useragent='python-duckduckgo ' + str(__version__), safesearch=True, html=False, meanings=True,
+def query(query, user_agent='python-duckduckgo ' + str(__version__), safe_search=True, html=False, meanings=True,
           **kwargs):
     """
     Query DuckDuckGo, returning a Results object.
@@ -30,28 +30,30 @@ def query(query, useragent='python-duckduckgo ' + str(__version__), safesearch=T
     >>> result.answer.type
     'calc'
 
-    Keword arguments:
-    useragent: UserAgent to use while querying. Default: "python-duckduckgo <__version__>" (str)
-    safesearch: True for on, False for off. Default: True (bool)
-    html: True to allow HTML in output. Default: False (bool)
-    meanings: True to include disambiguations in results (bool)
     Any other keyword arguments are passed directly to DuckDuckGo as URL params.
+    :param query:
+    :param user_agent: UserAgent to use while querying. Default: "python-duckduckgo <__version__>" (str)
+    :param safe_search: True for on, False for off. Default: True (bool)
+    :param html: True to allow HTML in output. Default: False (bool)
+    :param meanings: True to include disambiguations in results. Default: True (bool)
+    :param kwargs:
+    :return:
     """
 
-    safesearch = '1' if safesearch else '-1'
+    safe_search = '1' if safe_search else '-1'
     html = '0' if html else '1'
     meanings = '0' if meanings else '1'
     params = {
         'q': query,
         'o': 'json',
-        'kp': safesearch,
+        'kp': safe_search,
         'no_redirect': '1',
         'no_html': html,
         'd': meanings,
     }
     params.update(kwargs)
 
-    rs = requests.get('http://api.duckduckgo.com/', params=params, headers={'User-Agent': useragent})
+    rs = requests.get('http://api.duckduckgo.com/', params=params, headers={'User-Agent': user_agent})
     json = rs.json()
 
     return Results(json)
