@@ -70,11 +70,11 @@ def messages_get(vk):
     try:
         rs = commands.execute(command)
 
-        # Сначала предполагаем что могла вернуться ошибка, если нет, тогда
-        # смотрим в результат
-        message = rs['error']
+        # Если нет результата, берем значение из поля error. В штатной ситуации
+        # result может быть null, error тоже null, а attachment содержать значения
+        message = rs['result']
         if not message:
-            message = rs['result']
+            message = rs['error']
 
         attachment = rs['attachment']
         attachment_type = rs['attachment_type']
