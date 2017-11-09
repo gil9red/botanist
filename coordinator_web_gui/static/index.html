@@ -178,7 +178,13 @@
                         }
 
                         var result_body = "<div>";
-                        result_body += '<pre>' + data.result + '</pre>';
+
+                        var result_text = data.result;
+                        if (result_text == null) {
+                            result_text = data.error;
+                        }
+
+                        result_body += '<pre>' + result_text + '</pre>';
 
                         switch (data.attachment_type) {
                             case 'image':
