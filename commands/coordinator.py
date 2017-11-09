@@ -25,21 +25,29 @@ import db
 
 # SOURCE: https://github.com/gil9red/SimplePyScripts/blob/460f3538ebc0fb78628ea885ac7d39481404fa1e/Damerau%E2%80%93Levenshtein_distance__misprints__%D0%BE%D0%BF%D0%B5%D1%87%D0%B0%D1%82%D0%BA%D0%B8/use__pyxdameraulevenshtein/fix_command.py
 def fix_command(text, all_commands):
-    import numpy as np
-    array = np.array(all_commands)
+    try:
+        import numpy as np
+        array = np.array(all_commands)
 
-    # Использование алгоритма "Расстояние Дамерау — Левенштейна"
-    from pyxdameraulevenshtein import normalized_damerau_levenshtein_distance_ndarray
-    result = list(zip(all_commands, list(normalized_damerau_levenshtein_distance_ndarray(text, array))))
-    # print('\n' + text, sorted(result, key=lambda x: x[1]))
+        # Использование алгоритма "Расстояние Дамерау — Левенштейна"
+        from pyxdameraulevenshtein import normalized_damerau_levenshtein_distance_ndarray
+        result = list(zip(all_commands, list(normalized_damerau_levenshtein_distance_ndarray(text, array))))
+        # print('\n' + text, sorted(result, key=lambda x: x[1]))
 
-    command, rate = min(result, key=lambda x: x[1])
+        command, rate = min(result, key=lambda x: x[1])
 
-    # Подобранное значение для определения совпадения текста среди значений указанного списка
-    if rate >= 0.3:
+        # Подобранное значение для определения совпадения текста среди значений указанного списка
+        # При rate >= 0.3 считаем что слишком много ошибок в слове, т.е. text среди all_commands нет
+        if rate >= 0.3:
+            return text
+
+        return command
+
+    except Exception as e:
+        import traceback
+        print('Error: {}\n\n{}'.format(e, traceback.format_exc()))
+
         return text
-
-    return command
 
 
 class CoordinatorServer(BaseServer):
@@ -93,7 +101,7 @@ class CoordinatorServer(BaseServer):
         print('execute_command: "{}"'.format(execute_command))
 
         all_command_by_url = db.get_all_command_name_by_url()
-        command_name_list = list(all_command_by_url.keys())
+        command_name_list = [x.lower() for x in all_command_by_url.keys()]
 
         # Если текущая команда не была найдена среди списка команд хотя бы по совпадению начальной строки,
         # пытаемся найти, учитывая, что в ней могут быть опечатки, иначе ругаемся на неизвестную команду
