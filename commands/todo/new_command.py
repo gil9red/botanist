@@ -19,8 +19,6 @@ __author__ = 'ipetrash'
 #       http://mistakes.ru/humor/bushism
 #       https://ru.wikipedia.org/wiki/%D0%A7%D0%B5%D1%80%D0%BD%D0%BE%D0%BC%D1%8B%D1%80%D0%B4%D0%B8%D0%BD%D0%BA%D0%B8
 
-# TODO: сделать команду поиска на википедии на подобии команды поиска через api duckduckgo
-
 # TODO: добавить команду получения случайного комикса cynicmansion.ru
 #       для получения комикса: https://github.com/gil9red/SimplePyScripts/blob/a317f43661786203047264f37b19ef45ead29f3d/get_random_comics__cynicmansion.ru/main.py
 
