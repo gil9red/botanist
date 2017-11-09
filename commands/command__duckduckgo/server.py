@@ -44,19 +44,28 @@ class DuckDuckGoServer(BaseServer):
 
     def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
         if not command:
-            raise Exception("Неправильная команда 'найти': нужно указать выражение, например: металлика")
+            raise Exception(
+                "Неправильная команда '{}': нужно указать выражение, например: металлика".format(command_name)
+            )
 
         from commands.command__duckduckgo import duckduckgo
-        query_result = duckduckgo.query(command, kad='ru_RU')
-        print('"{}" -> {}'.format(command, query_result.json))
+        result = duckduckgo.query(command, kad='ru_RU')
+        print('"{}" -> {}'.format(command, result.json))
 
-        if not query_result.results:
+        try:
+            # Пытаемся достать текст ответа и если произошла ошибка либо нет
+            # содержимого пытаемся получить результат из других полей
+            text = result.abstract.text.strip()
+            if not text:
+                raise Exception('time duckduckgo.get_zci!')
+
+        except:
             return duckduckgo.get_zci(command, on_no_results='<Нет результатов>', kad='ru_RU')
 
         attachment = None
         attachment_type = None
 
-        img_url = query_result.image.url
+        img_url = result.image.url
         if img_url:
             try:
                 import requests
@@ -71,9 +80,7 @@ class DuckDuckGoServer(BaseServer):
             except:
                 pass
 
-        text = query_result.abstract.text.strip()
-
-        url = query_result.abstract.url
+        url = result.abstract.url
         if url:
             from urllib.parse import unquote
             url = unquote(url)

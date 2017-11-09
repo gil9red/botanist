@@ -66,10 +66,10 @@ class WikipediaServer(BaseServer):
             )
 
         # В сообщении ссылки с кирилицей лучше будут смотреться чем percent-encoded
-        rs = wiki_search(command, unquote_percent_encoded=True)
-        print('"{}" -> {}'.format(command, rs))
+        result = wiki_search(command, unquote_percent_encoded=True)
+        print('"{}" -> {}'.format(command, result))
 
-        text = rs.strip()
+        text = result.strip()
         if not text:
             return '<Нет результатов>'
 
