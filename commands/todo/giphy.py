@@ -26,7 +26,7 @@ def get_gif(text: str) -> str:
     import random
     data = random.choice(result)
 
-    return data['images']['downsized']['url']
+    return data['images']['original']['url']
 
 
 if __name__ == '__main__':
