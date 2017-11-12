@@ -197,6 +197,8 @@ def get_zci(q, web_fallback=True, priority=('answer', 'abstract', 'related.0', '
 
 # TODO: на основе get_zci и query_result сделать функцию, возвращающую один результат
 #       в виде словаря с полями: text, url и img_url
+#       Может пригодиться: https://github.com/sk89q/Plumeria/blob/13e08869764e9efcff74dd64c8c6661336876d2c/orchard/duckduckgo.py
+
 # TODO: добавить аргумент lang и его значение подставять в kad
 # TODO: добавить примеры значений lang/kad
 
