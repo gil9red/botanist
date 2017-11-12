@@ -7,30 +7,60 @@ __author__ = 'ipetrash'
 # https://developers.giphy.com/docs/#search-endpoint
 # https://developers.giphy.com/explorer/
 
-URL_SEARCH = 'https://api.giphy.com/v1/gifs/search?api_key={}&limit=1&offset={}&rating=G&lang=ru&q={}'
 API_KEY = '80efb56295eb4277bc18d52771529a10'
+URL_SEARCH = 'https://api.giphy.com/v1/gifs/search?api_key={}&q={}&limit=25&offset=0&rating=G&lang=ru'
 
 
-# import requests
-# rs = requests.get('https://media1.giphy.com/media/PhudO5SeUmbQI/giphy.gif')
-# open('file_name.gif', 'wb').write(rs.content)
-#
-# quit()
-
-def get_gif(text):
-    import random
-    offset = random.randrange(0, 100)
-
-    url = URL_SEARCH.format(API_KEY, offset, text)
+def get_gif(text: str) -> str:
+    url = URL_SEARCH.format(API_KEY, text)
 
     import requests
     rs = requests.get(url)
-    print(rs)
-    return rs.json()
+    json_data = rs.json()
+    # print(rs, json_data)
+
+    result = json_data['data']
+    if not result:
+        return ''
+
+    import random
+    data = random.choice(result)
+
+    return data['images']['downsized']['url']
 
 
 if __name__ == '__main__':
-    print(get_gif('Котята'))
-    print(get_gif('Cats'))
-    print(get_gif('   '))
-    print(get_gif('dfsdfsdf'))
+    def check_rs_url(url):
+        if not url:
+            print('not found')
+        else:
+            print(url)
+
+            dir_name = 'gif'
+
+            import os
+            if not os.path.exists(dir_name):
+                os.mkdir(dir_name)
+
+            # https://media0.giphy.com/media/LypkRynk8We7C/giphy-downsized.gif -> LypkRynk8We7C__giphy-downsized.gif
+            parts = url.split('/')
+            file_name = dir_name + '/' + parts[-2] + '__' + parts[-1]
+
+            with open(file_name, mode='wb') as f:
+                import requests
+                rs = requests.get(url)
+
+                f.write(rs.content)
+
+
+    url = get_gif('Котята')
+    check_rs_url(url)
+
+    url = get_gif('Cats')
+    check_rs_url(url)
+
+    url = get_gif('   ')
+    check_rs_url(url)
+
+    url = get_gif('dfsdfsdf')
+    check_rs_url(url)
