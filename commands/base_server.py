@@ -17,7 +17,7 @@ dir_up = str(current_dir.parent.resolve())
 if dir_up not in sys.path:
     sys.path.append(dir_up)
 
-
+# TODO: добавить возможность задавать альтернативные названия команд, например: гифка, gif
 from collections import namedtuple
 Command = namedtuple('Command', ['name', 'uri', 'description', 'priority'])
 Command.__new__.__defaults__ = (None, None, None, 0)
