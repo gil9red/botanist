@@ -48,13 +48,12 @@ def messages_get(vk):
     from_user_id = item['user_id']
     message = item['body']
 
-    # Если сообщение пришло из групповой беседы, в chat_id будет число, иначе None
-    chat_id = item.get('chat_id')
-
     # Бот реагирует только на сообщения, начинающиеся с префикса
     if not message.lower().startswith(command_prefix.lower()):
         return
 
+    # Если сообщение пришло из групповой беседы, в chat_id будет число, иначе None
+    chat_id = item.get('chat_id')
     if chat_id:
         log.debug('From chat #%s from user #%s, message (#%s): "%s"',
                   chat_id, from_user_id, message_id, message)
