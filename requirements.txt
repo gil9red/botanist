@@ -7,4 +7,4 @@ vk_api==9.1.1
 qrcode==5.3
 pyxDamerauLevenshtein==1.4.1
 beautifulsoup4==4.6.0
-mediawiki==0.0.1
+pymediawiki==0.3.15
