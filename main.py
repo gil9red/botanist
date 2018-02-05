@@ -15,7 +15,7 @@ from config import LOGIN, PASSWORD
 log = common.get_logger('mini_vk_bot', file='bot.log')
 
 
-# Отлов необработанныз исключений и закрытие
+# Отлов необработанных исключений и закрытие скрипта
 def log_uncaught_exceptions(ex_cls, ex, tb):
     text = '{}: {}:\n'.format(ex_cls.__name__, ex)
     import traceback
