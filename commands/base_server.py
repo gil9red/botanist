@@ -42,6 +42,9 @@ import cherrypy
 #
 #       https://github.com/gil9red/SimplePyScripts/blob/7b904be26f16da7676a0ecc6b31076792d6068ef/ordered_json.py
 
+# TODO: надо как-то определять методы серверов и возвращать их список: @cherrypy.expose
+# TODO: интересно, можно ли задавать для методов серверов (@cherrypy.expose) альтернативные
+# имена, которые в url будут задаваться
 
 class BaseServer:
     expose = cherrypy.expose
