@@ -22,6 +22,10 @@ from commands.base_server import BaseServer, Command
 from commands import generate_request
 import db
 
+# TODO: интересная идея реализации конвеера команд, например: str2hex -> str2base64 -> qrcode
+#       т.е. в координатор попадает текст, который преобразуется в HEX, HEX преобразуется в base64, а BASE64
+#       преобразуется в картинку QRCode
+
 
 # SOURCE: https://github.com/gil9red/SimplePyScripts/blob/460f3538ebc0fb78628ea885ac7d39481404fa1e/Damerau%E2%80%93Levenshtein_distance__misprints__%D0%BE%D0%BF%D0%B5%D1%87%D0%B0%D1%82%D0%BA%D0%B8/use__pyxdameraulevenshtein/fix_command.py
 def fix_command(text, all_commands):
