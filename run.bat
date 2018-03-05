@@ -2,7 +2,7 @@
 REM Указание пути, чтобы модули при импортировании могли найти нужные им модули/пакеты
 set PYTHON=C:\ProgramData\Anaconda3\python.exe
 
-start %PYTHON% main.py
+start %PYTHON% main_vk_bot.py
 start %PYTHON% commands\coordinator.py
 start %PYTHON% commands\command__calc\server.py
 start %PYTHON% commands\command__damn\server.py

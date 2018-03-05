@@ -6,7 +6,7 @@ __author__ = 'ipetrash'
 
 FILE_NAME_RUN = 'run.bat'
 file_name_list = [
-    'main.py',
+    'main_vk_bot.py',
     'commands\coordinator.py'
 ]
 
