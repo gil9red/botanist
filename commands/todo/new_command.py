@@ -72,3 +72,4 @@ __author__ = 'ipetrash'
 # TODO: команду ретуши фотографии -- например faceapp умеет добавлять улыбку и т.п.
 # TODO: 'что посмотреть': 'Рандомная ссылка на кинопоиск'
 # TODO: 'котики': ':3',
+# TODO: команда экранирования (escape): \n -> \\n, \ -> \\, " -> \". (https://github.com/gil9red/SimplePyScripts/tree/58bc5d5b9dddb2203507ca27fc04cad35ceae0e4/EscapeString)
