@@ -144,11 +144,13 @@ class BaseServer:
         raise Exception('_execute_body is not implemented!')
 
     def generate_response(self, result=None, attachment=None, error=None, stack_trace=None, elapsed=None, attachment_type=None) -> dict:
+        # TODO: думаю, имеет смысл вынести этот код в common в отдельную функцию. Пусть будет наподобии generate_request
         if attachment and attachment_type:
             attachment = common.create_attachment(attachment, attachment_type)
 
         from collections import OrderedDict
         rs = OrderedDict()
+        # TODO: думаю, имеет смысл создать поле для типа result. Например, это может быть text, json, html, xml, и т.п.
         rs['result'] = result
         rs['attachment'] = attachment
         rs['error'] = error
