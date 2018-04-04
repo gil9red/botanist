@@ -1,6 +1,6 @@
 @echo off
 REM Указание пути, чтобы модули при импортировании могли найти нужные им модули/пакеты
-set PYTHON=C:\ProgramData\Anaconda3\python.exe
+set PYTHON=C:\Users\ipetrash\AppData\Local\Continuum\Anaconda3\python.exe
 
 start %PYTHON% main_vk_bot.py
 start %PYTHON% commands\coordinator.py

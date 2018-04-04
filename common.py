@@ -68,6 +68,14 @@ AnyAttachment = Union[FileAttachment, List[FileAttachment]]
 AttachmentRs = Union[Dict[str, str], List[Dict[str, str]], None]
 
 
+def generate_request(command_name: str = '', command: str = '', attachment: AnyAttachment = None) -> dict:
+    return {
+        'command_name': command_name,
+        'command': command,
+        'attachment': attachment,
+    }
+
+
 def create_attachment(attachment: AnyAttachment, attachment_type: AnyAttachmentType) -> AttachmentRs:
     if attachment is None or attachment_type is None:
         return

@@ -4,7 +4,7 @@
 __author__ = 'ipetrash'
 
 
-from commands import generate_request
+from common import generate_request
 from commands.command__exchange_rate.server import ExchangeRateServer
 from db import get_execute_command_url_server
 

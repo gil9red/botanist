@@ -19,7 +19,7 @@ if dir_up not in sys.path:
 
 
 from commands.base_server import BaseServer, Command
-from commands import generate_request
+from common import generate_request
 import db
 
 # TODO: интересная идея реализации конвеера команд, например: str2hex -> str2base64 -> qrcode

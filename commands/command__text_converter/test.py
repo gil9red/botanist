@@ -4,7 +4,7 @@
 __author__ = 'ipetrash'
 
 
-from commands import generate_request
+from common import generate_request
 from commands.command__text_converter.server import TextConverter
 from db import get_url_server
 

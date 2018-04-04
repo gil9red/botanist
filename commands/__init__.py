@@ -6,6 +6,7 @@ __author__ = 'ipetrash'
 
 # TODO: использовать jsonschema для проверки запросов API
 import typing
+import sys
 
 
 # Если True, тогда модули-команды вместо выполнения своей команды вернут эхо в верхнем регистре
@@ -21,6 +22,19 @@ DEBUG = False
 #     'log.access_file': "access.log",
 #     'log.error_file': "error.log",
 # })
+
+
+# Добавление пути к папке с проектом, чтобы заработал импорт пакета commands и таких модулей
+# как db.py и common.py
+import pathlib
+current_dir = pathlib.Path(__file__).parent.resolve()
+dir_up = str(current_dir.parent.resolve())
+
+if dir_up not in sys.path:
+    sys.path.append(dir_up)
+
+
+from common import generate_request
 
 
 def execute(command: str) -> dict:
@@ -53,10 +67,3 @@ def execute(command: str) -> dict:
         print(message + '\n\nrs.content:\n{}'.format(rs.content))
 
         raise Exception(message)
-
-
-def generate_request(command_name: str = '', command: str = '') -> dict:
-    return {
-        'command_name': command_name,
-        'command': command,
-    }
