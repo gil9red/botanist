@@ -41,7 +41,10 @@ class WeatherServer(BaseServer):
     # Путь к файлу сервера
     file_name = os.path.abspath(__file__)
 
-    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
+    def _execute_body(self, rq: dict, **params: dict) -> typing.Union[dict, str]:
+        command = rq['command']
+        command_name = rq['command_name']
+
         if not command:
             raise Exception("Неправильная команда 'погода': не указан населенный пункт")
 

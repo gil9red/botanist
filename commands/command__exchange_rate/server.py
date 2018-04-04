@@ -55,7 +55,10 @@ class ExchangeRateServer(BaseServer):
         # Поле для сохранения времени, когда кэш испортится
         self.cache_update_time = None
 
-    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
+    def _execute_body(self, rq: dict, **params: dict) -> typing.Union[dict, str]:
+        # command = rq['command']
+        # command_name = rq['command_name']
+
         delta = timedelta(hours=1)
 
         if self.last_request_time is None or self.cache_update_time < datetime.now():

@@ -120,7 +120,7 @@ class BaseServer:
             if DEBUG and self.guid != 'B57B73C8F8D442C48EDAFC951963D7A5':
                 rs = '{} {}'.format(command_name, command).upper()
             else:
-                rs = self._execute_body(command, command_name, **params)
+                rs = self._execute_body(rq, **params)
 
         finally:
             self.last_elapsed = '{:.7f}'.format(time.clock() - start_elapsed)
@@ -139,7 +139,8 @@ class BaseServer:
 
         return rs
 
-    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
+    # TODO: нужно определить тип для Запросов. И лучше его брать от какого-нибудь класса с полями
+    def _execute_body(self, rq: dict, **params: dict) -> typing.Union[dict, str]:
         raise Exception('_execute_body is not implemented!')
 
     def generate_response(self, result=None, attachment=None, error=None, stack_trace=None, elapsed=None, attachment_type=None) -> dict:

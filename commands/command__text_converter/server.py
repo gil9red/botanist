@@ -127,7 +127,10 @@ class TextConverter(BaseServer):
         'ascii85_2_str': lambda text: base64.a85decode(text.encode()).decode(),
     }
 
-    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
+    def _execute_body(self, rq: dict, **params: dict) -> typing.Union[dict, str]:
+        command = rq['command']
+        command_name = rq['command_name']
+
         if not command:
             raise Exception("Неправильная команда '{}': не указан текст".format(command_name))
 

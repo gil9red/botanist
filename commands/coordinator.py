@@ -95,7 +95,10 @@ class CoordinatorServer(BaseServer):
     def get_top10_commands(self, as_result=None) -> dict:
         return self.get_commands(as_result, max_number=10)
 
-    def _execute_body(self, command: str, command_name: str, **params: dict) -> typing.Union[dict, str]:
+    def _execute_body(self, rq: dict, **params: dict) -> typing.Union[dict, str]:
+        command = rq['command']
+        command_name = rq['command_name']
+
         # Если команды нет, показываем список команд
         if not command.strip():
             return self.get_top10_commands(as_result=True)
