@@ -56,8 +56,7 @@ class BaseServer:
 
     # Для генерации GUID нужно вызвать:
     # import uuid
-    # x = uuid.uuid4()
-    # print(x.hex.upper())
+    # print(uuid.uuid4().hex.upper())
     #
     guid = 'E72DD28502D64F76B5E698DC9247C220'
 
