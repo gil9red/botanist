@@ -9,6 +9,7 @@ start %PYTHON% commands\command__damn\server.py
 start %PYTHON% commands\command__duckduckgo\server.py
 start %PYTHON% commands\command__exchange_rate\server.py
 start %PYTHON% commands\command__fun\server.py
+start %PYTHON% commands\command__get_image_info\server.py
 start %PYTHON% commands\command__gif\server.py
 start %PYTHON% commands\command__qrcode\server.py
 start %PYTHON% commands\command__test_get_attachment\server.py
