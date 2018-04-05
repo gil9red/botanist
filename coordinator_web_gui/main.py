@@ -14,6 +14,7 @@ __author__ = 'ipetrash'
 # TODO: мб завести в команды отдельное поле "Примеры"? И там приводить примеры. Это удобнее чем парсить из описания
 
 # TODO: возможность отправлять картинки в запросе
+#       https://github.com/gil9red/SimplePyScripts/blob/fb5aa6cc32e3cef94418415ee7b7a53398dbf330/web_servers/get_upload_image_info/main.py#L272
 
 
 import pathlib
