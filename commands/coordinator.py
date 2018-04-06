@@ -22,6 +22,15 @@ from commands.base_server import BaseServer, Command
 from common import generate_request
 import db
 
+import time
+import requests
+
+# pip install tabulate
+from tabulate import tabulate
+
+from multiprocessing.dummy import Pool as ThreadPool
+
+
 # TODO: интересная идея реализации конвеера команд, например: str2hex -> str2base64 -> qrcode
 #       т.е. в координатор попадает текст, который преобразуется в HEX, HEX преобразуется в base64, а BASE64
 #       преобразуется в картинку QRCode
@@ -52,6 +61,23 @@ def fix_command(text, all_commands):
         print('Error: {}\n\n{}'.format(e, traceback.format_exc()))
 
         return text
+
+
+def update_availability_server(server):
+    name = server['name']
+    guid = server['guid']
+    url = server['url']
+
+    try:
+        requests.get(url, timeout=0.1)
+        availability = True
+
+    except requests.exceptions.ConnectionError:
+        availability = False
+
+    db.update_availability(guid, availability)
+
+    return name, availability
 
 
 class CoordinatorServer(BaseServer):
@@ -169,33 +195,19 @@ class CoordinatorServer(BaseServer):
 
     def _before_run(self):
         def _thread_func():
-            import time
-            import db
-            import requests
-
             # Немного дадим времени серверам перед проверкой (особенно http-серверу самого координатора)
             time.sleep(2)
 
             while True:
-                for server in db.get_all_server():
-                    name = server['name']
-                    guid = server['guid']
-                    url = server['url']
+                pool = ThreadPool()
+                rows = pool.map(update_availability_server, db.get_all_server())
 
-                    try:
-                        requests.get(url, timeout=0.1)
-                        availability = True
+                # Сортировка по NAME
+                rows.sort(key=lambda x: x[0])
+                table = tabulate(rows, headers=('NAME', 'AVAILABILITY'), tablefmt="grid")
 
-                    except requests.exceptions.ConnectionError:
-                        availability = False
-
-                    # TODO: лучше это логировать в отдельный файл, т.к. логировать
-                    #       будет много и часто и общий лог засорять не нужно
-                    # TODO: думаю, лучше логировать сразу всю инфу и в текстовой таблице
-                    print('name: "{}", availability={}'.format(name, availability))
-                    db.update_availability(guid, availability)
-
-                print('\n')
+                # TODO: лучше это логировать. Можно и в отдельный файл, т.к. логировать будет много и часто
+                print(table + '\n\n')
 
                 # Иначе может не вывести сразу в консоль
                 sys.stdout.flush()
