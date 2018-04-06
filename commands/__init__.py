@@ -47,7 +47,7 @@ def execute(command: str) -> dict:
 
     try:
         rs = requests.post(url, json=generate_request(command=command))
-        print(rs.text)
+        print('Response text:', rs.text)
 
     except requests.exceptions.ConnectionError:
         raise Exception('Сервер Координатора ({}) недоступен'.format(url))
@@ -67,3 +67,8 @@ def execute(command: str) -> dict:
         print(message + '\n\nrs.content:\n{}'.format(rs.content))
 
         raise Exception(message)
+
+
+if __name__ == '__main__':
+    rs = execute('команды')
+    print(rs)
