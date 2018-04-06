@@ -39,13 +39,13 @@ if __name__ == '__main__':
     rs = common.execute('команды')
     print(rs)
 
-    # file_name = 'example.jpg'
-    # with open(file_name, 'rb') as f:
-    #     content = f.read()
-    #     extension = pathlib.Path(file_name).suffix[1:]
-    #
-    # file_attachment = common.FileAttachment(content=content, extension=extension)
-    # attachment_type = common.AttachmentType.IMAGE
-    # attachment = common.create_attachment(file_attachment, attachment_type)
-    # rs = common.execute('получить информацию о картинке', attachment)
-    # print(rs)
+    file_name = 'command__get_image_info/example.jpg'
+    with open(file_name, 'rb') as f:
+        content = f.read()
+        extension = pathlib.Path(file_name).suffix[1:]
+
+    file_attachment = common.FileAttachment(content=content, extension=extension)
+    attachment_type = common.AttachmentType.IMAGE
+    attachment = common.create_attachment(file_attachment, attachment_type)
+    rs = common.execute('получить информацию о картинке', attachment)
+    print(rs)
