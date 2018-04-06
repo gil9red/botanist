@@ -124,6 +124,7 @@ class CoordinatorServer(BaseServer):
     def _execute_body(self, rq: dict, **params: dict) -> typing.Union[dict, str]:
         command = rq['command']
         command_name = rq['command_name']
+        attachment = rq['attachment']
 
         # Если команды нет, показываем список команд
         if not command.strip():
@@ -177,7 +178,7 @@ class CoordinatorServer(BaseServer):
                     url, command_name, command_text)
                 )
 
-                rq = generate_request(command_name, command_text)
+                rq = generate_request(command_name, command_text, attachment)
                 print('Generate request:', rq)
 
                 import requests

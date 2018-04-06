@@ -68,6 +68,38 @@ AnyAttachment = Union[FileAttachment, List[FileAttachment]]
 AttachmentRs = Union[Dict[str, str], List[Dict[str, str]], None]
 
 
+def execute(command: str, attachment: AnyAttachment = None) -> dict:
+    import db
+    url = db.get_url_command_coordinator()
+    if not url:
+        raise Exception('Не удалось получить адрес Координатора')
+
+    import requests
+
+    try:
+        rs = requests.post(url, json=generate_request(command=command, attachment=attachment))
+        print('Response text:', rs.text)
+
+    except requests.exceptions.ConnectionError:
+        raise Exception('Сервер Координатора ({}) недоступен'.format(url))
+
+    # На всякий случай, вдруг не json придет, а html
+    try:
+        rs = rs.json()
+        print('rs:', rs)
+
+        return rs
+
+    except Exception as e:
+        import traceback
+        message = 'При выполнении команды "{}" произошла ошибка: ' \
+                  '"{}":\n\n{}'.format(command, e, traceback.format_exc())
+
+        print(message + '\n\nrs.content:\n{}'.format(rs.content))
+
+        raise Exception(message)
+
+
 def generate_request(command_name: str = '', command: str = '', attachment: AnyAttachment = None) -> dict:
     return {
         'command_name': command_name,

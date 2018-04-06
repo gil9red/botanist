@@ -107,8 +107,11 @@ class BaseServer:
 
         command = rq['command']
         command_name = rq['command_name']
+        attachment = rq['attachment']
 
-        print('_execute_body(command="{}", command_name="{}", **params={})'.format(command, command_name, params))
+        print('_execute_body(command="{}", command_name="{}", attachment="{}", **params={})'.format(
+            command, command_name, attachment, params)
+        )
 
         start_elapsed = time.clock()
 
