@@ -191,6 +191,7 @@ class CoordinatorServer(BaseServer):
 
                     # TODO: лучше это логировать в отдельный файл, т.к. логировать
                     #       будет много и часто и общий лог засорять не нужно
+                    # TODO: думаю, лучше логировать сразу всю инфу и в текстовой таблице
                     print('name: "{}", availability={}'.format(name, availability))
                     db.update_availability(guid, availability)
 
