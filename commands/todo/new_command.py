@@ -36,6 +36,7 @@ __author__ = 'ipetrash'
 
 # TODO: сервер для обработки картинок: инвертирование, пикселизация, gray, сглаживание, и т.п.
 #       сделать возможность создавать thumbnails
+#       https://github.com/gil9red/SimplePyScripts/blob/4516206d6e29608a732b7c096cd557b11c7ce67b/telegram_bot__image_process_bot/main.py
 
 # TODO: добавить команду генерирования случайного UUID'а
 # import uuid
