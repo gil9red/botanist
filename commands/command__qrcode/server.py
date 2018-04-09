@@ -27,6 +27,9 @@ import common
 from commands.base_server import BaseServer, Command
 
 
+# TODO: добавить команду разбор qrcode, которая из отправленного в запросе картинке выковыривает текст
+
+
 class QRCodeServer(BaseServer):
     name = 'QRCodeServer'
     guid = '60BC4D9FB8BB461E996E0F22C37F7498'
