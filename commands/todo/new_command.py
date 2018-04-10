@@ -81,3 +81,7 @@ __author__ = 'ipetrash'
 # TODO: команда экранирования (escape): \n -> \\n, \ -> \\, " -> \". (https://github.com/gil9red/SimplePyScripts/tree/58bc5d5b9dddb2203507ca27fc04cad35ceae0e4/EscapeString)
 
 # TODO: добавление команды помощь / help, которая покажет подробную информацию по указанной команде. Например, "помощь насмеши"
+
+# TODO: добавить команду добавления подписи (fingerprint) в переданный текст. Т.е. в команду передается подпись и текст.
+# TODO: добавить команду извлечения подписи (fingerprint) из переданного текста.
+#       https://github.com/gil9red/SimplePyScripts/blob/6dea0ef577c68ad3e64dcce36821d813ee2b7df1/FOO_TEST_TEST/FOO_TEST_TEST.py#L154
