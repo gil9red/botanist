@@ -84,4 +84,4 @@ __author__ = 'ipetrash'
 
 # TODO: добавить команду добавления подписи (fingerprint) в переданный текст. Т.е. в команду передается подпись и текст.
 # TODO: добавить команду извлечения подписи (fingerprint) из переданного текста.
-#       https://github.com/gil9red/SimplePyScripts/blob/6dea0ef577c68ad3e64dcce36821d813ee2b7df1/FOO_TEST_TEST/FOO_TEST_TEST.py#L154
+#       https://github.com/gil9red/SimplePyScripts/blob/c092c81a4b547cd7cc10e2e4dcac8499bec1ac1b/Fingerprinting%20with%20Zero-Width%20Characters/main.py
