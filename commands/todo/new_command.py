@@ -85,3 +85,6 @@ __author__ = 'ipetrash'
 # TODO: добавить команду добавления подписи (fingerprint) в переданный текст. Т.е. в команду передается подпись и текст.
 # TODO: добавить команду извлечения подписи (fingerprint) из переданного текста.
 #       https://github.com/gil9red/SimplePyScripts/blob/c092c81a4b547cd7cc10e2e4dcac8499bec1ac1b/Fingerprinting%20with%20Zero-Width%20Characters/main.py
+
+# TODO: команда для переворачивания текста: Переворачивание текста -> ɐɯɔʞǝɯ ǝинɐʚиҺɐdоʚǝdǝu
+#       https://github.com/gil9red/SimplePyScripts/blob/88fad1583fb959454138ab6ee09f45312f59ec76/flip_text.py
