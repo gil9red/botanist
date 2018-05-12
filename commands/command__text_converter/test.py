@@ -18,11 +18,11 @@ rs = requests.post(
     json=generate_request(command_name='str2hex', command='Привет мир!')
 )
 print(rs.json())
-assert rs.json()['result'] == 'CFF0E8E2E5F220ECE8F021'
+assert rs.json()['result'] == 'D09FD180D0B8D0B2D0B5D18220D0BCD0B8D18021'
 
 rs = requests.post(
     url + '/execute?hex2str',
-    json=generate_request(command_name='hex2str', command='CFF0E8E2E5F220ECE8F021')
+    json=generate_request(command_name='hex2str', command='D09FD180D0B8D0B2D0B5D18220D0BCD0B8D18021')
 )
 print(rs.json())
 assert rs.json()['result'] == 'Привет мир!'

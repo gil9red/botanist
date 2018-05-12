@@ -43,7 +43,7 @@ class TextConverter(BaseServer):
         Command(
             name='hex2str',
             uri='/execute?hex2str',
-            description='Конвертация из HEX в строку. Например: Бот, hex2str CFF0E8E2E5F221',
+            description='Конвертация из HEX в строку. Например: Бот, hex2str D09FD180D0B8D0B2D0B5D18220D0BCD0B8D18021',
             priority=6,
         ),
 
