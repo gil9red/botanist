@@ -22,7 +22,7 @@ STATIC_DIR = str((pathlib.Path(__file__).parent / "static").resolve())
 INDEX_FILE_NAME = str((pathlib.Path(__file__).parent / "static" / 'index.html').resolve())
 
 
-from commands import execute
+from common import execute
 import db
 
 import cherrypy

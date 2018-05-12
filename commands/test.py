@@ -4,68 +4,68 @@
 __author__ = 'ipetrash'
 
 
-import commands
-result = commands.execute('команды')
+import common
+result = common.execute('команды')
 print(repr(result))
 print()
 
-result = commands.execute('str2hex Привет мир!')
+result = common.execute('str2hex Привет мир!')
 print(repr(result))
 print()
 
-result = commands.execute('hex2str CFF0E8E2E5F220ECE8F021')
+result = common.execute('hex2str CFF0E8E2E5F220ECE8F021')
 print(repr(result))
 print()
 
-result = commands.execute('курс валют')
+result = common.execute('курс валют')
 print(repr(result))
 print()
 
-result = commands.execute('Курс ВАлут')
+result = common.execute('Курс ВАлут')
 print(repr(result))
 print()
 
-result = commands.execute('насмеши')
+result = common.execute('насмеши')
 print(repr(result))
 print()
 
-result = commands.execute('ругнись петр иваныч')
+result = common.execute('ругнись петр иваныч')
 print(repr(result))
 print()
 
-result = commands.execute('регнись петр иваныч')
+result = common.execute('регнись петр иваныч')
 print(repr(result))
 print()
 
-result = commands.execute('регнись регнись петр иваныч')
+result = common.execute('регнись регнись петр иваныч')
 print(repr(result))
 print()
 
-result = commands.execute('регнись петр иваныч регнись')
+result = common.execute('регнись петр иваныч регнись')
 print(repr(result))
 print()
 
-result = commands.execute('погода магнитогорск')
+result = common.execute('погода магнитогорск')
 print(repr(result))
 print()
 
-result = commands.execute('пагода магнитогорск')
+result = common.execute('пагода магнитогорск')
 print(repr(result))
 print()
 
-result = commands.execute('курс валют')
+result = common.execute('курс валют')
 print(repr(result))
 print()
 
 
-result = commands.execute('сила луны')
+result = common.execute('сила луны')
 print(repr(result))
 print()
 
-result = commands.execute('2 + 2 = ?')
+result = common.execute('2 + 2 = ?')
 print(repr(result))
 print()
 
-result = commands.execute('спой')
+result = common.execute('спой')
 print(repr(result))
 print()

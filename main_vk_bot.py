@@ -29,7 +29,6 @@ import sys
 sys.excepthook = log_uncaught_exceptions
 
 
-import commands
 import time
 
 
@@ -66,7 +65,7 @@ def messages_get(vk):
 
     # Выполнение команды
     try:
-        rs = commands.execute(command)
+        rs = common.execute(command)
 
         # Если нет результата, берем значение из поля error. В штатной ситуации
         # result может быть null, error тоже null, а attachment содержать значения
