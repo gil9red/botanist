@@ -50,6 +50,9 @@ __author__ = 'ipetrash'
 
 # TODO: Присмотреть интересные команды: https://github.com/sk89q/Plumeria/tree/13e08869764e9efcff74dd64c8c6661336876d2c/orchard
 
+# TODO: добавить команду транслитерации/transliterate: https://github.com/gil9red/SimplePyScripts/blob/5f25da2f231838d841faa2420041c5e49f517908/transliterate__%D1%82%D1%80%D0%B0%D0%BD%D1%81%D0%BB%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D1%8F.py
+#       чтобы: 'Привет мир!' -> 'Privet mir!'
+
 # TODO: добавить команду курс криптовалют
 # TODO: добавить команду Язык Йода: http://vexer.ru/jokez/joda.php
 # TODO: добавить команду для генерации в язык падонков
