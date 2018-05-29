@@ -52,6 +52,8 @@ class CalcServer(BaseServer):
 
         # Калькулятор из: https://github.com/gil9red/SimplePyScripts/blob/master/calculator/use_numexpr_module/main.py
         # TODO: не модет подсчитать 10**123
+
+        # TODO: использовать simpleeval: https://github.com/gil9red/SimplePyScripts/blob/38765c6ef304fb5da233b8d44a9294b52b86343d/simpleeval__examples__calc/hello_world.py
         import numexpr
         result = numexpr.evaluate(command)
 
