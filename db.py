@@ -4,7 +4,7 @@
 __author__ = 'ipetrash'
 
 
-from typing import Union, List, Dict
+from typing import List, Dict, Optional
 
 DB_FILE_NAME = 'database.sqlite'
 
@@ -103,7 +103,7 @@ def get_all_command_name_by_url() -> Dict[str, str]:
     return items
 
 
-def get_execute_command_list_url_server(guid: str) -> [Union[str, None]]:
+def get_execute_command_list_url_server(guid: str) -> [Optional[str]]:
     with create_connect() as connect:
         url_list = connect.execute('''
             SELECT Server.url || Command.uri 
@@ -116,7 +116,7 @@ def get_execute_command_list_url_server(guid: str) -> [Union[str, None]]:
         return [x for x, in url_list]
 
 
-def get_execute_command_url_server(guid: str) -> Union[str, None]:
+def get_execute_command_url_server(guid: str) -> Optional[str]:
     url_list = get_execute_command_list_url_server(guid)
     if not url_list:
         return
@@ -160,7 +160,7 @@ def get_all_server_with_commands() -> List[dict]:
     return server_list
 
 
-def get_url_server(guid: str) -> Union[str, None]:
+def get_url_server(guid: str) -> Optional[str]:
     with create_connect() as connect:
         url = connect.execute('SELECT Server.url FROM Server WHERE Server.guid = :guid ', {'guid': guid}).fetchone()
         if url is None:
@@ -169,11 +169,11 @@ def get_url_server(guid: str) -> Union[str, None]:
         return url[0]
 
 
-def get_url_coordinator() -> Union[str, None]:
+def get_url_coordinator() -> Optional[str]:
     return get_url_server('B57B73C8F8D442C48EDAFC951963D7A5')
 
 
-def get_url_command_coordinator() -> Union[str, None]:
+def get_url_command_coordinator() -> Optional[str]:
     return get_execute_command_url_server('B57B73C8F8D442C48EDAFC951963D7A5')
 
 
