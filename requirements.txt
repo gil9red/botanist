@@ -1,5 +1,5 @@
 numpy==1.12.1
-requests==2.18.4
+requests==2.20.0
 numexpr==2.6.2
 CherryPy==11.0.0
 lxml==4.6.2
