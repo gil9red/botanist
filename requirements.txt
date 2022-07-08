@@ -2,7 +2,7 @@ numpy==1.22.0
 requests==2.20.0
 numexpr==2.6.2
 CherryPy==11.0.0
-lxml==4.6.5
+lxml==4.9.1
 vk_api==9.1.1
 qrcode==5.3
 pyxDamerauLevenshtein==1.4.1
